@@ -43,7 +43,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
               <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                 <div className="sidebar-widget mb-20">
                   <h6 className="mb-15 title font600 sidebar-title d-inline-block position-relative pb-1">
-                    Product Categories
+                    Phân loại
                   </h6>
                   <ul>
                     {category &&
@@ -74,7 +74,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
           <div className="col-xl-12  col-lg-12  col-md-6  col-sm-12 col-12">
             <div className="sidebar-widget">
               <h6 className="mb-25 title font600 sidebar-title d-inline-block position-relative pb-1">
-                Color
+                Màu sắc
               </h6>
               <ul className="shop-color">
                 {colors &&
@@ -94,7 +94,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
           <div className="col-xl-12  col-lg-12  col-md-6  col-sm-12 col-12">
             <div className="sidebar-widget mt-25">
               <h6 className="mb-15 title font600 sidebar-title d-inline-block position-relative pb-1">
-                Size
+                Kích thước
               </h6>
               <ul className="shop-color">
                 {size &&
@@ -114,7 +114,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
           <div className="col-xl-12  col-lg-12  col-md-6  col-sm-12 col-12">
             <div className="sidebar-widget mt-25">
               <h6 className="mb-20 title font600 sidebar-title d-inline-block position-relative pb-1">
-                Popular tags
+                Thẻ tag phổ biến
               </h6>
               <ul className="shop-tag">
                 {tags &&
@@ -132,7 +132,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
           <div className="col-xl-12  col-lg-12  col-md-6  col-sm-12 col-12">
             <div className="sidebar-widget mt-25">
               <h6 className="title font600 sidebar-title d-inline-block position-relative mb-20 pb-1">
-                Recent Product
+                Có thể bạn thích
               </h6>
               <div className="side-product mb-50">
                 {products &&

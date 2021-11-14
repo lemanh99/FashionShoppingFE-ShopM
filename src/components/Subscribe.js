@@ -21,9 +21,9 @@ const Subscribe = ({ getTestimonial, testimonial, bg, inputBg }) => {
   return (
     <div className="">
       <div className="section-title mb-30">
-        <h3 className="font-pt light-black-color2 pb-1">
+        <h4 className="light-black-color2 pb-1 font300">
           Đăng ký thông báo
-        </h3>
+        </h4>
         <p className="light-black-color7 font300">
           Nhận thông báo ưu đãi mới nhất của cửa hàng
         </p>

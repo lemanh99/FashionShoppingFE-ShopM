@@ -31,12 +31,10 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
     e.preventDefault();
     decreaseCart(cart);
     setaddCart(true);
-    toast.error("Remove item from Cart.");
+    toast.error("Xóa sản phẩm từ giỏ hàng thành công");
   };
   return (
     <Layout>
-      <PageBanner pageName="Cart" title="Shoping Cart" />
-
       {carts && carts.length > 0 ? (
         <div className="cart-area mt-100">
           <div className="container border-b-light-gray pb-100">
@@ -116,7 +114,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                             onClick={(e) => {
                               removeCart(cart.id);
                               setaddCart(true);
-                              toast.error("Remove Item from cart.");
+                              toast.error("Xóa sản phẩm từ giỏ hàng thành công");
                               e.preventDefault();
                             }}
                           >
@@ -135,14 +133,14 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                     <form onSubmit={(e) => e.preventDefault()}>
                       <input
                         type="text"
-                        placeholder="Coupon code"
+                        placeholder="Mã giảm giá"
                         className="pl-15 mr-10 pt-0 mb-15 d-inline-block width50"
                       />
                       <a
                         href="#"
                         className="web-btn h2-theme-border1 d-inline-block text-uppercase white  rounded-0 h2-theme-color cart-c-btn h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17 mr-20"
                       >
-                        Apply coupon
+                        Áp dụng
                       </a>
                     </form>
                   </div>
@@ -154,7 +152,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                       href="#"
                       className="web-btn h2-theme-border1 d-inline-block text-uppercase white mt-15 rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-60 pr-60 ptb-17 mr-20"
                     >
-                      UPDATE CART
+                      Cập nhật sản phẩm
                     </a>
                   </div>
                 </div>
@@ -165,20 +163,20 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
             <div className="row">
               <div className="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12 offset-xl-6 offset-lg-6">
                 <div className="total-price-area mt-60">
-                  <h2 className="font600">Cart totals</h2>
+                  <h2 className="font600">Thanh toán giỏ hàng</h2>
                   <ul className="pt-15 pb-25">
                     <li className="d-flex justify-content-between align-items-center border-gray1 mb-2 pl-25 pr-25 pt-15 pb-15">
-                      <span>Subtotal</span>
+                      <span>Tổng tiền</span>
                       <span>${totalPrice(carts)}</span>
                     </li>
                     <li className="d-flex justify-content-between align-items-center border-gray1 pl-25 pr-25 pt-15 pb-15">
-                      <span>Total </span>
+                      <span>Tổng thanh toán </span>
                       <span>${totalPrice(carts)}</span>
                     </li>
                   </ul>
                   <Link href="/checkout">
                     <a className="web-btn h2-theme-border1 d-inline-block text-uppercase white  rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17 mr-20">
-                      Checkout
+                      Thanh toán
                     </a>
                   </Link>
                 </div>
@@ -189,7 +187,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
           {/* /container */}
         </div>
       ) : (
-        <h2 className="py-5 text-center w-100">No Product Found</h2>
+        <h2 className="py-5 text-center w-100">Không có sản phẩm nào</h2>
       )}
     </Layout>
   );

@@ -9,13 +9,12 @@ const Register = () => {
   return (
     <Layout>
       <main>
-        <PageBanner title="Register" pageName="Register" />
         <section className="login-area pt-100 pb-100">
           <div className="container">
             <div className="row">
               <div className="col-lg-8 offset-lg-2">
                 <div className="basic-login">
-                  <h3 className="text-center mb-60">Signup From Here</h3>
+                  <h3 className="text-center mb-60">Đăng ký tài khoản</h3>
                   <Formik
                     initialValues={registerSchema.initialValue}
                     validationSchema={registerSchema.schema}
@@ -40,14 +39,14 @@ const Register = () => {
                           id="username"
                           name="username"
                           type="string"
-                          placeholder="Enter Username ..."
+                          placeholder="Nhập Username ..."
                           values={values.username}
                           errors={errors.username}
                           handleBlur={handleBlur}
                           handleChange={handleChange}
                         />
                         <InputGroup
-                          label="Email Address"
+                          label="Email"
                           id="email"
                           name="email"
                           type="string"
@@ -58,11 +57,11 @@ const Register = () => {
                           handleChange={handleChange}
                         />
                         <InputGroup
-                          label="Password"
+                          label="Mật khẩu"
                           id="password"
                           name="password"
                           type="password"
-                          placeholder="Enter password..."
+                          placeholder="Nhập mật khẩu..."
                           values={values.password}
                           errors={errors.password}
                           handleBlur={handleBlur}
@@ -72,14 +71,14 @@ const Register = () => {
                           disabled={isSubmitting}
                           className="bt-btn theme-btn-2 w-100"
                         >
-                          Register Now
+                          Đăng ký
                         </button>
                         <div className="or-divide">
                           <span>or</span>
                         </div>
                         <Link href="/login">
                           <a className="bt-btn bt-btn-black w-100 text-center">
-                            Login Now
+                            Đăng nhập
                           </a>
                         </Link>
                       </form>

@@ -9,13 +9,12 @@ const Login = () => {
   return (
     <Layout sticky textCenter footerBg container>
       <main>
-        <PageBanner title="Login" pageName="Login" />
         <section className="login-area pt-100 pb-100">
           <div className="container">
             <div className="row">
               <div className="col-lg-8 offset-lg-2">
                 <div className="basic-login">
-                  <h3 className="text-center mb-60">Login From Here</h3>
+                  <h3 className="text-center mb-60">Đăng nhập tài khoản</h3>
                   <Formik
                     initialValues={loginSchema.initialValue}
                     validationSchema={loginSchema.schema}
@@ -36,22 +35,22 @@ const Login = () => {
                     }) => (
                       <form onSubmit={handleSubmit}>
                         <InputGroup
-                          label="Email Address"
+                          label="Email"
                           id="email"
                           name="email"
                           type="string"
-                          placeholder="Enter Username or Email address..."
+                          placeholder="Nhập địa chỉ email"
                           values={values.email}
-                          errors={errors.email}
+                          errors={"Email không hợp lệ"}
                           handleBlur={handleBlur}
                           handleChange={handleChange}
                         />
                         <InputGroup
-                          label="Password"
+                          label="Mật khẩu"
                           id="password"
                           name="password"
                           type="password"
-                          placeholder="Enter password..."
+                          placeholder="Nhập mật khẩu"
                           values={values.password}
                           errors={errors.password}
                           handleBlur={handleBlur}
@@ -60,11 +59,11 @@ const Login = () => {
                         <div className="login-action mb-20 fix ">
                           <span className="log-rem f-left">
                             <input id="remember" type="checkbox" />
-                            <label htmlFor="remember">Remember me!</label>
+                            <label htmlFor="remember">Ghi nhớ tài khoản!</label>
                           </span>
                           <span className="forgot-login f-right ms-1">
                             <a href="#" onClick={(e) => e.preventDefault()}>
-                              Lost your password?
+                              Quên mật khẩu?
                             </a>
                           </span>
                         </div>
@@ -73,14 +72,14 @@ const Login = () => {
                           disabled={isSubmitting}
                           className="bt-btn theme-btn-2 w-100"
                         >
-                          Login Now
+                          Đăng nhập
                         </button>
                         <div className="or-divide">
                           <span>or</span>
                         </div>
                         <Link href="/register">
                           <a className="bt-btn bt-btn-black w-100 text-center">
-                            Register Now
+                            Đăng ký tài khoản
                           </a>
                         </Link>
                       </form>

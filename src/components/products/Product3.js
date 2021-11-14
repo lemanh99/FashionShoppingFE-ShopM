@@ -91,8 +91,8 @@ const Product3 = ({
         )}
         <div className="position-relative">
           <Link href={`/shop/${product.id}`}>
-            <a className="position-relative d-block">
-              <img src={product.img} alt="product" className="d-block m-auto" />
+            <a className="d-block">
+              <img src={product.img} alt="product" className="d-block m-auto w-100" width={228} height={250}/>
             </a>
           </Link>
           {productActionOff && (
@@ -186,11 +186,11 @@ const Product3 = ({
             <li>
               {product.price && (
                 <span className="pr-2 d-inline-block">
-                  <del>${Number(product.price).toFixed(2)}</del>
+                  <del>{Number(product.price)} VND</del>
                 </span>
               )}
               <span className="theme-color d-inline-block ms-1 font600">
-                ${Number(product.mainPrice).toFixed(2)}
+                {Number(product.mainPrice)} VND
               </span>
             </li>
           </ul>

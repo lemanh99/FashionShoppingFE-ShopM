@@ -19,7 +19,7 @@ const Paggination = ({ setActive, active, length, sort }) => {
                     }}
                   >
                     <i className="fas fa-angle-left me-1"></i>
-                    First
+                    Trước
                   </a>
                 </li>
                 {Array(Math.ceil(length / sort))
@@ -51,7 +51,7 @@ const Paggination = ({ setActive, active, length, sort }) => {
                       e.preventDefault();
                     }}
                   >
-                    Last <i className="fas fa-angle-right "></i>
+                    Sau <i className="fas fa-angle-right "></i>
                   </a>
                 </li>
               </ul>

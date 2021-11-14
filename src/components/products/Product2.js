@@ -37,16 +37,13 @@ const Product2 = ({ product, addToCart }) => {
         {/* /product-label */}
         <Link href={`/shop/${product.id}`}>
           <a className="d-block">
-            <img src={product.img} className="w-100" alt="Product" />
+            <img src={product.img} className="w-100" alt="Product" width={200} height={220}/>
           </a>
         </Link>
       </div>
-      <div className="single-handpick-item-content">
+      <div className="single-handpick-item-content" style={{ marginLeft: "18px" }}>
         <div className="single-product-info mt-25 transition-3">
-          <div className="rating rating-shop d-flex mt-25">
-            {product.reating && <Reating rating={product.reating} />}
-          </div>
-          {/* /rating */}
+
           <h6 className="light-black-color2">
             <Link href={`/shop/${product.id}`}>
               <a>{product.name}</a>
@@ -65,12 +62,16 @@ const Product2 = ({ product, addToCart }) => {
             </li>
           </ul>
           {/* /single-product-price */}
+          <div className="rating rating-shop d-flex mt-25">
+            {product.reating && <Reating rating={product.reating} />}
+          </div>
+          {/* /rating */}
           <a
             href="#"
             className="web-btn web-btn2 border-white01 d-inline-block font700 text-capitalize light-black-color9 position-relative over-hidden pl-35 pr-35 ptb-12"
             onClick={(e) => onClickCart(e)}
           >
-            Add To Cart
+            Thêm vào giỏ hàng
           </a>
         </div>
       </div>

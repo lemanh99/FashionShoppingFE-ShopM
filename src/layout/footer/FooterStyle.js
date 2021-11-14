@@ -10,7 +10,7 @@ export const DefaultFooter = ({ footerWhite }) => {
         <div className="footer-top">
           <div className="container">
             <div className="row d-flex border-b-gray1 border-t-gray1 pt-25 pb-40">
-              <div className="col-xxl-5 col-xl-5  col-lg-6  col-md-12  col-sm-12 col-12">
+              <div className="col-xxl-5 col-xl-5  col-lg-6  col-md-12  col-sm-12 col-12 border-l-gray1">
                 <div className="row">
                   <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12 ">
                     <div className="footer-widget pb-30">
@@ -20,7 +20,7 @@ export const DefaultFooter = ({ footerWhite }) => {
                             href="#"
                             className="position-relative d-inline-block"
                           >
-                            My Account
+                            Tài khoản của tôi
                           </a>
                         </li>
                         <li>
@@ -28,7 +28,7 @@ export const DefaultFooter = ({ footerWhite }) => {
                             href="#"
                             className="position-relative d-inline-block"
                           >
-                            Order Status
+                            Đơn hàng của tôi
                           </a>
                         </li>
                         <li>
@@ -36,31 +36,7 @@ export const DefaultFooter = ({ footerWhite }) => {
                             href="#"
                             className="position-relative d-inline-block"
                           >
-                            Shipping
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            Billing
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            Returns &amp; Exchanges
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            International Shipments
+                            Theo dõi đơn hàng
                           </a>
                         </li>
                       </ul>
@@ -75,7 +51,7 @@ export const DefaultFooter = ({ footerWhite }) => {
                             href="#"
                             className="position-relative d-inline-block"
                           >
-                            Customer Service
+                            Dịch vụ chăm sóc khách hàng
                           </a>
                         </li>
                         <li>
@@ -83,15 +59,7 @@ export const DefaultFooter = ({ footerWhite }) => {
                             href="#"
                             className="position-relative d-inline-block"
                           >
-                            Liên hệ với chúng tôi
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            Accessibility
+                            Bạn cần trợ giúp?
                           </a>
                         </li>
                       </ul>
@@ -102,44 +70,44 @@ export const DefaultFooter = ({ footerWhite }) => {
                 {/* /row */}
               </div>
               {/* /col */}
-              <div className="col-xxl-7 col-xl-7  col-lg-6  col-md-12  col-sm-12 col-12">
+              <div className="col-xxl-4 col-xl-4  col-lg-6  col-md-12  col-sm-12 col-12 border-l-gray1">
                 <div className="row">
-                  <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                    <div className="footer-widget f-adress pb-30 pr-60 ml--35">
-                      <ul className="footer-address">
-                        <Subscribe
-                          bg="theme-bg theme-border1"
-                          inputBg="theme-color light-theme-bg"
-                        />
-                      </ul>
-                    </div>
+                  <div className="footer-widget f-adress pb-30 pr-60">
+                    <ul className="footer-address">
+                      <Subscribe
+                        bg="theme-bg theme-border1"
+                        inputBg="theme-color light-theme-bg"
+                      />
+                    </ul>
                   </div>
+                </div>
+                {/* /row */}
+              </div>
+              {/* /col */}
+              {/* /col */}
+              <div className="col-xxl-3 col-xl-3  col-lg-6  col-md-12  col-sm-12 col-12 border-l-gray1">
+                <div className="row">
                   {/* /col */}
-                  <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12 pl-xl-0">
-                    <div className="footer-widget pb-30 f-link ml--3">
-                      <p className="font500">
-                        Liên chiểu, Hòa Khánh Bắc, Đà Nẵng
-                      </p>
-                      <div className="f-social mt-20">
-                        <a href="#">
-                          <i className="fab fa-facebook-f" />
-                        </a>
-                        <a href="#">
-                          <i className="fab fa-dribbble" />
-                        </a>
-                        <a href="#">
-                          <i className="fab fa-twitter" />
-                        </a>
-                        <a href="#">
-                          <i className="fab fa-linkedin-in" />
-                        </a>
-                        <a href="#">
-                          <i className="fab fa-behance" />
-                        </a>
-                        <a href="#">
-                          <i className="fab fa-instagram" />
-                        </a>
-                      </div>
+                  <div className="footer-widget pb-30 f-link ml--3">
+                    <p className="font500">
+                      Liên chiểu, Hòa Khánh Bắc, Đà Nẵng
+                    </p>
+                    <div className="f-social mt-20">
+                      <a href="https://www.facebook.com/lemanh.10.11.99/" target="_blank" >
+                        <i className="fab fa-facebook-f" />
+                      </a>
+                      <a href="https://twitter.com/LeXuanManh_" target="_blank">
+                        <i className="fab fa-twitter" />
+                      </a>
+                      <a href="https://www.linkedin.com/in/l%C3%AA-xu%C3%A2n-m%E1%BA%A1nh-babb371b9/" target="_blank">
+                        <i className="fab fa-linkedin-in" />
+                      </a>
+                      <a href="https://github.com/lemanh99" target="_blank">
+                        <i className="fab fa-github" />
+                      </a>
+                      <a href="#">
+                        <i className="fab fa-instagram" />
+                      </a>
                     </div>
                   </div>
                   {/* /col */}

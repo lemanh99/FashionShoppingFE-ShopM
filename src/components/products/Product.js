@@ -143,11 +143,11 @@ const Product = ({
             <li>
               {product.price && (
                 <span className="pr-2 d-inline-block">
-                  <del>${Number(product.price).toFixed(2)}</del>
+                  <del>{Number(product.price).toFixed(2)} VND</del>
                 </span>
               )}
               <span className="theme-color d-inline-block ms-1 font600">
-                ${Number(product.mainPrice).toFixed(2)}
+                {Number(product.mainPrice).toFixed(2)} VND
               </span>
             </li>
           </ul>

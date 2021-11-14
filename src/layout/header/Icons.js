@@ -25,7 +25,7 @@ export const CompareIcon = ({ color }) => {
         data-toggle="tooltip"
         data-selector="true"
         data-placement="bottom"
-        title="View compare"
+        title="So sánh sản phẩm"
         className="dark-black-color"
       >
         <span>

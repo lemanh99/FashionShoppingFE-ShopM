@@ -8,29 +8,29 @@ export const DasktopMenu = () => {
       <ul className="d-block">
         <li>
           <Link href="/">
-            <a className="active dp-menu">Home</a>
+            <a className="active dp-menu">Thời trang nam</a>
           </Link>
           <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
             <li>
               <Link href="/">
-                <a>Home page 01</a>
+                <a>Nam1</a>
               </Link>
             </li>
             <li>
               <Link href="/index-2">
-                <a>Home page 02</a>
+                <a>Nam2</a>
               </Link>
             </li>
             <li>
               <Link href="/index-3">
-                <a>Home page 03</a>
+                <a>Nam3</a>
               </Link>
             </li>
           </ul>
         </li>
         <li>
           <Link href="/shop">
-            <a className="dp-menu">Pages</a>
+            <a className="dp-menu">Thời trang nữ</a>
           </Link>
           <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
             <li>
@@ -80,7 +80,7 @@ export const DasktopMenu = () => {
             </li>
             <li>
               <Link href="/contact-us">
-                <a>Contact</a>
+                <a>Liên hệ</a>
               </Link>
             </li>
             <li>
@@ -101,30 +101,8 @@ export const DasktopMenu = () => {
           </ul>
         </li>
         <li>
-          <Link href="/shop">
-            <a>Medicines</a>
-          </Link>
-        </li>
-        <li>
-          <Link href="/blog">
-            <a className="dp-menu">Blog</a>
-          </Link>
-          <ul className="mega-menu mega-dropdown-menu  box-shadow-gray pt-25 pb-20 pl-30 pr-30">
-            <li>
-              <Link href="/blog">
-                <a>Blog page</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/blog/1">
-                <a>Blog details</a>
-              </Link>
-            </li>
-          </ul>
-        </li>
-        <li>
           <Link href="/contact-us">
-            <a className="mr-0">Contact</a>
+            <a className="mr-0">Liên hệ</a>
           </Link>
         </li>
       </ul>
@@ -240,7 +218,7 @@ export const MobileMenu = () => {
                 <li>
                   <Link href="/">
                     <a className="dp-menu" aria-expanded="true">
-                      Home
+                      Thời trang nam
                     </a>
                   </Link>
                   <ul
@@ -249,12 +227,12 @@ export const MobileMenu = () => {
                   >
                     <li>
                       <Link href="/">
-                        <a>Home page 01</a>
+                        <a>Jacket</a>
                       </Link>
                     </li>
                     <li>
                       <Link href="/index-2">
-                        <a>Home page 02</a>
+                        <a>Coat</a>
                       </Link>
                     </li>
                     <li>
@@ -277,7 +255,7 @@ export const MobileMenu = () => {
                 <li>
                   <Link href="/shop">
                     <a className="dp-menu" aria-expanded="true">
-                      Pages
+                      Thời trang nữ
                     </a>
                   </Link>
                   <ul
@@ -331,7 +309,7 @@ export const MobileMenu = () => {
                     </li>
                     <li>
                       <Link href="/contact-us">
-                        <a>Contact</a>
+                        <a>Liên hệ</a>
                       </Link>
                     </li>
                     <li>

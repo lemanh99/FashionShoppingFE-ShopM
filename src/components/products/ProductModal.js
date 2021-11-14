@@ -53,7 +53,7 @@ const ProductModal = ({
   const onClickRemoveCart = (e) => {
     e.preventDefault();
     decreaseCart(cart);
-    toast.error("Remove item from Cart.");
+    toast.error("Xóa sản phẩm từ giỏ hàng thành công");
   };
   const onClickWishlist = (e) => {
     e.preventDefault();

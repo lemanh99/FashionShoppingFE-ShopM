@@ -140,7 +140,7 @@ const ShopLayout = ({
                     </Tab.Pane>
                   </Tab.Content>
                 ) : (
-                  <h2 className="text-center">No Product Found</h2>
+                  <h2 className="text-center">Không có sản phẩm nào</h2>
                 )}
               </Tab.Container>
               <div className="mt-5">

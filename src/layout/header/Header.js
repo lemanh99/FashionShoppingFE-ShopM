@@ -16,7 +16,7 @@ const Header = ({ homePage, withoutContainer }) => {
       case 3:
         return <HomePageThree />;
       default:
-        return <DefaultMenu />;
+        return <HomePageOne />;
     }
   };
   return (

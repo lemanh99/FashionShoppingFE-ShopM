@@ -71,7 +71,7 @@ const ProductDetails = ({
   const onClickRemoveCart = (e) => {
     e.preventDefault();
     decreaseCart(cart);
-    toast.error("Remove item from Cart.");
+    toast.error("Xóa sản phẩm từ giỏ hàng thành công");
   };
   const onClickWishlist = (e) => {
     e.preventDefault();
@@ -86,7 +86,7 @@ const ProductDetails = ({
 
   return (
     <Layout>
-      <PageBanner title="Product Details" />
+      {/* <PageBanner title="Product Details" /> */}
       {product && product ? (
         <div className="product-details-area pro-top-thamb pro-bottom-thamb pt-80">
           <div className="container">
@@ -406,7 +406,7 @@ const ProductDetails = ({
                             eventKey="des"
                             className=" bg-transparent pl-0 title position-relative hvr2 font600"
                           >
-                            Description
+                            Mô tả
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
@@ -414,7 +414,7 @@ const ProductDetails = ({
                             eventKey="info"
                             className="bg-transparentt pl-0 title position-relative hvr2 font600"
                           >
-                            Additional information
+                            Thông tin chi tiết
                           </Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
@@ -422,7 +422,7 @@ const ProductDetails = ({
                             eventKey="review"
                             className="nav-link bg-transparentt pl-0 title position-relative hvr2 font600"
                           >
-                            Reviews (
+                            Bình luận (
                             {product && product.reviews ? product.reviews : 0})
                           </Nav.Link>
                         </Nav.Item>

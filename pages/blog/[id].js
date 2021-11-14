@@ -17,7 +17,7 @@ const SingleBlog = ({ blog, getSingleBlog, blogs }) => {
 
   return (
     <Layout>
-      <PageBanner title="Blog Details" pageName="Blog Details" />
+      {/* <PageBanner title="Blog Details" pageName="Blog Details" /> */}
       {blog ? (
         <div className="blog-details-area mt-100 mb-100">
           <div className="container">

@@ -2,11 +2,11 @@
   {
     "id": 1,
     "name": "Bifunctional Scale X200",
-    "img": "/images/product/product3.jpg",
+    "img": "/images/product/product1.png",
     "images": [
-      { "src": "/images/product/product3.jpg" },
-      { "src": "/images/product/product1.jpg" },
-      { "src": "/images/product/product2.jpg" }
+      { "src": "/images/product/product1.png" },
+      { "src": "/images/product/product1.png" },
+      { "src": "/images/product/product2.png" }
     ],
     "mainPrice": 109,
     "stock": true,
@@ -24,15 +24,15 @@
   },
   {
     "id": 2,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/product1.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/product1.png",
     "images": [
-      { "src": "/images/product/product1.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product1.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "showProductPage": false,
     "reating": 2,
@@ -49,14 +49,14 @@
   {
     "id": 3,
     "name": "IT Contact Thermometer",
-    "img": "/images/product/product2.jpg",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product1.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "showProductPage": false,
     "new": false,
@@ -74,14 +74,14 @@
   {
     "id": 4,
     "name": "Nursing Care Protection",
-    "img": "/images/product/product4.jpg",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product4.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
     "mainPrice": 79.66,
-    "price": 96,
+    "price": 299000,
     "stock": false,
     "showProductPage": false,
     "reating": 4,
@@ -98,11 +98,11 @@
   {
     "id": 5,
     "name": "Blood Pressure Monitor",
-    "img": "/images/product/product5.jpg",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product5.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
     "mainPrice": 66.66,
     "price": 80,
@@ -122,14 +122,14 @@
   {
     "id": 6,
     "name": "Blood Pressure Monitor",
-    "img": "/images/product/product6.jpg",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product6.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "showProductPage": false,
     "new": false,
@@ -146,15 +146,15 @@
   },
   {
     "id": 7,
-    "name": "Black Fashion Zapda",
-    "img": "/images/product/product7.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product7.jpg" },
-      { "src": "/images/product/product8.jpg" },
-      { "src": "/images/product/product9.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "new": false,
     "reating": 5,
     "reviews": 10,
@@ -175,14 +175,14 @@
   {
     "id": 8,
     "name": "Best Product Tips You",
-    "img": "/images/product/product8.jpg",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product8.jpg" },
-      { "src": "/images/product/product9.jpg" },
-      { "src": "/images/product/product10.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" }
     ],
-    "mainPrice": 90.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "new": false,
     "upcoming": "2022-09-27 00:00:00",
@@ -199,15 +199,15 @@
   },
   {
     "id": 9,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/product9.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product9.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "new": false,
     "off": 10,
@@ -223,15 +223,15 @@
   },
   {
     "id": 10,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/product10.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product10.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 29.66,
-    "price": 40,
+    "mainPrice": 369000,
+    "price": 400000,
     "stock": false,
     "new": true,
     "reating": 4,
@@ -245,15 +245,15 @@
   },
   {
     "id": 11,
-    "name": "Black Fashion Zapda",
-    "img": "/images/product/product11.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/product2.png",
     "images": [
-      { "src": "/images/product/product11.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "new": true,
     "reating": 4,
@@ -264,20 +264,19 @@
     "weight": "1.4 oz",
     "dimensions": "62 × 56 × 12 in",
     "size": ["small", "extra small", "large", "extra large", "medium"],
-    "warranty": "3 Months",
-    "upcoming": "2022-09-27 00:00:00"
+    "warranty": "3 Months"
   },
   {
     "id": 12,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/product12.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/product1.png",
     "images": [
-      { "src": "/images/product/product12.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product1.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": true,
     "reating": 4,
     "reviews": 8,
@@ -291,15 +290,15 @@
   },
   {
     "id": 13,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/home3/product1.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product1.png",
     "images": [
-      { "src": "/images/product/home3/product1.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product1.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
     "new": true,
     "reating": 4,
@@ -314,17 +313,17 @@
   },
   {
     "id": 14,
-    "name": "Black Fashion Zapda",
-    "img": "/images/product/home3/product2.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product2.png",
     "images": [
-      { "src": "/images/product/home3/product2.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
-    "off": 40,
+    "off": 400000,
     "reating": 4,
     "reviews": 8,
     "colors": ["dark", "blue", "Lower Blue", "Pink", "White", "Yellow"],
@@ -333,22 +332,21 @@
     "weight": "1.4 oz",
     "dimensions": "62 × 56 × 12 in",
     "size": ["small", "extra small", "large", "extra large", "medium"],
-    "warranty": "3 Months",
-    "upcoming": "2022-09-27 00:00:00"
+    "warranty": "3 Months"
   },
   {
     "id": 15,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/home3/product8.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product2.png",
     "images": [
-      { "src": "/images/product/home3/product8.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
-    "off": 40,
+    "off": 400000,
     "reating": 4,
     "reviews": 8,
     "colors": ["dark", "blue", "Lower Blue", "Pink", "White", "Yellow"],
@@ -361,15 +359,15 @@
   },
   {
     "id": 16,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/home3/product4.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product2.png",
     "images": [
-      { "src": "/images/product/home3/product3.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product1.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 29.66,
-    "price": 40,
+    "mainPrice": 369000,
+    "price": 400000,
     "stock": false,
     "new": true,
     "reating": 4,
@@ -384,15 +382,15 @@
   },
   {
     "id": 17,
-    "name": "Black Fashion Zapda",
-    "img": "/images/product/home3/product5.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product2.png",
     "images": [
-      { "src": "/images/product/home3/product5.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
 
     "reating": 4,
@@ -403,20 +401,19 @@
     "weight": "1.4 oz",
     "dimensions": "62 × 56 × 12 in",
     "size": ["small", "extra small", "large", "extra large", "medium"],
-    "warranty": "3 Months",
-    "upcoming": "2022-09-27 00:00:00"
+    "warranty": "3 Months"
   },
   {
     "id": 18,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/home3/product11.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product2.png",
     "images": [
-      { "src": "/images/product/home3/product11.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
 
     "reating": 4,
@@ -431,17 +428,17 @@
   },
   {
     "id": 19,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/home3/product12.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product1.png",
     "images": [
-      { "src": "/images/product/home3/product12.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product1.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
-    "off": 40,
+    "off": 400000,
     "reating": 4,
     "reviews": 8,
     "colors": ["dark", "blue", "Yellow"],
@@ -454,15 +451,15 @@
   },
   {
     "id": 20,
-    "name": "Black Fashion Zapda",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
     "img": "/images/product/home3/pro-list-4.jpg",
     "images": [
       { "src": "/images/product/home3/pro-list-4.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 59.66,
-    "price": 96,
+    "mainPrice": 269000,
+    "price": 299000,
     "stock": false,
 
     "reating": 4,
@@ -477,17 +474,17 @@
   },
   {
     "id": 21,
-    "name": "Surgical Face Disinfection",
-    "img": "/images/product/home3/product9.jpg",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
+    "img": "/images/product/home3/product2.png",
     "images": [
-      { "src": "/images/product/home3/product9.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/home3/product2.png" },
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 29.66,
-    "price": 40,
+    "mainPrice": 369000,
+    "price": 400000,
     "stock": false,
-    "off": 40,
+    "off": 400000,
     "reating": 4,
     "reviews": 8,
     "colors": ["dark", "blue", "Yellow"],
@@ -500,17 +497,17 @@
   },
   {
     "id": 22,
-    "name": "Surgical Face Disinfection",
+    "name": "ÁO KHOÁC KAKI HÀN QUỐC PIGOFASHION AKK19",
     "img": "/images/product/home3/product15.jpg",
     "images": [
       { "src": "/images/product/home3/product15.jpg" },
-      { "src": "/images/product/product2.jpg" },
-      { "src": "/images/product/product3.jpg" }
+      { "src": "/images/product/product2.png" },
+      { "src": "/images/product/product1.png" }
     ],
-    "mainPrice": 29.66,
-    "price": 40,
+    "mainPrice": 369000,
+    "price": 400000,
     "stock": false,
-    "off": 40,
+    "off": 400000,
     "reating": 4,
     "reviews": 8,
     "colors": ["dark", "blue", "Yellow"],

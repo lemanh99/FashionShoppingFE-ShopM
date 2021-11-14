@@ -272,48 +272,48 @@ const Index = ({
       </div>
       <br />
       {/*Deadsell end */}
-      {/*  most-purchased-item-area-start */}
+
+      {/* most-purchased-item Start */}
       <div
-        className="most-purchased-item-area most-purched-2 most-purchased-item-bg "
+        className="handpick-items-area pt-60 wow fadeInUp animated"
+        data-wow-duration="1s"
       >
         <div className="container">
-          <div className="row">
-            <div className="col-xxl-12 col-xl-12 col-lg-12  col-md-12  col-sm-12 col-12">
-              <div
-                className="most-purchased-item-wrapper purchased-item-2  wow"
-                data-wow-duration="1.5s"
-              >
-                <h3 className="font-pt light-black-color2 pb-1">
+          <div className="row free-shopping-area light-theme-bg  mlr-1">
+            <div className="col-xl-12 col-lg-12  col-md-  col-sm- col-">
+              <div className="free-shopping pt-15 pb-15 text-center">
+                <h4 className="theme-color mb-0 font600">
                   Sản phẩm được mua nhiều nhất
-                </h3>
-                <div className="col-xxl-12 col-xl-12  col-lg-12  col-md-5  col-sm-12 col-12 pl-0">
-                  {purchasedProduct && (
-                    <SliderWithAutoPlayNumberShow extraClass="row best-deal-product-active  pt-40 mlr-1 ml--20" slidesToShow={5}>
-                      {purchasedProduct &&
-                        purchasedProduct.map((product) => (
-                          <Product3
-                            key={product.id}
-                            product={product}
-                            productActionOff
-                          />
-                        ))}
-                      {purchasedProduct &&
-                        purchasedProduct.map((product) => (
-                          <Product3
-                            key={product.id}
-                            product={product}
-                            productActionOff
-                          />
-                        ))}
-                    </SliderWithAutoPlayNumberShow>
-                  )}
-                </div>
+                </h4>
               </div>
             </div>
           </div>
+          <div className="col-xxl-12 col-xl-12  col-lg-12  col-md-5  col-sm-12 col-12 pl-0">
+            {purchasedProduct && (
+              <SliderWithAutoPlayNumberShow extraClass="row best-deal-product-active  pt-40 mlr-1 ml--20" slidesToShow={5}>
+                {purchasedProduct &&
+                  purchasedProduct.map((product) => (
+                    <Product3
+                      key={product.id}
+                      product={product}
+                      productActionOff
+                    />
+                  ))}
+                {purchasedProduct &&
+                  purchasedProduct.map((product) => (
+                    <Product3
+                      key={product.id}
+                      product={product}
+                      productActionOff
+                    />
+                  ))}
+              </SliderWithAutoPlayNumberShow>
+            )}
+          </div>
+
         </div>
       </div>
-      {/*  most-purchased-item-area-end */}
+      {/* most-purchased-item End */}
 
     </Layout>
   );
