@@ -1,0 +1,32 @@
+{
+  "sliders": {
+    "home1": [
+      {
+        "title": "UX",
+        "name": "Furniture Collection",
+        "heading": "Synnes Dining Chair Upholstered",
+        "images": [
+          { "src": "/img/slider/shape3.png" },
+          { "src": "/img/slider/shape4.png" }
+        ],
+        "shapIcon": "/img/slider/shape-icon.png",
+        "bgImage": "/img/slider/slide1-1.jpg",
+        "shopLink": true,
+        "categoryLink": true
+      },
+      {
+        "title": "UX",
+        "name": "Furniture Collection",
+        "heading": "Synnes Dining Chair Upholstered",
+        "images": [
+          { "src": "/img/slider/shape1.png" },
+          { "src": "/img/slider/shape2.png" }
+        ],
+        "shapIcon": "/img/slider/shape-icon.png",
+        "bgImage": "/img/slider/slide1.jpg",
+        "shopLink": true,
+        "categoryLink": true
+      }
+    ]
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "sliders": [
+    {
+      "title": "Bộ sưu tập mới nhất",
+      "text": "Jacket and coats",
+      "bg": "/images/slider/home1-slider1.jpg"
+    },
+    {
+      "title": "Electronical /n Brushes 50% Off",
+      "text": "Tìm kiếm những gì hợp với bạn nhất",
+      "bg": "/images/slider/home1-slider2.jpg"
+    }
+  ],
+  "category": [
+    {
+      "title": "WOUND CARE",
+      "menus": [
+        "Accessories",
+        "Bandages",
+        "Gypsum foundations",
+        "Patches and tapes",
+        "Surgical sutures",
+        "Swabs",
+        "Wound healing"
+      ]
+    },
+    {
+      "title": "HIGIENE",
+      "menus": [
+        "Disinfectants",
+        "Disposable products",
+        "Face Masks - protective",
+        "Gloves",
+        "Protective clothing",
+        "Sterilization",
+        "Surgical foils"
+      ]
+    },
+    {
+      "title": "LABORATORY",
+      "menus": [
+        "Accessories",
+        "Devices",
+        "Diagnostic tests",
+        "Dyes",
+        "Pipettes",
+        "Tubes",
+        "Test-tubes"
+      ]
+    },
+    {
+      "title": "TOOLS",
+      "menus": [
+        "Care products",
+        "Claws and forceps",
+        "Electrosurgery",
+        "Needles",
+        "Plaster tools",
+        "Scalpels, blades",
+        "Scissors"
+      ]
+    },
+    {
+      "title": "DIAGNOSIS",
+      "menus": [
+        "Accessories",
+        "Biopsy tools",
+        "Endoscopes",
+        "Monitoring",
+        "Otoscopes",
+        "Oxygen concentrators",
+        "Thermometers"
+      ]
+    },
+    {
+      "title": "EQUIPMENT",
+      "menus": [
+        "Blades",
+        "Education",
+        "Germicidal lamps",
+        "Infusion stands",
+        "Lighting",
+        "Machines",
+        "Tables and assistants"
+      ]
+    }
+  ],
+  "banner_1": [
+    {
+      "bg": "/images/banner/banner-img.jpg",
+      "title": "",
+      "subTitle": "",
+      "text": ""
+    },
+    {
+      "bg": "/images/banner/banner-img2.jpg",
+      "title": "",
+      "subTitle": "",
+      "text": ""
+    }
+  ],
+  "category_2": {
+    "title": "",
+    "menus": [
+      "Hand Sanitizer",
+      "Lab N95 Face Mask",
+      "Hand Gloves",
+      "Medical Equipment",
+      "Home Accessories",
+      "New Arrival Product",
+      "Special Offers",
+      "Inhaler Pressure Drop"
+    ],
+    "bg": "/images/banner/pro-banner-bg.jpg",
+    "img": "/images/banner/sidebar-banner.png",
+    "off": 10
+  }
+}

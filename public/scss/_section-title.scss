@@ -1,0 +1,26 @@
+/*
+=================================
+09. section-title
+=================================
+*/
+.section-title {
+	span {
+		font-weight: 500;
+	}
+	h3 {
+		font-size: 38px;
+	}
+}
+.box-shadow-gray {
+	border-top: 2px solid #4c80fa;
+	box-shadow: 0px 2px 4px 0px rgba(75, 128, 250, 0.5);
+}
+.box-shadow-gray2 {
+	border-top: 2px solid #ff5b30;
+	box-shadow: 0px 2px 4px 0px rgba(255, 91, 48, 0.5);
+}
+.box-shadow-gray3 {
+	border-top: 2px solid #3dbebd;
+	box-shadow: 0px 2px 4px 0px rgba(67, 213, 203, 0.5);
+}
+

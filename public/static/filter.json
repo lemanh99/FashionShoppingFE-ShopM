@@ -1,0 +1,42 @@
+{
+  "brands": [
+    "IKEA",
+    "Steelcase",
+    "Stickley",
+    "Nike",
+    "Everlane",
+    "ASOS",
+    "gucci",
+    "dior",
+    "chanel"
+  ],
+  "category": [
+    "furniture",
+    "ladies",
+    "gent",
+    "Clothing",
+    "jacket",
+    "tshart",
+    "lamp",
+    "chair"
+  ],
+  "color": ["black", "green", "blue", "white", "red", "gray"],
+  "size": ["L", "M", "X", "XL", "XXL"],
+  "price": [
+    { "min": "0", "max": "50" },
+    { "min": "50", "max": "100" },
+    { "min": "100", "max": "150" },
+    { "min": "150", "max": "200" },
+    { "min": "200" }
+  ],
+  "tags": [
+    "furniture",
+    "ladies",
+    "gent",
+    "Clothing",
+    "jacket",
+    "tshart",
+    "lamp",
+    "chair"
+  ]
+}

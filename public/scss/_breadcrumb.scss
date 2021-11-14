@@ -1,0 +1,40 @@
+/*
+=================================
+11. breadcrumb
+=================================
+*/
+.breadcrumb-item.active {
+	color: #ff5b30;
+}
+.banner-content {
+	&:hover {
+		.img-zoom {
+			transform: scale(1.05);
+			-webkit-transform: scale(1.05);
+			-moz-transform: scale(1.05);
+			-ms-transform: scale(1.05);
+			-o-transform: scale(1.05);
+			transition: .7s;
+			-webkit-transition: .7s;
+			-moz-transition: .7s;
+			-ms-transition: .7s;
+			-o-transition: .7s;
+		}
+	}
+}
+.banner {
+	&:hover {
+		.img-zoom {
+			transform: scale(1.05);
+			-webkit-transform: scale(1.05);
+			-moz-transform: scale(1.05);
+			-ms-transform: scale(1.05);
+			-o-transform: scale(1.05);
+			transition: .7s;
+			-webkit-transition: .7s;
+			-moz-transition: .7s;
+			-ms-transition: .7s;
+			-o-transition: .7s;
+		}
+	}
+}

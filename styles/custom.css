@@ -1,0 +1,80 @@
+.c-pointer {
+  cursor: pointer;
+}
+.fs-100 {
+  font-size: 100px;
+}
+
+.order-success h5 {
+  margin-bottom: 5px;
+}
+.order-success p {
+  margin-bottom: 2px;
+}
+
+.page-link:focus {
+  box-shadow: none;
+}
+
+.single-product {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.active_wishList {
+  background: #3dbebd;
+  border-color: #3dbebd;
+}
+
+.web-btn {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.home3-close span {
+  color: #000 !important;
+}
+.home3-close:hover span {
+  color: #fff !important;
+}
+.product3-count {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+.product3-count .cdown {
+  box-shadow: 0px 0px 15px -4px rgba(0, 0, 0, 0.4) !important;
+}
+.details-page-count .cdown {
+  min-width: 70px;
+  line-height: unset;
+}
+.modal-icon {
+  position: absolute;
+  right: -16.5px;
+  top: -14px;
+  border-radius: 50%;
+  background: #fff;
+  height: 30px;
+  width: 30px;
+  display: -moz-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #3dbebd;
+}
+
+@media (min-width: 992px) {
+  .modal-dialog {
+    max-width: 70%;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .countdown-time {
+    display: none !important;
+  }
+}

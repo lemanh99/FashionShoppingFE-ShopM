@@ -1,0 +1,17 @@
+{
+  "sliders": [
+    {
+      "title": "Electronic Brush",
+      "text": "Tired of seeing disposable mask discarded on the floor?",
+      "off": 10,
+      "bg": "/images/slider/h3-slider1.jpg"
+    },
+    {
+      "title": "Electronic Brush",
+      "text": "Tired of seeing disposable mask discarded on the floor?",
+      "video": "https://www.youtube.com/embed/mAd3WGuBoeI",
+      "videoBg": "images/slider/slider-img.png",
+      "bg": "/images/slider/h3-slider2.jpg"
+    }
+  ]
+}

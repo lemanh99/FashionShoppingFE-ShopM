@@ -1,0 +1,86 @@
+{
+  "category1": [
+    {
+      "title": "WOUND CARE",
+      "menus": [
+        "Accessories",
+        "Bandages",
+        "Gypsum foundations",
+        "Patches and tapes",
+        "Surgical sutures",
+        "Swabs",
+        "Wound healing"
+      ]
+    },
+    {
+      "title": "HIGIENE",
+      "menus": [
+        "Disinfectants",
+        "Disposable products",
+        "Face Masks - protective",
+        "Gloves",
+        "Protective clothing",
+        "Sterilization",
+        "Surgical foils"
+      ]
+    },
+    {
+      "title": "LABORATORY",
+      "menus": [
+        "Accessories",
+        "Devices",
+        "Diagnostic tests",
+        "Dyes",
+        "Pipettes",
+        "Tubes",
+        "Test-tubes"
+      ]
+    },
+    {
+      "title": "TOOLS",
+      "menus": [
+        "Care products",
+        "Claws and forceps",
+        "Electrosurgery",
+        "Needles",
+        "Plaster tools",
+        "Scalpels, blades",
+        "Scissors"
+      ]
+    },
+    {
+      "title": "DIAGNOSIS",
+      "menus": [
+        "Accessories",
+        "Biopsy tools",
+        "Endoscopes",
+        "Monitoring",
+        "Otoscopes",
+        "Oxygen concentrators",
+        "Thermometers"
+      ]
+    },
+    {
+      "title": "EQUIPMENT",
+      "menus": [
+        "Blades",
+        "Education",
+        "Germicidal lamps",
+        "Infusion stands",
+        "Lighting",
+        "Machines",
+        "Tables and assistants"
+      ]
+    }
+  ],
+  "category2": [
+    { "icon": "briefcase-medical", "name": "Higiene" },
+    { "icon": "stethoscope", "name": "Equipment" },
+    { "icon": "kidneys", "name": "Dentist" },
+    { "icon": "hospital-alt", "name": "Needles" },
+    { "icon": "lungs", "name": "Oxygen" },
+    { "icon": "stretcher", "name": "Devices" },
+    { "icon": "pills", "name": "Medicine" },
+    { "icon": "procedures", "name": "Otoscope" }
+  ]
+}

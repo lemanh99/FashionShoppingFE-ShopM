@@ -1,0 +1,44 @@
+{
+  "sliders": [
+    {
+      "title": "Anti-Virus Mask /n Get Free Shipping",
+      "mainPrice": 59.99,
+      "price": 65.0,
+      "text": "Tired of seeing disposable mask discarded on the floor? /n Tell Your Brand’s Story Through Images",
+      "bg": "/images/slider/slider-img1.jpg"
+    },
+    {
+      "title": "Anti-Virus Mask /n Get Free Shipping",
+      "mainPrice": 59.99,
+      "price": 65.0,
+      "text": "Tired of seeing disposable mask discarded on the floor? /n Tell Your Brand’s Story Through Images",
+      "bg": "/images/slider/slider-img2.jpg"
+    }
+  ],
+  "category": [
+    { "icon": "briefcase-medical", "name": "Higiene" },
+    { "icon": "stethoscope", "name": "Equipment" },
+    { "icon": "kidneys", "name": "Dentist" },
+    { "icon": "hospital-alt", "name": "Needles" },
+    { "icon": "lungs", "name": "Oxygen" },
+    { "icon": "stretcher", "name": "Devices" },
+    { "icon": "pills", "name": "Medicine" },
+    { "icon": "procedures", "name": "Otoscope" }
+  ],
+  "banner_1": [
+    {
+      "bg": "/images/banner/home2/sub-banner1.jpg",
+      "title": "Pressure Meter",
+      "subTitle": "Get Upto 50% Flate",
+      "text": "Free Shipping on Order Over $99.",
+      "class": "light-black-color2"
+    },
+    {
+      "bg": "/images/banner/home2/sub-banner2.jpg",
+      "title": "Hand Sanitizer",
+      "subTitle": "Premium Quality Items",
+      "text": "Care of loved ones. Hand Cleaner.",
+      "class": "text-white"
+    }
+  ]
+}

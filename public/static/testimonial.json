@@ -1,0 +1,34 @@
+[
+  {
+    "img": "/images/bg/client-avater.png",
+    "review": 3.5,
+    "text": "There are many variations of passage Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.",
+    "name": "Jennifer Lopaz",
+    "deg": "Sr. Authopedic",
+    "color": "theme-bg"
+  },
+  {
+    "img": "/images/bg/avater2.png",
+    "review": 3,
+    "text": "There are many variations of passage Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.",
+    "name": "Christofer Lons",
+    "deg": "Sr. Authopedic",
+    "color": "h2-theme-bg"
+  },
+  {
+    "img": "/images/bg/client-avater.png",
+    "review": 3.5,
+    "text": "There are many variations of passage Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.",
+    "name": "Jennifer Lopaz",
+    "deg": "Sr. Authopedic",
+    "color": "theme-bg"
+  },
+  {
+    "img": "/images/bg/avater2.png",
+    "review": 3,
+    "text": "There are many variations of passage Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour.",
+    "name": "Christofer Lons",
+    "deg": "Sr. Authopedic",
+    "color": "h2-theme-bg"
+  }
+]
