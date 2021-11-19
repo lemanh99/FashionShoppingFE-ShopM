@@ -71,7 +71,7 @@ export const simpleProductFilter = (key, arr) => {
   return (
     arr &&
     arr.filter((arr) =>
-      arr.catagory.find((e) =>
+      arr.category.find((e) =>
         e.toLowerCase().includes(sorted && sorted.join(","))
       )
     )

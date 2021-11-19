@@ -20,7 +20,7 @@ export const GET_SINGLE = "GET_SINGLE";
 // filter
 export const FILTER_NAME = "FILTER_NAME";
 export const FILTER_BRAND = "FILTER_BRAND";
-export const FILTER_CATAGORY = "FILTER_CATAGORY";
+export const FILTER_CATEGORY = "FILTER_CATEGORY";
 export const FILTER_SIZE = "FILTER_SIZE";
 export const FILTER_PRICE = "FILTER_PRICE";
 export const FILTER_COLOR = "FILTER_COLOR";

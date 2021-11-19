@@ -69,7 +69,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                         <td>
                           <div className="cart-price">
                             {" "}
-                            ${Number(cart.mainPrice).toFixed(2)}
+                            {Number(cart.mainPrice).toFixed(2)} VND
                           </div>
                         </td>
                         <td>
@@ -104,7 +104,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                         <td>
                           <div className="cart-price">
                             {" "}
-                            ${Number(cart.totalPrice).toFixed(2)}
+                            {Number(cart.totalPrice).toFixed(2)} VND
                           </div>
                         </td>
                         <td>
@@ -167,11 +167,11 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                   <ul className="pt-15 pb-25">
                     <li className="d-flex justify-content-between align-items-center border-gray1 mb-2 pl-25 pr-25 pt-15 pb-15">
                       <span>Tổng tiền</span>
-                      <span>${totalPrice(carts)}</span>
+                      <span>${totalPrice(carts)} VND</span>
                     </li>
                     <li className="d-flex justify-content-between align-items-center border-gray1 pl-25 pr-25 pt-15 pb-15">
                       <span>Tổng thanh toán </span>
-                      <span>${totalPrice(carts)}</span>
+                      <span>{totalPrice(carts)} VND</span>
                     </li>
                   </ul>
                   <Link href="/checkout">

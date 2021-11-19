@@ -86,7 +86,7 @@ const ProductModal = ({
   ];
   let cat_ =
     product &&
-    product.catagory.filter(
+    product.category.filter(
       (cat) => !removeformCat.join("").includes(cat) && cat
     );
   let totalTime = time(product && product.upcoming);

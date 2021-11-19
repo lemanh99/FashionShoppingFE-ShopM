@@ -16,7 +16,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
   }, []);
   const [active_, setActive_] = useState(0);
   const tags = findFilterValue(products, "tags"),
-    category = findFilterValue(products, "catagory", [
+    category = findFilterValue(products, "category", [
       "home1unmissed",
       "home1handpicked",
       "home2bestdeal",
@@ -53,7 +53,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                             <a className="text-capitalize">
                               {cat}
                               <span className="ms-1">
-                                ({arrLengthByKey(products, "catagory", cat)})
+                                ({arrLengthByKey(products, "category", cat)})
                               </span>
                             </a>
                           </Link>

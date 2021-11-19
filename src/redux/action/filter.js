@@ -1,6 +1,6 @@
 import {
   FILTER_BRAND,
-  FILTER_CATAGORY,
+  FILTER_CATEGORY,
   FILTER_COLOR,
   FILTER_NAME,
   FILTER_PRICE,
@@ -24,7 +24,7 @@ export const filterByBrand = (value) => (dispatch) => {
 
 export const filterByCatagory = (value) => (dispatch) => {
   dispatch({
-    type: FILTER_CATAGORY,
+    type: FILTER_CATEGORY,
     payload: value,
   });
 };

@@ -1,7 +1,7 @@
 import { updateState } from "../../utils/utils";
 import {
   FILTER_BRAND,
-  FILTER_CATAGORY,
+  FILTER_CATEGORY,
   FILTER_COLOR,
   FILTER_NAME,
   FILTER_PRICE,
@@ -32,7 +32,7 @@ const filter = (state = initialState, action) => {
         ...state,
         brand: updateState(state.brand, payload),
       };
-    case FILTER_CATAGORY:
+    case FILTER_CATEGORY:
       return {
         ...state,
         category: updateState(state.category, payload),
