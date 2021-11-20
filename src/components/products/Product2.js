@@ -37,7 +37,7 @@ const Product2 = ({ product, addToCart }) => {
         {/* /product-label */}
         <Link href={`/shop/${product.id}`}>
           <a className="d-block">
-            <img src={product.img} className="w-100" alt="Product" width={200} height={220}/>
+            <img src={product.img} className="img-container-product2" alt="Product"/>
           </a>
         </Link>
       </div>
@@ -53,11 +53,11 @@ const Product2 = ({ product, addToCart }) => {
             <li>
               <span className="pr-2 d-inline-block">
                 {product.price && (
-                  <del>${Number(product.price).toFixed(2)}</del>
+                  <del>{Number(product.price).toFixed(2)} VND</del>
                 )}
               </span>
               <span className="theme-color d-inline-block font600">
-                ${Number(product.mainPrice).toFixed(2)}
+                {Number(product.mainPrice).toFixed(2) }VND
               </span>
             </li>
           </ul>

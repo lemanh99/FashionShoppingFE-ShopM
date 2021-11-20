@@ -1,7 +1,7 @@
 import Link from "next/link";
 import moment from "moment";
-import { Fragment, useEffect } from "react";
-import { connect } from "react-redux";
+import { Fragment, useEffect, useState } from "react";
+import { connect, useDispatch, useSelector } from "react-redux";
 import HomePageBlog from "../src/components/blog/HomePageBlog";
 import Product from "../src/components/products/Product";
 import Product2 from "../src/components/products/Product2";
@@ -21,23 +21,29 @@ import { simpleProductFilter } from "../src/utils/filterProduct";
 import { createMap } from "../src/utils/utils";
 import time from "../src/utils/time";
 
-const Index = ({
-  getHome1,
-  sliders,
-  banner_1,
-  category_2,
-  bestDealProduct,
-  getCategory_1,
-  unmissedProducts,
-  getProducts,
-  handpickedProduct,
-  purchasedProduct,
-}) => {
+const Index = () => {
+  const sliders = useSelector((state) => state.home.home1 && state.home.home1.sliders);
+  const banner_1 = useSelector((state) =>state.home.home1 && state.home.home1.banner_1);
+  const category_2 = useSelector((state) => state.home.home1 && state.home.home1.category_2);
+  const products = useSelector((state) => state.product.products)
+  const [bestDealProduct, setBestDealProductuseState] = useState([])
+  const [unmissedProducts, setUnmissedProducts] = useState([])
+  const [handpickedProduct, setHandpickedProduct] = useState([])
+  const [purchasedProduct, setPurchasedProduct] = useState([])
+  const dispatch = useDispatch();
+  
   useEffect(() => {
-    getHome1();
-    getCategory_1();
-    getProducts();
+    dispatch(getHome1());
+    dispatch(getCategory_1());
+    dispatch(getProducts());
   }, []);
+
+  useEffect(() => {
+    setBestDealProductuseState(products);
+    setUnmissedProducts(products);
+    setHandpickedProduct(products);
+    setPurchasedProduct(products);
+  }, [products])
 
   let date = new Date();
   date.setDate(date.getDate() + 7);
@@ -319,26 +325,23 @@ const Index = ({
   );
 };
 
-const mapStateToProps = (state) => ({
-  sliders: state.home.home1 && state.home.home1.sliders,
-  banner_1: state.home.home1 && state.home.home1.banner_1,
-  category_2: state.home.home1 && state.home.home1.category_2,
-  unmissedProducts: simpleProductFilter(
-    "home1unmissed",
-    state.product.products
-  ),
-  handpickedProduct: simpleProductFilter(
-    "home1handpicked",
-    state.product.products
-  ),
-  purchasedProduct: simpleProductFilter(
-    "home1purchased",
-    state.product.products
-  ),
-});
 
-export default connect(mapStateToProps, {
-  getHome1,
-  getCategory_1,
-  getProducts,
-})(Index);
+// const mapStateToProps = (state) => ({
+//   sliders: state.home.home1 && state.home.home1.sliders,
+//   banner_1: state.home.home1 && state.home.home1.banner_1,
+//   category_2: state.home.home1 && state.home.home1.category_2,
+//   unmissedProducts: simpleProductFilter(
+//     "home1unmissed",
+//     state.product.products
+//   ),
+//   handpickedProduct: simpleProductFilter(
+//     "home1handpicked",
+//     state.product.products
+//   ),
+//   purchasedProduct: simpleProductFilter(
+//     "home1purchased",
+//     state.product.products
+//   ),
+// });
+
+export default Index;

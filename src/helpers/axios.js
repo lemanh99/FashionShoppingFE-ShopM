@@ -3,7 +3,6 @@ import store from '../redux/store';
 import { api } from '../urlConfig';
 
 const token = (typeof window !== "undefined") ? window.localStorage.getItem('token') : null;
-console.log(api)
 
 const axiosIntance = axios.create({
     baseURL: api,

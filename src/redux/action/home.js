@@ -1,8 +1,10 @@
+import axiosIntance from "../../helpers/axios";
 import { fatchData } from "../../utils/fatchData";
 import {
   BRAND,
   CATEGORY_1,
   CATEGORY_2,
+  CATEGORY_3,
   HOME_1,
   HOME_2,
   HOME_3,
@@ -50,4 +52,24 @@ export const getCategory_2 = () => async (dispatch) => {
     type: CATEGORY_2,
     payload: await fatchData("/static/catagory.json"),
   });
+};
+
+export const getCategory_3 = () => async (dispatch) => {
+  const res = await axiosIntance.get(`/product/category/public/`)
+  if (res && res.status === 200) {
+    const { data } = res.data;
+    dispatch({
+      type: CATEGORY_3,
+      payload: data,
+    });
+  } else {
+    dispatch({
+      type: CATEGORY_3,
+      payload: [],
+    });
+  }
+  // dispatch({
+  //   type: CATEGORY_2,
+  //   payload: await fatchData("/static/catagory.json"),
+  // });
 };

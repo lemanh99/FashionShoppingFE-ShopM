@@ -10,7 +10,7 @@ const Shop = () => {
 
   return (
     <Layout>
-      <PageBanner title={name_} pageName="Shop" />
+      {/* <PageBanner title={name_} pageName="Shop" /> */}
       <ShopLayout keyValueForQurey="tags" value={name_} active_={0} />
     </Layout>
   );

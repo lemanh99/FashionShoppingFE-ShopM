@@ -1,110 +1,45 @@
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategory_3 } from "../../redux/action/home";
 import { CartIcon, CompareIcon, WishListIcon } from "./Icons";
 
 export const DasktopMenu = () => {
+
+  const categoies = useSelector((state) => state.home.category_3)
+  const [listCategory, setListCategory] = useState([])
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCategory_3());
+  }, []);
+
+  useEffect(() => {
+    setListCategory(categoies);
+  }, [categoies])
+
   return (
     <nav id="mobile-menu">
       <ul className="d-block">
-        <li>
-          <Link href="/">
-            <a className="active dp-menu">Thời trang nam</a>
-          </Link>
-          <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
+        {listCategory ? (listCategory.map((category) => (
+          // <Product2 product={product} key={product.id} />
+          category.child_category.length > 0 ? (
             <li>
               <Link href="/">
-                <a>Nam1</a>
+                <a className="active dp-menu">{category.category_name}</a>
               </Link>
+              <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
+                {category.child_category.map((child) => (
+                  <li>
+                    <Link href="/">
+                      <a>{child.category_name}</a>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </li>
-            <li>
-              <Link href="/index-2">
-                <a>Nam2</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/index-3">
-                <a>Nam3</a>
-              </Link>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <Link href="/shop">
-            <a className="dp-menu">Thời trang nữ</a>
-          </Link>
-          <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
-            <li>
-              <Link href="/shop">
-                <a>Shop</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/shop/7">
-                <a>Product Details</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/cart">
-                <a>Shopping cart</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/checkout">
-                <a>Checkout</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/order-success">
-                <a>Order Success</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/wishlist">
-                <a>Wishlist </a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/compare">
-                <a>Compare </a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/register">
-                <a>Register</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/login">
-                <a>Login</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/contact-us">
-                <a>Liên hệ</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/terms-and-condition">
-                <a>Terms &amp; Condition</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/privacy-page">
-                <a>Privacy</a>
-              </Link>
-            </li>
-            <li>
-              <Link href="/404">
-                <a>404 Page</a>
-              </Link>
-            </li>
-          </ul>
-        </li>
-        <li>
-          <Link href="/contact-us">
-            <a className="mr-0">Liên hệ</a>
-          </Link>
-        </li>
+          ) : null
+        ))) : null}
       </ul>
     </nav>
   );
@@ -178,9 +113,8 @@ export const MobileMenu = () => {
       </div>
 
       <div
-        className={`side-mobile-menu bg-white pt-20 pb-30 pl-40 pr-40 pb-100 d-lg-none ${
-          openMenu ? "open-menubar" : ""
-        }`}
+        className={`side-mobile-menu bg-white pt-20 pb-30 pl-40 pr-40 pb-100 d-lg-none ${openMenu ? "open-menubar" : ""
+          }`}
       >
         <div className="close-icon d-flex justify-content-end mt-0">
           <a

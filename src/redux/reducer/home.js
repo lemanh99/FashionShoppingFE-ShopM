@@ -2,6 +2,7 @@ import {
   BRAND,
   CATEGORY_1,
   CATEGORY_2,
+  CATEGORY_3,
   HOME_1,
   HOME_2,
   HOME_3,
@@ -58,6 +59,11 @@ const home = (state = [], action) => {
         ...state,
         category_2: payload.category2,
       };
+    case CATEGORY_3:
+        return {
+          ...state,
+          category_3: payload,
+        };
     default:
       return state;
   }

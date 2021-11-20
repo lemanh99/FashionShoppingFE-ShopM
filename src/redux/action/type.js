@@ -12,6 +12,7 @@ export const BRAND = "BRAND";
 export const TESTIMONIAL = "TESTIMONIAL";
 export const CATEGORY_1 = "CATEGORY_1";
 export const CATEGORY_2 = "CATEGORY_2";
+export const CATEGORY_3 = "CATEGORY_3";
 
 // Product
 export const GET_PRODUCT = "GET_PRODUCT";

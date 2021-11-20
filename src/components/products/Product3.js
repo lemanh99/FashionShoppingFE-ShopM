@@ -92,7 +92,7 @@ const Product3 = ({
         <div className="position-relative">
           <Link href={`/shop/${product.id}`}>
             <a className="d-block">
-              <img src={product.img} alt="product" className="d-block m-auto w-100" width={228} height={250}/>
+              <img src={product.img} alt="product" className="d-block m-auto img-container-product3"/>
             </a>
           </Link>
           {productActionOff && (
