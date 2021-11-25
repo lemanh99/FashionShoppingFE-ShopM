@@ -13,6 +13,7 @@ const initState = {
 
 
 export default (state = initState, action) => {
+    console.log(state.type)
     switch (action.type) {
         case REGISTER_REQUEST:
             state = {

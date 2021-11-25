@@ -36,7 +36,10 @@ const ProductDetails = ({
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {
-    getSingleProduct(id);
+    if (id) {
+      getSingleProduct(id);
+    }
+
     getCarts();
     getWishlist();
     getProducts();
@@ -156,13 +159,13 @@ const ProductDetails = ({
                           )}
                           <span className="gray-color2 ms-1">
                             ({product && product.reviews ? product.reviews : 0}{" "}
-                            Reviews)
+                            Đánh giá)
                           </span>
                         </div>
                         {/* /rating */}
                         <div className="price pb-18 pt-3">
                           <span className="rc-price font700">
-                            ${Number(product && product.mainPrice).toFixed(2)}
+                            {Number(product && product.mainPrice).toFixed(2)} VND
                           </span>
                           {product && product.price && (
                             <span className="ms-1 text-muted font600">
@@ -172,16 +175,10 @@ const ProductDetails = ({
                         </div>
                         <div className="p-info-text pr-55">
                           <p className="gray-color2">
-                            On the other hand, we denounce with righteous
-                            indignation and dislike men who are so beguiled and
-                            demoralized by the charms we denounce with righteous
-                            indignation and dislike men who are so beguiled with
-                            righteous
+                            {product && product.description_list}
                           </p>
                           <p className="gray-color2">
-                            But I must explain to you how all this mistaken idea
-                            of denouncing pleasure men who are so beguiled and
-                            demoralized
+                            {product && product.description_detail}
                           </p>
                         </div>
                         {product.upcoming && (
@@ -192,25 +189,25 @@ const ProductDetails = ({
                                   <span className="time-count">
                                     {totalTime.days}
                                   </span>
-                                  <p>Days</p>
+                                  <p>Ngày</p>
                                 </span>
                                 <span className="cdown hour">
                                   <span className="time-count">
                                     {totalTime.hours}
                                   </span>
-                                  <p>HRS</p>
+                                  <p>Giờ</p>
                                 </span>
                                 <span className="cdown minutes">
                                   <span className="time-count">
                                     {totalTime.minutes}
                                   </span>
-                                  <p>Min</p>
+                                  <p>Phút</p>
                                 </span>
                                 <span className="cdown second mr-0">
                                   <span className="time-count">
                                     {totalTime.seconds}
                                   </span>
-                                  <p>Sec</p>
+                                  <p>Giây</p>
                                 </span>
                               </div>
                             </div>
@@ -254,15 +251,14 @@ const ProductDetails = ({
                                 toast.success("Thêm vào giỏ hàng thành công");
                               }}
                             >
-                              add to cart
+                              Thêm vào giỏ hàng
                             </a>
                           </div>
                           <div className="pro-wishlist d-inline-block mb-15">
                             <a
                               href="#"
-                              className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15  ${
-                                wishlist ? "active_wishList" : ""
-                              } `}
+                              className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15  ${wishlist ? "active_wishList" : ""
+                                } `}
                               onClick={(e) => onClickWishlist(e)}
                             >
                               <span className="icon-heart" />
@@ -272,7 +268,7 @@ const ProductDetails = ({
                         <ul className="review-cat d-sm-flex align-items-center pt-20 pb-15">
                           <li className="mb-1 mb-2 mr-6 d-inline-block">
                             <span className="cat-title dark-black-color font600">
-                              Categories :
+                              Phân loại  :
                             </span>
                           </li>
                           {product &&
@@ -304,7 +300,7 @@ const ProductDetails = ({
                         <ul className="social-link mt-10">
                           <li className="d-block d-sm-inline-block mr-12">
                             <span className="cat-title dark-black-color font600">
-                              Share Now:
+                              Chia sẻ:
                             </span>
                           </li>
                           <li
@@ -432,29 +428,9 @@ const ProductDetails = ({
                           <div className="describe-area">
                             <div className="product-details-text pr-10 mb-50">
                               <p className="gray-color2 dc-text1 pb-6">
-                                Sed perspiciatis unde omnis iste natus error sit
-                                voluptatem accusantium doloremque laudantium,
-                                totam rem aperiam eaque ipsa quae ab illo
-                                inventore veritatis et quasi architecto beatae
-                                vitae dicta sunt explicabo. Nemo enim ipsam
-                                voluptatem quia voluptas sit aspernatur aut odit
-                                aut fugit, sed quia consequuntur magni doloreos
-                                qui ratione voluptatem sequi nesciunt. Neque
-                                porro quisquam est, qui dolorem ipsum quia dolor
-                                siconsectetur, adipisci velit, sed quia non
-                                numquam eius modi tempora incidunt ut labore et
-                                dolore magnam aliquam quaerat voluptatem. Ut
-                                enim ad minima veniam, quis nostrum
-                                exercitationem ullam corporis suscipit
-                                laboriosam, nisi ut aliquid ex ea commodi
-                                consequatur? Quis autem vel eum iure
-                                reprehenderit Neque porro quisquam est, qui
-                                dolorem ipsum quia dolor siconsectetur, adipisci
-                                velit, sed quia non numquam eius modi tempora
-                                incidunt ut labore et dolore magnam aliquam
-                                quaerat voluptatem.
+                              {product && product.description_detail}
                               </p>
-                              <p className="gray-color2">
+                              {/* <p className="gray-color2">
                                 <span className="h2-theme-color pr-10">
                                   <i className="far fa-check-circle" />
                                 </span>
@@ -488,14 +464,14 @@ const ProductDetails = ({
                                 </span>
                                 Can Data Visualization Improve The Mobile Web
                                 Experience?
-                              </p>
-                              <p className="gray-color2">
+                              </p> */}
+                              {/* <p className="gray-color2">
                                 <span className="h2-theme-color pr-10">
                                   <i className="far fa-check-circle" />
                                 </span>
                                 How To Make Performance Visible With GitLab CI
                                 And Hoodoo Of GitLab
-                              </p>
+                              </p> */}
                             </div>{" "}
                             {/* /product-details-text */}
                             <div className="p-review-area pb-90">
@@ -525,14 +501,14 @@ const ProductDetails = ({
                             <div className="row">
                               <div className="col-xl-12">
                                 <h5 className="title mb-20 font600">
-                                  Additional information
+                                  Thêm thông tin sản phẩm
                                 </h5>
                                 <table className="table border mt-25 table-responsive">
                                   <tbody>
                                     {product && product.colors && (
                                       <tr className="add-color-area aditional-info border-bottom border-top ">
                                         <td className="tbl-title pl-5">
-                                          <h6 className="add-title">Color</h6>
+                                          <h6 className="add-title">Màu</h6>
                                         </td>
                                         <td className="tbl-content">
                                           <ul className="add-color d-flex">
@@ -624,8 +600,8 @@ const ProductDetails = ({
                               <h5 className="primary-color font600">
                                 {product && product.reviews
                                   ? product.reviews
-                                  : 0}{" "}
-                                reviews for Coating design lighting lamp
+                                  : "Chưa có "}{" "}
+                                đánh giá cho sản phẩm
                               </h5>
                               {product && product.reviews && (
                                 <div className="review-comments-area mt-35">
@@ -789,10 +765,10 @@ const ProductDetails = ({
                                 </div>
                               )}
                               <div className="product-review mt-80 pb-10">
-                                <h5 className="mb-30 font600">Add a review </h5>
+                                <h5 className="mb-30 font600">Thêm bình luận </h5>
                                 <div className="d-flex">
                                   <span className="pr-15 mb-15">
-                                    Your Rating:
+                                    Bạn đánh giá:
                                   </span>
                                   <div className="rating rating-shop d-flex mb-15">
                                     {product && (

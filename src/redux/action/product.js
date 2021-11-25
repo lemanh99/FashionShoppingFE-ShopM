@@ -19,9 +19,21 @@ export const getProducts = () => async (dispatch) => {
 
 };
 export const getSingleProduct = (id) => async (dispatch) => {
-  const data = await fatchData("/static/product.json");
-  dispatch({
-    type: GET_SINGLE,
-    payload: data.find((data) => data.id === Number(id)),
-  });
+  console.log("id", id)
+  const res =  await axiosIntance.get(`/product/public/detail/${id}`);
+  
+  const { data } = res.data;
+  console.log(data);
+  if (res && res.status === 200) {
+    dispatch({
+      type: GET_SINGLE,
+      payload:data,
+    });
+  }else{
+    dispatch({
+      type: GET_SINGLE,
+      payload: {},
+    });
+  }
+
 };

@@ -23,7 +23,7 @@ const withoutAuthPublic = (WrappedComponent) => {
                     const res = await axiosIntance.post(`/user/jwt/verify/`, {
                         token: token,
                     });
-                    if (res.status === 200) {
+                    if (res && res.status === 200) {
                         dispatch({
                             type: LOGIN_SUCCESS,
                             payload: {
