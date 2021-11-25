@@ -31,7 +31,7 @@ const utilis = (state = initialState, action) => {
     case DECREASE_CART:
       return updateCart(state, payload, "-");
     case REMOVE_CART:
-      const removeItem = state.carts.filter((cart) => cart.id !== payload);
+      const removeItem = state.carts.filter((cart) => (cart.product_id !== payload));
       setLocalStorage("shopm-ecommerce", removeItem);
       return {
         ...state,

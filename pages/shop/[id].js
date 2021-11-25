@@ -60,7 +60,7 @@ const ProductDetails = ({
   ];
   let cat_ =
     product &&
-    product.catagory.filter(
+    product.category.filter(
       (cat) => !removeformCat.join("").includes(cat) && cat
     );
   const onClickCart = (e) => {

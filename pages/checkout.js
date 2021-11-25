@@ -1,14 +1,15 @@
 // import swal from "@sweetalert/with-react";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { CardElement, Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 import { Formik } from "formik";
 import Router from "next/router";
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
 import SelectGroup from "../src/components/form/SelectGroup";
+import withAuth from "../src/HOC/withAuth";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import { setCheckoutData } from "../src/redux/action/utilis";
@@ -18,218 +19,70 @@ import {
   couponSchema,
   loginSchema,
 } from "../src/utils/yupModal";
+import PaymentPaypal from "../src/components/payment/paypal";
 
 const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
 const Checkout = ({ setCheckoutData }) => {
   const carts = useSelector((state) => state.utilis.carts);
   const [freeShpping, setFreeShpping] = useState(false);
+  const [differentAddresses, setDifferentAddresses] = useState(false);
+  const [country, setCountry] = useState([]);
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+
   const [flat, setFlat] = useState(false);
   const price = totalPrice(carts);
-  let shppingPrice = 30,
-    flatPrice = 7;
+  let shppingPrice = 30, flatPrice = 7;
 
   const [activeId, setActiveId] = useState(false);
   const [active2, setActive2] = useState(false);
   const [active3, setActive3] = useState(false);
   const [active4, setActive4] = useState(false);
+  const [tokenUser, setTokenUser] = useState(null);
 
-  const countrys = [
-    "bangladesh",
-    "Algeria",
-    "Afghanistan",
-    "Ghana",
-    "Albania",
-    "Bahrain",
-    "Colombia",
-    "Dominican Republic",
-  ];
+  async function getCountry() {
+    const res = await axios.get('https://provinces.open-api.vn/api/?depth=3')
+    setProvinces(res.data);
+  }
+
+  useEffect(() => {
+    getCountry()
+    const token = localStorage.getItem("token")
+    setTokenUser(token);
+  }, [])
+
+  const getDistrictByProvinces = (value) => {
+    const province_info = provinces.filter((province) => province.codename == value)[0]
+    if (province_info) {
+      setDistricts(province_info["districts"])
+      return province_info["districts"]
+    }
+    return []
+  }
+  const getWardsByDistrict = (value) => {
+    const district_info = districts.filter((district) => district.codename == value)[0]
+    if (district_info) {
+      setWards(district_info["wards"])
+      return district_info["wards"]
+    }
+    return []
+  }
+
 
   return (
     <Layout sticky textCenter container footerBg>
       <main>
-        <PageBanner title="Checkout" />
+        {/* <PageBanner title="Checkout" /> */}
         <div className="coupon-area mt-80">
           <div className="container">
             <div className="row">
               <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
-                <Accordion>
-                  <div className="coupon-accordion">
-                    <h6 className="pt-15 pl-40 pb-15 mb-25 position-relative">
-                      Returning customer?{" "}
-                      <Accordion.Toggle
-                        as="span"
-                        eventKey="0"
-                        id="login"
-                        className="light-black-color2 font600 transition-3"
-                      >
-                        Click here to login
-                      </Accordion.Toggle>
-                    </h6>
-                    <Accordion.Collapse
-                      eventKey="0"
-                      id="checkout-login"
-                      className="coupon-content border-gray pt-20 pb-35 pl-30 pr-30 mb-25"
-                    >
-                      <div className="coupon-info">
-                        <p className="coupon-text mb-15">
-                          Quisque gravida turpis sit amet nulla posuere lacinia.
-                          Cras sed est sit amet ipsum luctus.
-                        </p>
-                        <Formik
-                          initialValues={loginSchema.initialValue}
-                          validationSchema={loginSchema.schema}
-                          onSubmit={(values, { setSubmitting }) => {
-                            setTimeout(() => {
-                              alert(JSON.stringify(values, null, 2));
-                              setSubmitting(false);
-                            }, 400);
-                          }}
-                        >
-                          {({
-                            values,
-                            errors,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                          }) => (
-                            <form onSubmit={handleSubmit} action="#">
-                              <p className="log-mail mb-0">
-                                <InputGroup
-                                  label="Email Address"
-                                  id="email"
-                                  name="email"
-                                  type="string"
-                                  placeholder="Enter Username or Email address..."
-                                  values={values.email}
-                                  errors={errors.email}
-                                  handleBlur={handleBlur}
-                                  handleChange={handleChange}
-                                />
-                              </p>
-                              <p className="log-pass mb-0">
-                                <InputGroup
-                                  label="Password"
-                                  id="password"
-                                  name="password"
-                                  type="password"
-                                  placeholder="Enter password..."
-                                  values={values.password}
-                                  errors={errors.password}
-                                  handleBlur={handleBlur}
-                                  handleChange={handleChange}
-                                />
-                              </p>
-                              <div className="log-btn mb-0">
-                                <a
-                                  href="#"
-                                  className="web-btn h2-theme-border1 d-inline-block text-capitalize white mt-15 mb-30 rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-60 pr-60 ptb-17 mr-20"
-                                  disabled={isSubmitting}
-                                >
-                                  Login
-                                </a>
-                                <div className="save-info d-inline-block mb-30 mt-2">
-                                  <input
-                                    className="p-0 "
-                                    type="checkbox"
-                                    aria-label="Checkbox for following text input"
-                                  />
-                                  <p className="mb-0  ms-1 d-inline-block">
-                                    Remember me
-                                  </p>
-                                </div>
-                              </div>
-                              <p className="lost-password mb-0">
-                                <a
-                                  href="#"
-                                  className="light-black-color2 font600"
-                                >
-                                  Lost your password?
-                                </a>
-                              </p>
-                            </form>
-                          )}
-                        </Formik>
-                      </div>
-                    </Accordion.Collapse>
-                  </div>
-                </Accordion>
               </div>
               {/* /col */}
               <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
-                <div className="coupon-accordion">
-                  {/* accordion start */}
-                  <Accordion>
-                    <h6 className="pt-15 pl-40 pb-15 mb-25 position-relative">
-                      Have a coupon?{" "}
-                      <Accordion.Toggle
-                        as="span"
-                        eventKey="0"
-                        id="couponshow"
-                        className="light-black-color2 font600 transition-3"
-                      >
-                        Click here to enter your code
-                      </Accordion.Toggle>
-                    </h6>
-                    <Accordion.Collapse
-                      eventKey="0"
-                      id="checkout-coupon"
-                      className="checkout-content"
-                    >
-                      <div className="coupon-info">
-                        <Formik
-                          initialValues={couponSchema.initialValue}
-                          validationSchema={couponSchema.schema}
-                          onSubmit={(values, { setSubmitting }) => {
-                            setTimeout(() => {
-                              alert(JSON.stringify(values, null, 2));
-                              setSubmitting(false);
-                            }, 400);
-                          }}
-                        >
-                          {({
-                            values,
-                            errors,
-                            handleChange,
-                            handleBlur,
-                            handleSubmit,
-                            isSubmitting,
-                          }) => (
-                            <form action="#">
-                              <p className="checkout-coupon">
-                                <input
-                                  className="mb-0"
-                                  type="text"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.coupon}
-                                  name="coupon"
-                                  placeholder="Coupon Code"
-                                />
 
-                                <div
-                                  id="val-username1-error"
-                                  className="invalid-feedback animated fadeInUp mb-3"
-                                  style={{ display: "block" }}
-                                >
-                                  {errors.coupon && errors.coupon}
-                                </div>
-                                <a
-                                  disabled={isSubmitting}
-                                  href="#"
-                                  className="web-btn h2-theme-border1 d-inline-block text-capitalize white mt-15 mb-30 rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-60 pr-60 ptb-17 mr-20"
-                                >
-                                  Apply coupon
-                                </a>
-                              </p>
-                            </form>
-                          )}
-                        </Formik>
-                      </div>
-                    </Accordion.Collapse>
-                  </Accordion>
-                </div>
               </div>
               {/* /col */}
             </div>
@@ -272,203 +125,8 @@ const Checkout = ({ setCheckoutData }) => {
                     <div className="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12">
                       <div className="checkbox-form">
                         <h4 className="pb-10 mb-20 border-b-light-gray2">
-                          Billing Details
+                          Thông tin giao hàng
                         </h4>
-                        <div className="row">
-                          <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                            <div className="country-select mb-30">
-                              <SelectGroup
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                name="country"
-                                id="country"
-                                values={values.country}
-                                errors={errors.country}
-                                options={countrys}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="fName"
-                                id="fName"
-                                label="First Name"
-                                errors={errors.fName}
-                                values={values.fName}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="lName"
-                                id="lName"
-                                label="Last Name"
-                                errors={errors.lName}
-                                values={values.lName}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="cName"
-                                id="cName"
-                                label="Company Name"
-                                errors={errors.cName}
-                                values={values.cName}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="address"
-                                id="address"
-                                label="Address"
-                                placeholder="Street address"
-                                errors={errors.address}
-                                values={values.address}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <input
-                                type="text"
-                                placeholder="Apartment, suite, unit etc. (optional)"
-                                className="form-control primary-bg2 border-gray"
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="city"
-                                id="city"
-                                label="Town / City"
-                                placeholder="Town / City"
-                                errors={errors.city}
-                                values={values.city}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="state"
-                                id="state"
-                                label="State / County"
-                                placeholder="State / County"
-                                errors={errors.state}
-                                values={values.state}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="zip"
-                                id="zip"
-                                label="Postcode / Zip"
-                                placeholder="Postcode / Zip"
-                                errors={errors.zip}
-                                values={values.zip}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                name="email"
-                                id="email"
-                                label="Email Address"
-                                type="email"
-                                errors={errors.email}
-                                values={values.email}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                            <div className="checkout-form-list mb-20">
-                              <InputGroup
-                                type="number"
-                                name="phone"
-                                id="phone"
-                                label="Phone"
-                                errors={errors.phone}
-                                values={values.phone}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                            <div className="checkout-form-list create-acc mr-1">
-                              <Accordion>
-                                <div className="save-info d-inline-block">
-                                  <Accordion.Toggle
-                                    eventKey="0"
-                                    as="input"
-                                    id="cbox-account"
-                                    className="p-0 pr-2"
-                                    type="checkbox"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    name="createAccount"
-                                  />
-                                  <label
-                                    htmlFor="cbox-account"
-                                    className="mb-0 d-inline-block ms-1 c-pointer"
-                                  >
-                                    Create an account?
-                                  </label>
-                                </div>
-                                <Accordion.Collapse
-                                  eventKey="0"
-                                  id="cbox-account-info"
-                                  className="checkout-form-list create-account"
-                                >
-                                  <div>
-                                    <p>
-                                      Create an account by entering the
-                                      information below. If you are a returning
-                                      customer please login at the top of the
-                                      page.
-                                    </p>
-                                    <InputGroup
-                                      name="password2"
-                                      id="password2"
-                                      label="Account password"
-                                      type="password"
-                                      errors={errors.password2}
-                                      values={values.password2}
-                                      handleBlur={handleBlur}
-                                      handleChange={handleChange}
-                                    />
-                                  </div>
-                                </Accordion.Collapse>
-                              </Accordion>
-                            </div>
-                          </div>
-                        </div>
                         {/* /row */}
                         <div className="different-address">
                           <Accordion>
@@ -478,7 +136,7 @@ const Checkout = ({ setCheckoutData }) => {
                                   htmlFor="ship-box"
                                   className="mb-0 d-inline-block text-uppercase pr-15"
                                 >
-                                  Ship to a different address?
+                                  Sử dụng địa chỉ giao hàng khác?
                                 </label>
                                 <Accordion.Toggle
                                   eventKey="0"
@@ -489,33 +147,20 @@ const Checkout = ({ setCheckoutData }) => {
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   name="defferentAddress"
+                                  onClick={() => { setDifferentAddresses(!differentAddresses) }}
                                 />
                               </div>
                             </div>
-
                             <Accordion.Collapse eventKey="0" id="ship-box-info">
                               <div className="row">
-                                <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                                  <div className="country-select mb-30">
-                                    <SelectGroup
-                                      handleBlur={handleBlur}
-                                      handleChange={handleChange}
-                                      name="country2"
-                                      id="country2"
-                                      values={values.country2}
-                                      errors={errors.country2}
-                                      options={countrys}
-                                    />
-                                  </div>
-                                </div>
                                 <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="fName2"
-                                      id="fName2"
-                                      label="First Name"
-                                      errors={errors.fName2}
-                                      values={values.fName2}
+                                      name="firstName1"
+                                      id="firstName1"
+                                      label="Họ"
+                                      errors={errors.firstName1}
+                                      values={values.firstName1}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -523,16 +168,12 @@ const Checkout = ({ setCheckoutData }) => {
                                 </div>
                                 <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
                                   <div className="checkout-form-list mb-30">
-                                    <label>
-                                      Last Name{" "}
-                                      <span className="required">*</span>
-                                    </label>
                                     <InputGroup
-                                      name="lName2"
-                                      id="lName2"
-                                      label="Last Name"
-                                      errors={errors.lName2}
-                                      values={values.lName2}
+                                      name="lastName1"
+                                      id="lastName1"
+                                      label="Tên"
+                                      errors={errors.lastName1}
+                                      values={values.lastName1}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -541,11 +182,11 @@ const Checkout = ({ setCheckoutData }) => {
                                 <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="cName2"
-                                      id="cName2"
-                                      label="Company Name"
-                                      errors={errors.cName2}
-                                      values={values.cName2}
+                                      name="phoneNumber2"
+                                      id="phoneNumber2"
+                                      label="Số điện thoại"
+                                      errors={errors.phoneNumber1}
+                                      values={values.phoneNumber1}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -554,124 +195,388 @@ const Checkout = ({ setCheckoutData }) => {
                                 <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="address2"
-                                      id="address2"
-                                      label="Address2"
-                                      placeholder="Street address"
-                                      errors={errors.address2}
-                                      values={values.address2}
+                                      name="email2"
+                                      id="email2"
+                                      label="Email"
+                                      type="email"
+                                      errors={errors.email1}
+                                      values={values.email1}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
                                   </div>
                                 </div>
+                                <div className="row">
+                                  <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                    <div className="country-select mb-30">
+                                      <label>
+                                        Tỉnh/Thành phố <span className="required">*</span>
+                                      </label>
+                                      <select
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.province1}
+                                        name="province"
+                                        className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                      >
+                                        <option value="">Chọn 1 tỉnh</option>
+                                        {provinces.map((province, i) => (
+                                          <option value={province.codename} key={i}>
+                                            {province.name}
+                                          </option>
+                                        ))}
+                                        <div
+                                          id="val-username1-error"
+                                          className="invalid-feedback animated fadeInUp mb-3"
+                                          style={{ display: "block" }}
+                                        >
+                                          {errors.province && errors.province}
+                                        </div>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                    <div className="country-select mb-30">
+                                      <label>
+                                        Quận/Huyện <span className="required">*</span>
+                                      </label>
+                                      <select
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.district1}
+                                        name="district"
+                                        className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                      >
+                                        <option value="">Chọn 1 quận huyện</option>
+                                        {getDistrictByProvinces(values.province).map((district, i) => (
+                                          <option value={district.codename} key={i}>
+                                            {district.name}
+                                          </option>
+                                        ))}
+                                        <div
+                                          id="val-username1-error"
+                                          className="invalid-feedback animated fadeInUp mb-3"
+                                          style={{ display: "block" }}
+                                        >
+                                          {errors.district}
+                                        </div>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                    <div className="country-select mb-30">
+                                      <label>
+                                        Phường/xã <span className="required">*</span>
+                                      </label>
+                                      <select
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        value={values.wards1}
+                                        name="wards"
+                                        className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                      >
+                                        <option value="">Chọn 1 phường xã</option>
+                                        {getWardsByDistrict(values.district).map((ward, i) => (
+                                          <option value={ward.codename} key={i}>
+                                            {ward.name}
+                                          </option>
+                                        ))}
+                                        <div
+                                          id="val-username1-error"
+                                          className="invalid-feedback animated fadeInUp mb-3"
+                                          style={{ display: "block" }}
+                                        >
+                                          {errors.wards && errors.wards}
+                                        </div>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
+
                                 <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                   <div className="checkout-form-list mb-30">
-                                    <input
-                                      type="text"
-                                      placeholder="Apartment, suite, unit etc. (optional)"
-                                      className="form-control primary-bg2 border-gray"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                                  <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="city2"
-                                      id="city2"
-                                      label="Town / City"
-                                      placeholder="Town / City"
-                                      errors={errors.city2}
-                                      values={values.city2}
-                                      handleBlur={handleBlur}
-                                      handleChange={handleChange}
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                                  <div className="checkout-form-list mb-30">
-                                    <label>
-                                      State / County{" "}
-                                      <span className="required">*</span>
-                                    </label>
-                                    <input
-                                      type="text"
-                                      className="form-control primary-bg2 border-gray"
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                                  <div className="checkout-form-list mb-30">
-                                    <InputGroup
-                                      name="state2"
-                                      id="state2"
-                                      label="State / County"
-                                      placeholder="State / County"
-                                      errors={errors.state2}
-                                      values={values.state2}
-                                      handleBlur={handleBlur}
-                                      handleChange={handleChange}
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                                  <div className="checkout-form-list mb-30">
-                                    <InputGroup
-                                      name="zip2"
-                                      id="zip2"
-                                      label="Postcode / Zip"
-                                      placeholder="Postcode / Zip"
-                                      errors={errors.zip2}
-                                      values={values.zip2}
-                                      handleBlur={handleBlur}
-                                      handleChange={handleChange}
-                                    />
-                                  </div>
-                                </div>
-                                <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
-                                  <div className="checkout-form-list mb-30">
-                                    <InputGroup
-                                      type="number"
-                                      name="phone2"
-                                      id="phone2"
-                                      label="Phone"
-                                      errors={errors.phone2}
-                                      values={values.phone2}
+                                      name="address1"
+                                      id="address1"
+                                      label="Địa chị cụ th"
+                                      placeholder="Địa chỉ cụ thể"
+                                      errors={errors.address1}
+                                      values={values.address1}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
                                   </div>
                                 </div>
                               </div>
-                              {/* /row */}
                             </Accordion.Collapse>
+
+                            {/* /row */}
                           </Accordion>
-                          <div className="order-notes">
-                            <div className="checkout-form-list mb-40">
-                              <label>Order Notes</label>
-                              <textarea
-                                id="checkout-mess"
-                                placeholder="Notes about your order, e.g. special notes for delivery."
-                                className="form-control pt-20 pl-20 primary-bg2 border-gray"
-                                defaultValue={""}
-                              />
-                            </div>
+                          {!differentAddresses ? (
+                            <div className="row">
+                              <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
+                                <div className="checkout-form-list mb-30">
+                                  <InputGroup
+                                    name="firstName2"
+                                    id="firstName2"
+                                    label="Họ"
+                                    errors={errors.firstName2}
+                                    values={values.firstName2}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
+                                <div className="checkout-form-list mb-30">
+                                  <InputGroup
+                                    name="lastName2"
+                                    id="lastName2"
+                                    label="Tên"
+                                    errors={errors.lastName2}
+                                    values={values.lastName2}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                <div className="checkout-form-list mb-30">
+                                  <InputGroup
+                                    name="phoneNumber2"
+                                    id="phoneNumber2"
+                                    label="Số điện thoại"
+                                    errors={errors.phoneNumber2}
+                                    values={values.phoneNumber2}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                <div className="checkout-form-list mb-30">
+                                  <InputGroup
+                                    name="email2"
+                                    id="email2"
+                                    label="Email"
+                                    type="email"
+                                    errors={errors.email2}
+                                    values={values.email2}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="row">
+                                <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                  <div className="country-select mb-30">
+                                    <label>
+                                      Tỉnh/Thành phố <span className="required">*</span>
+                                    </label>
+                                    <select
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      value={values.province}
+                                      name="province"
+                                      className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                    >
+                                      <option value="">Chọn 1 tỉnh</option>
+                                      {provinces.map((province, i) => (
+                                        <option value={province.codename} key={i}>
+                                          {province.name}
+                                        </option>
+                                      ))}
+                                      <div
+                                        id="val-username1-error"
+                                        className="invalid-feedback animated fadeInUp mb-3"
+                                        style={{ display: "block" }}
+                                      >
+                                        {errors.province && errors.province}
+                                      </div>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                  <div className="country-select mb-30">
+                                    <label>
+                                      Quận/Huyện <span className="required">*</span>
+                                    </label>
+                                    <select
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      value={values.district}
+                                      name="district"
+                                      className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                    >
+                                      <option value="">Chọn 1 quận huyện</option>
+                                      {getDistrictByProvinces(values.province).map((district, i) => (
+                                        <option value={district.codename} key={i}>
+                                          {district.name}
+                                        </option>
+                                      ))}
+                                      <div
+                                        id="val-username1-error"
+                                        className="invalid-feedback animated fadeInUp mb-3"
+                                        style={{ display: "block" }}
+                                      >
+                                        {errors.district}
+                                      </div>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                  <div className="country-select mb-30">
+                                    <label>
+                                      Phường/xã <span className="required">*</span>
+                                    </label>
+                                    <select
+                                      onChange={handleChange}
+                                      onBlur={handleBlur}
+                                      value={values.wards}
+                                      name="wards"
+                                      className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                    >
+                                      <option value="">Chọn 1 phường xã</option>
+                                      {getWardsByDistrict(values.district).map((ward, i) => (
+                                        <option value={ward.codename} key={i}>
+                                          {ward.name}
+                                        </option>
+                                      ))}
+                                      <div
+                                        id="val-username1-error"
+                                        className="invalid-feedback animated fadeInUp mb-3"
+                                        style={{ display: "block" }}
+                                      >
+                                        {errors.wards && errors.wards}
+                                      </div>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                <div className="checkout-form-list mb-30">
+                                  <InputGroup
+                                    name="address2"
+                                    id="address2"
+                                    label="Địa chị cụ th"
+                                    placeholder="Địa chỉ cụ thể"
+                                    errors={errors.address2}
+                                    values={values.address2}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                  />
+                                </div>
+                              </div>
+                            </div>) : null}
+                        </div>
+                        <div className="order-notes">
+                          <div className="checkout-form-list mb-40">
+                            <label>Ghi chú</label>
+                            <textarea
+                              id="checkout-mess"
+                              placeholder="Điền những thông tin bổ sung"
+                              className="form-control pt-20 pl-20 primary-bg2 border-gray"
+                              defaultValue={""}
+                            />
                           </div>
                         </div>
                       </div>
+
                     </div>
                     {/* /col */}
                     <div className="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12">
                       <div className="your-order mb-30 pt-30 pr-40 pb-60 pl-40 mt-15">
                         <h4 className="pb-10 mb-20 border-b-light-gray3">
-                          Your order
+                          Thông tin đơn hàng
                         </h4>
+                        <div className="coupon-accordion">
+                          {/* accordion start */}
+                          <Accordion>
+                            <h6 className="pt-15 pl-40 pb-15 mb-25 position-relative">
+                              Bạn có mã giảm giá không?{" "}
+                              <Accordion.Toggle
+                                as="span"
+                                eventKey="0"
+                                id="couponshow"
+                                className="light-black-color2 font600 transition-3"
+                              >
+                                Nhập mã tại đây
+                              </Accordion.Toggle>
+                            </h6>
+                            <Accordion.Collapse
+                              eventKey="0"
+                              id="checkout-coupon"
+                              className="checkout-content"
+                            >
+                              <div className="coupon-info">
+                                <Formik
+                                  initialValues={couponSchema.initialValue}
+                                  validationSchema={couponSchema.schema}
+                                  onSubmit={(values, { setSubmitting }) => {
+                                    setTimeout(() => {
+                                      alert(JSON.stringify(values, null, 2));
+                                      setSubmitting(false);
+                                    }, 400);
+                                  }}
+                                >
+                                  {({
+                                    values,
+                                    errors,
+                                    handleChange,
+                                    handleBlur,
+                                    handleSubmit,
+                                    isSubmitting,
+                                  }) => (
+                                    <div className="row">
+                                      <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                                        <form action="#">
+                                          <p className="checkout-coupon">
+                                            <input
+                                              className="mb-0"
+                                              type="text"
+                                              onChange={handleChange}
+                                              onBlur={handleBlur}
+                                              value={values.coupon}
+                                              name="coupon"
+                                              placeholder="Coupon Code"
+                                            />
+
+                                            <div
+                                              id="val-username1-error"
+                                              className="invalid-feedback animated fadeInUp mb-3"
+                                              style={{ display: "block" }}
+                                            >
+                                              {errors.coupon && errors.coupon}
+                                            </div>
+                                          </p>
+                                        </form>
+                                      </div>
+                                      {/* /col */}
+                                      <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                                        <a
+                                          disabled={isSubmitting}
+                                          href="#"
+                                          className="web-btn h2-theme-border1 d-inline-block text-capitalize white mt-15 rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-60 pr-60 ptb-15 mr-20"
+                                        >
+                                          Apply coupon
+                                        </a>
+                                      </div>
+                                      {/* /col */}
+                                    </div>
+
+                                  )}
+                                </Formik>
+                              </div>
+                            </Accordion.Collapse>
+                          </Accordion>
+                        </div>
                         <div className="your-order-table table-responsive">
                           <table className="width100">
                             <thead>
                               <tr>
-                                <th className="product-name">Product</th>
-                                <th className="product-total">Total</th>
+                                <th className="product-name">Sản phẩm</th>
+                                <th className="product-total">Tổng</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -695,13 +600,13 @@ const Checkout = ({ setCheckoutData }) => {
                             </tbody>
                             <tfoot>
                               <tr className="cart-subtotal">
-                                <th>Cart Subtotal</th>
+                                <th>Tổng giỏ hàng</th>
                                 <td>
                                   <span className="amount">${price}</span>
                                 </td>
                               </tr>
                               <tr className="shipping">
-                                <th>Shipping</th>
+                                <th>Phí giao hàng</th>
                                 <td>
                                   <ul>
                                     <li className="d-flex">
@@ -738,7 +643,7 @@ const Checkout = ({ setCheckoutData }) => {
                                 </td>
                               </tr>
                               <tr className="order-total">
-                                <th>Order Total</th>
+                                <th>Tổng thanh toán</th>
                                 <td>
                                   <strong>
                                     {price && (
@@ -746,15 +651,15 @@ const Checkout = ({ setCheckoutData }) => {
                                         $
                                         {flat && freeShpping
                                           ? (
-                                              price -
-                                              flatPrice -
-                                              shppingPrice
-                                            ).toFixed(2)
+                                            price -
+                                            flatPrice -
+                                            shppingPrice
+                                          ).toFixed(2)
                                           : flat
-                                          ? (price - flatPrice).toFixed(2)
-                                          : freeShpping
-                                          ? (price - shppingPrice).toFixed(2)
-                                          : price}
+                                            ? (price - flatPrice).toFixed(2)
+                                            : freeShpping
+                                              ? (price - shppingPrice).toFixed(2)
+                                              : price}
                                       </span>
                                     )}
                                   </strong>
@@ -763,6 +668,7 @@ const Checkout = ({ setCheckoutData }) => {
                             </tfoot>
                           </table>
                         </div>
+
                         <div className="payment-method mt-40">
                           <Accordion defaultActiveKey="0">
                             <div className="accordion-item">
@@ -821,19 +727,7 @@ const Checkout = ({ setCheckoutData }) => {
                                 </Accordion.Toggle>
                               </h2>
                               <Accordion.Collapse eventKey="2">
-                                <div className="accordion-body">
-                                  Pay via PayPal; you can pay with your credit
-                                  card if you don’t have a PayPal account.
-                                  <div className="mt-3">
-                                    <PayPalScriptProvider
-                                      options={{ "client-id": "test" }}
-                                    >
-                                      <PayPalButtons
-                                        style={{ layout: "horizontal" }}
-                                      />
-                                    </PayPalScriptProvider>
-                                  </div>
-                                </div>
+                                <PaymentPaypal total="10.00" token={tokenUser} />
                               </Accordion.Collapse>
                             </div>
                           </Accordion>
@@ -865,4 +759,4 @@ const Checkout = ({ setCheckoutData }) => {
   );
 };
 
-export default connect(null, { setCheckoutData })(Checkout);
+export default connect(null, { setCheckoutData })(withAuth(Checkout));

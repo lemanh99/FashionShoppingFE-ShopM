@@ -20,6 +20,7 @@ import { getProducts } from "../src/redux/action/product";
 import { simpleProductFilter } from "../src/utils/filterProduct";
 import { createMap } from "../src/utils/utils";
 import time from "../src/utils/time";
+import withoutAuth from "../src/HOC/withoutAuth";
 
 const Index = () => {
   const sliders = useSelector((state) => state.home.home1 && state.home.home1.sliders);
@@ -325,23 +326,4 @@ const Index = () => {
   );
 };
 
-
-// const mapStateToProps = (state) => ({
-//   sliders: state.home.home1 && state.home.home1.sliders,
-//   banner_1: state.home.home1 && state.home.home1.banner_1,
-//   category_2: state.home.home1 && state.home.home1.category_2,
-//   unmissedProducts: simpleProductFilter(
-//     "home1unmissed",
-//     state.product.products
-//   ),
-//   handpickedProduct: simpleProductFilter(
-//     "home1handpicked",
-//     state.product.products
-//   ),
-//   purchasedProduct: simpleProductFilter(
-//     "home1purchased",
-//     state.product.products
-//   ),
-// });
-
-export default Index;
+export default withoutAuth(Index);

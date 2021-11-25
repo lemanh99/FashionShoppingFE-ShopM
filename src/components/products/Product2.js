@@ -8,6 +8,7 @@ import ProductModal from "./ProductModal";
 
 const Product2 = ({ product, addToCart }) => {
   const [quickView, setQuickView] = useState(false);
+  const [sizeSelected, setSizeSelected] = useState(null)
   const onClickCart = (e) => {
     e.preventDefault();
     addToCart(product);
@@ -20,6 +21,8 @@ const Product2 = ({ product, addToCart }) => {
         show={quickView}
         handleClose={() => setQuickView(false)}
         product={product}
+        sizeSelected={sizeSelected}
+        setSizeSelected={setSizeSelected}
       />
       <div className="single-handpick-item-img position-relative">
         {product.off && (
@@ -69,7 +72,10 @@ const Product2 = ({ product, addToCart }) => {
           <a
             href="#"
             className="web-btn web-btn2 border-white01 d-inline-block font700 text-capitalize light-black-color9 position-relative over-hidden pl-35 pr-35 ptb-12"
-            onClick={(e) => onClickCart(e)}
+            onClick={(e) => {
+              e.preventDefault();
+              setQuickView(true);
+            }}
           >
             Thêm vào giỏ hàng
           </a>

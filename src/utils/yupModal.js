@@ -1,9 +1,9 @@
 import * as Yup from "yup";
 
 const username = Yup.string()
-    .min(3, "Your username must consist of at least 3 characters ")
-    .max(50, "Your username must consist of at least 3 characters ")
-    .required("Please enter a username"),
+  .min(3, "Your username must consist of at least 3 characters ")
+  .max(50, "Your username must consist of at least 3 characters ")
+  .required("Please enter a username"),
   password = Yup.string()
     .min(5, "Your password must be at least 5 characters long")
     .max(50, "Your password must be at least 5 characters long")
@@ -13,9 +13,13 @@ const username = Yup.string()
     [true],
     "You must accept the terms and conditions"
   ),
+  phoneNumber = Yup.number().required("Please provide your phone"),
   country = Yup.string().required("Please provide your country name"),
-  fName = Yup.string().required("Please provide your first name"),
-  lName = Yup.string().required("Please provide your last name"),
+  province = Yup.string().required("Please provide your province name"),
+  district = Yup.string().required("Please provide your district name"),
+  wards = Yup.string().required("Please provide your wards name"),
+  firstName = Yup.string().required("Please provide your first name"),
+  lastName = Yup.string().required("Please provide your last name"),
   cName = Yup.string().required("Please provide your company name"),
   address = Yup.string().required("Please provide your address"),
   city = Yup.string().required("Please provide your city"),
@@ -27,11 +31,11 @@ const username = Yup.string()
     is: true,
     then: Yup.string().required("Please provide your country name"),
   }),
-  fName2 = Yup.string().when("defferentAddress", {
+  firstName2 = Yup.string().when("defferentAddress", {
     is: true,
     then: Yup.string().required("Please provide your frist name"),
   }),
-  lName2 = Yup.string().when("defferentAddress", {
+  lastName2 = Yup.string().when("defferentAddress", {
     is: true,
     then: Yup.string().required("Please provide your last name"),
   }),
@@ -79,25 +83,29 @@ export const loginSchema = {
   schema: Yup.object().shape({
     email,
     password,
-    tandc,
   }),
-  initialValue: { email: "", password: "", tandc: false },
+  initialValue: { email: "", password: "" },
 };
 
 export const registerSchema = {
   schema: Yup.object().shape({
-    username,
+    firstName,
+    lastName,
+    phoneNumber,
     password,
     email,
   }),
-  initialValue: { username: "", password: "", email: "" },
+  initialValue: { password: "", email: "", firstName: "", lastName: "", phoneNumber: "" },
 };
 
 export const checkoutSchema = {
   schema: Yup.object().shape({
+    province,
+    district,
+    wards,
     country,
-    fName,
-    lName,
+    firstName,
+    lastName,
     address,
     state,
     country,
@@ -107,8 +115,8 @@ export const checkoutSchema = {
     zip,
     phone,
     country2,
-    fName2,
-    lName2,
+    firstName2,
+    lastName2,
     address2,
     state2,
     country2,
@@ -122,9 +130,11 @@ export const checkoutSchema = {
     password2,
   }),
   initialValue: {
-    country: "",
-    fName: "",
-    lName: "",
+    province: "",
+    district: "",
+    wards: "",
+    firstName: "",
+    lastName: "",
     address: "",
     state: "",
     country: "",
@@ -133,8 +143,8 @@ export const checkoutSchema = {
     zip: "",
     phone: "",
     country2: "",
-    fName2: "",
-    lName2: "",
+    firstName2: "",
+    lastName2: "",
     address2: "",
     state2: "",
     country2: "",

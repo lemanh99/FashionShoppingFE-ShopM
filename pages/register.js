@@ -1,11 +1,33 @@
 import { Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
+import { signup } from "../src/redux/action/auth";
 import { registerSchema } from "../src/utils/yupModal";
 
 const Register = () => {
+  const Router = useRouter();
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const submit = (users) => {
+    const user = {
+      first_name: users.firstName,
+      last_name: users.lastName,
+      phone_number: users.phoneNumber,
+      email: users.email,
+      password: users.password,
+    };
+    dispatch(signup(user));
+  }
+  useEffect(() => {
+    if (auth.register) {
+      Router.push("/login")
+    }
+  }, [auth])
   return (
     <Layout>
       <main>
@@ -20,7 +42,7 @@ const Register = () => {
                     validationSchema={registerSchema.schema}
                     onSubmit={(values, { setSubmitting }) => {
                       setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
+                        submit(values);
                         setSubmitting(false);
                       }, 400);
                     }}
@@ -35,17 +57,6 @@ const Register = () => {
                     }) => (
                       <form onSubmit={handleSubmit}>
                         <InputGroup
-                          label="Username"
-                          id="username"
-                          name="username"
-                          type="string"
-                          placeholder="Nhập Username ..."
-                          values={values.username}
-                          errors={errors.username}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                        />
-                        <InputGroup
                           label="Email"
                           id="email"
                           name="email"
@@ -53,6 +64,39 @@ const Register = () => {
                           placeholder="Enter Email address..."
                           values={values.email}
                           errors={errors.email}
+                          handleBlur={handleBlur}
+                          handleChange={handleChange}
+                        />
+                        <InputGroup
+                          label="Họ"
+                          id="firstName"
+                          name="firstName"
+                          type="string"
+                          placeholder="Họ"
+                          values={values.firstName}
+                          errors={values.errors}
+                          handleBlur={handleBlur}
+                          handleChange={handleChange}
+                        />
+                        <InputGroup
+                          label="Tên"
+                          id="lastName"
+                          name="lastName"
+                          type="string"
+                          placeholder="Tên"
+                          values={values.lastName}
+                          errors={values.errors}
+                          handleBlur={handleBlur}
+                          handleChange={handleChange}
+                        />
+                        <InputGroup
+                          label="Số điện thoại"
+                          id="phoneNumber"
+                          name="phoneNumber"
+                          type="number"
+                          placeholder="Số điện thoại"
+                          values={values.phoneNumber}
+                          errors={values.errors}
                           handleBlur={handleBlur}
                           handleChange={handleChange}
                         />

@@ -1,7 +1,9 @@
 import Link from "next/dist/client/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { connect, useSelector } from "react-redux";
+import withoutAuthPublic from "../src/HOC/withoutAuthPublic";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import {
@@ -16,6 +18,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
   useEffect(() => {
     getCarts();
   }, []);
+
   const carts = useSelector((state) => state.utilis.carts);
   const [cartValue, setCartValue] = useState(0);
 
@@ -33,6 +36,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
     setaddCart(true);
     toast.error("Xóa sản phẩm từ giỏ hàng thành công");
   };
+  console.log(carts)
   return (
     <Layout>
       {carts && carts.length > 0 ? (
@@ -42,12 +46,13 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
               <table className="table table-bordered">
                 <thead>
                   <tr>
-                    <th scope="col">Price images</th>
-                    <th scope="col">Product name </th>
-                    <th scope="col">Unit price</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Remove</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">Tên sản phẩm</th>
+                    <th scope="col">Giá</th>
+                    <th scope="col">Kích thước</th>
+                    <th scope="col">Số lượng</th>
+                    <th scope="col">Tổng</th>
+                    <th scope="col">Xóa</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -70,6 +75,11 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                           <div className="cart-price">
                             {" "}
                             {Number(cart.mainPrice).toFixed(2)} VND
+                          </div>
+                        </td>
+                        <td>
+                          <div className="cart-price">
+                          {cart.sizeSelected}
                           </div>
                         </td>
                         <td>
@@ -112,7 +122,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                             href="#"
                             className="p-remove theme-color"
                             onClick={(e) => {
-                              removeCart(cart.id);
+                              removeCart(cart.product_id);
                               setaddCart(true);
                               toast.error("Xóa sản phẩm từ giỏ hàng thành công");
                               e.preventDefault();
@@ -194,5 +204,5 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
 };
 
 export default connect(null, { removeCart, addToCart, decreaseCart, getCarts })(
-  Cart
+  withoutAuthPublic(Cart)
 );

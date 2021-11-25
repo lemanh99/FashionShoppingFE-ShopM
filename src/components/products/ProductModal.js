@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Modal, Nav, Tab } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { ButtonGroup, ButtonToolbar, Modal, Nav, Tab, ToggleButton } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { connect } from "react-redux";
 import {
@@ -11,6 +11,7 @@ import {
   getCompare,
   getWishlist,
 } from "../../redux/action/utilis";
+import { productCart } from "../../utils/addCartProduct";
 import time from "../../utils/time";
 import Reating from "../Reating";
 const ProductModal = ({
@@ -30,10 +31,12 @@ const ProductModal = ({
   mainPrice,
   price,
 }) => {
+  const [sizeSelected, setSizeSelected] = useState(null);
   useEffect(() => {
     getCarts();
     getWishlist();
     getCompare();
+    setSizeSelected(null);
   }, []);
   const cart = product && carts && carts.find((cart) => cart.id === product.id);
   const wishlist =
@@ -47,13 +50,13 @@ const ProductModal = ({
 
   const onClickCart = (e) => {
     e.preventDefault();
-    addToCart(product);
-    toast.success("Thêm vào giỏ hàng thành công");
+    const products = { ...product, sizeSelected: sizeSelected }
+    console.log(products);
+    addToCart(products);
   };
   const onClickRemoveCart = (e) => {
     e.preventDefault();
     decreaseCart(cart);
-    toast.error("Xóa sản phẩm từ giỏ hàng thành công");
   };
   const onClickWishlist = (e) => {
     e.preventDefault();
@@ -170,13 +173,13 @@ const ProductModal = ({
                             <span className="gray-color2 ms-1">
                               (
                               {product && product.reviews ? product.reviews : 0}{" "}
-                              Reviews)
+                              Đánh giá)
                             </span>
                           </div>
                           {/* /rating */}
                           <div className="price pb-18 pt-3">
                             <span className="rc-price font700">
-                              ${Number(product && product.mainPrice).toFixed(2)}
+                              {Number(product && product.mainPrice).toFixed(2)} VND
                             </span>
                             {product && product.price && (
                               <span className="ms-1 text-muted font600">
@@ -186,11 +189,7 @@ const ProductModal = ({
                           </div>
                           <div className="p-info-text pr-55">
                             <p className="gray-color2">
-                              On the other hand, we denounce with righteous
-                              indignation and dislike men who are so beguiled
-                              and demoralized by the charms we denounce with
-                              righteous indignation and dislike men who are so
-                              beguiled with righteous
+                              {product && product.description_list}
                             </p>
                           </div>
                           {product.upcoming && (
@@ -201,30 +200,57 @@ const ProductModal = ({
                                     <span className="time-count">
                                       {totalTime.days}
                                     </span>
-                                    <p>Days</p>
+                                    <p>Ngày</p>
                                   </span>
                                   <span className="cdown hour">
                                     <span className="time-count">
                                       {totalTime.hours}
                                     </span>
-                                    <p>HRS</p>
+                                    <p>Giờ</p>
                                   </span>
                                   <span className="cdown minutes">
                                     <span className="time-count">
                                       {totalTime.minutes}
                                     </span>
-                                    <p>Min</p>
+                                    <p>Phút</p>
                                   </span>
                                   <span className="cdown second mr-0">
                                     <span className="time-count">
                                       {totalTime.seconds}
                                     </span>
-                                    <p>Sec</p>
+                                    <p>Giây</p>
                                   </span>
                                 </div>
                               </div>
                             </div>
                           )}
+                          <div className="all-info d-sm-flex align-items-center mt-35">
+                            <div className="sidebar-widget">
+                              <h6 className="mb-25 title font600 sidebar-title d-inline-block position-relative pb-1">
+                                Kích thước
+                              </h6>
+                              <ButtonToolbar>
+                                <ButtonGroup className="me-2">
+                                  {product.size &&
+                                    product.size.map((size, i) => (
+                                      <ToggleButton
+                                        key={i}
+                                        id={`radio-${i}`}
+                                        type="radio"
+                                        variant="outline-secondary"
+                                        name="radio"
+                                        value={size}
+                                        checked={sizeSelected === size}
+                                        onChange={(e) => setSizeSelected(e.currentTarget.value)}
+                                      >
+                                        {size}
+                                      </ToggleButton>
+                                    ))}
+                                </ButtonGroup>
+                              </ButtonToolbar>
+                            </div>
+
+                          </div>
                           <div className="all-info d-sm-flex align-items-center mt-35">
                             <div className="quick-add-to-cart d-sm-flex align-items-center mb-15 mr-10">
                               <div className="quantity-field position-relative d-inline-block mr-3">
@@ -262,8 +288,8 @@ const ProductModal = ({
                                 className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15 `}
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  addToCart(product);
-                                  toast.success("Thêm vào giỏ hàng thành công");
+                                  sizeSelected?addToCart(productCart(product, sizeSelected)):null;
+                                  sizeSelected?toast.success("Thêm vào giỏ hàng thành công"):toast.error("Vui lòng chọn size");
                                 }}
                               >
                                 <span className="icon-shopping-bag" />
@@ -272,9 +298,8 @@ const ProductModal = ({
                             <div className="pro-wishlist d-inline-block mb-15 ms-2">
                               <a
                                 href="#"
-                                className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15  ${
-                                  wishlist ? "active_wishList" : ""
-                                } `}
+                                className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15  ${wishlist ? "active_wishList" : ""
+                                  } `}
                                 onClick={(e) => onClickWishlist(e)}
                               >
                                 <span className="icon-heart" />

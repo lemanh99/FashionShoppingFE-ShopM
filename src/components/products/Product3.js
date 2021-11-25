@@ -92,33 +92,35 @@ const Product3 = ({
         <div className="position-relative">
           <Link href={`/shop/${product.id}`}>
             <a className="d-block">
-              <img src={product.img} alt="product" className="d-block m-auto img-container-product3"/>
+              <img src={product.img} alt="product" className="d-block m-auto img-container-product3" />
             </a>
           </Link>
           {productActionOff && (
             <div className="product-action">
               <div className="pro-action-inner">
-                <a href="#" className="gray-bg" onClick={(e) => onClickCart(e)}>
+                <a href="#" className="gray-bg"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setQuickView(true);
+                  }}>
                   <i className="icon-shopping-bag" />
                 </a>
                 <a
                   href="#"
                   onClick={(e) => onClickWishlist(e)}
-                  className={`gray-bg ${
-                    wishlist && wishlist.find((pro) => pro.id === product.id)
-                      ? "active"
-                      : ""
-                  } `}
+                  className={`gray-bg ${wishlist && wishlist.find((pro) => pro.id === product.id)
+                    ? "active"
+                    : ""
+                    } `}
                 >
                   <i className="fal fa-heart" />
                 </a>
                 <a
                   href="#"
-                  className={`gray-bg ${
-                    compares.find((compare) => compare.id === product.id)
-                      ? "active"
-                      : ""
-                  }`}
+                  className={`gray-bg ${compares.find((compare) => compare.id === product.id)
+                    ? "active"
+                    : ""
+                    }`}
                   onClick={(e) => onClickCompare(e)}
                 >
                   <i className="fal fa-random" />
@@ -211,11 +213,10 @@ const Product3 = ({
             <a
               href="#"
               onClick={(e) => onClickWishlist(e)}
-              className={`d-inline-block gray-bg bor-radius5 light-black-color9 mr-6 font14 pr-15 pl-15 ${
-                wishlist && wishlist.find((pro) => pro.id === product.id)
-                  ? "active"
-                  : ""
-              } `}
+              className={`d-inline-block gray-bg bor-radius5 light-black-color9 mr-6 font14 pr-15 pl-15 ${wishlist && wishlist.find((pro) => pro.id === product.id)
+                ? "active"
+                : ""
+                } `}
             >
               <span>
                 <i className="fas fa-heart"></i>

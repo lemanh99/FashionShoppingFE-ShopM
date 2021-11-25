@@ -52,8 +52,8 @@ function filterByPrice(filteredList, price) {
 function filterInArray(filteredList, value, key) {
   return filteredList && value.length > 0
     ? filteredList.filter(
-        (data) => data[key] && data[key].find((f) => value.includes(f))
-      )
+      (data) => data[key] && data[key].find((f) => value.includes(f))
+    )
     : filteredList;
 }
 
@@ -61,11 +61,11 @@ export const simpleProductFilter = (key, arr) => {
   let isArr = typeof key !== "string" ? true : false;
   var sorted = isArr
     ? key &&
-      key
-        .map(function (value) {
-          return value.toLowerCase();
-        })
-        .sort()
+    key
+      .map(function (value) {
+        return value.toLowerCase();
+      })
+      .sort()
     : [key.toLowerCase()];
 
   return (
@@ -80,14 +80,14 @@ export const simpleProductFilter = (key, arr) => {
 
 export const exitsProduct = (state, item) => {
   let value =
-    state && state.find((product) => Number(product.id) === Number(item.id));
+    state && state.find((product) => Number(product.id) === Number(item.id)&&Number(product.product_id) === Number(item.product_id));
   return value;
 };
 
 export const updateCart = (state, item, type) => {
   const exitsCarts =
     state.carts &&
-    state.carts.find((product) => Number(product.id) === Number(item.id));
+    state.carts.find((product) => Number(product.id) === Number(item.id)&&Number(product.product_id) === Number(item.product_id));
   let result = {};
 
   if (state.carts) {

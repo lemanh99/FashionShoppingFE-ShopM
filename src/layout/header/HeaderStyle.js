@@ -1,11 +1,18 @@
 import Link from "next/link";
-import { useState } from "react";
-import { AuthorIcon, CartIcon, CompareIcon, WishListIcon } from "./Icons";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { storePathValues } from "../../helpers/path";
+import { AuthorIcon, CartIcon, CompareIcon, WishListIcon, LoginIcon } from "./Icons";
 import { DasktopMenu } from "./Menu";
 import Search from "./Search";
 
 export const HomePageOne = () => {
   const [newest, setNewest] = useState(false);
+  const auth = useSelector((state) => state.auth);
+  const router = useRouter();
+  useEffect(() => storePathValues, [router.asPath]);
+
   return (
     <header className="d-none d-lg-block">
       <div className="header-area header-area1">
@@ -41,7 +48,8 @@ export const HomePageOne = () => {
                         <div className="header-right d-flex align-items-center">
                           <ul className="header-account d-none d-md-block mr-26">
                             <li className="d-none d-md-inline-block">
-                              <AuthorIcon />
+                              {auth.authenticate ? (<AuthorIcon />) : (<LoginIcon />)}
+
                             </li>
                           </ul>
                           <ul className="header-compare header-wishlist d-none d-md-block position-relative mr-26 pl-30">

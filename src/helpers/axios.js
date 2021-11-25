@@ -1,5 +1,4 @@
 import axios from 'axios';
-import store from '../redux/store';
 import { api } from '../urlConfig';
 
 const token = (typeof window !== "undefined") ? window.localStorage.getItem('token') : null;
@@ -14,7 +13,7 @@ const axiosIntance = axios.create({
 axiosIntance.interceptors.request.use((req) => {
     // const { auth } = store.getState();
     // if (auth.token) {
-        // req.headers.Authorization = `Bearer ${auth.token}`;
+    // req.headers.Authorization = `Bearer ${auth.token}`;
     // }
     return req;
 })

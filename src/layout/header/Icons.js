@@ -17,6 +17,21 @@ export const AuthorIcon = () => (
     </a>
   </Link>
 );
+
+export const LoginIcon = () => (
+  <Link href="/login">
+    <a
+      data-toggle="tooltip"
+      data-selector="true"
+      data-placement="bottom"
+      title="Đăng nhập"
+      className="dark-black-color"
+    >
+        Đăng nhập
+    </a>
+  </Link>
+);
+
 export const CompareIcon = ({ color }) => {
   const compare = useSelector((state) => state.utilis.compares);
   return (

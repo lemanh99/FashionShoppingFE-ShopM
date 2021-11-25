@@ -1,11 +1,41 @@
 import { Formik } from "formik";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
+import { getPrevPath } from "../src/helpers/path";
+import withoutAuth from "../src/HOC/withoutAuth";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
+import { login } from "../src/redux/action/auth";
 import { loginSchema } from "../src/utils/yupModal";
 
 const Login = () => {
+  const Router = useRouter();
+  const auth = useSelector((state) => state.auth);
+  console.log(auth)
+  const dispatch = useDispatch();
+  const submit = (users) => {
+    const user = {
+      username: users.email,
+      password: users.password,
+    };
+    dispatch(login(user));
+  }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (auth.authenticate && token) {
+      const prevPath = getPrevPath()
+      if (prevPath && prevPath !== "null") {
+        Router.push(`${prevPath}`)
+      } else {
+        Router.push("/")
+      }
+    }
+
+  }, [auth])
+
   return (
     <Layout sticky textCenter footerBg container>
       <main>
@@ -20,7 +50,7 @@ const Login = () => {
                     validationSchema={loginSchema.schema}
                     onSubmit={(values, { setSubmitting }) => {
                       setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2));
+                        submit(values);
                         setSubmitting(false);
                       }, 400);
                     }}
@@ -41,7 +71,7 @@ const Login = () => {
                           type="string"
                           placeholder="Nhập địa chỉ email"
                           values={values.email}
-                          errors={"Email không hợp lệ"}
+                          errors={errors.email}
                           handleBlur={handleBlur}
                           handleChange={handleChange}
                         />
@@ -70,6 +100,7 @@ const Login = () => {
 
                         <button
                           disabled={isSubmitting}
+                          type="submit"
                           className="bt-btn theme-btn-2 w-100"
                         >
                           Đăng nhập
@@ -95,4 +126,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default withoutAuth(Login);
