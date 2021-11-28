@@ -2,7 +2,7 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { Fragment } from "react";
 import toast from "react-hot-toast";
 
-const PaymentPaypal = ({ total, token
+const PaymentPaypal = ({ total, token, paymentUser
 }) => {
 
     const initialOptionsPaypal = {
@@ -36,6 +36,12 @@ const PaymentPaypal = ({ total, token
                             onApprove={(data, actions) => {
                                 return actions.order.capture().then(function (details) {
                                     toast.success('Thanh toán thành công ' + details.payer.name.given_name)
+                                    paymentUser({
+                                        order_status_id: 1,
+                                        payment_status_id: 1,
+                                        payment_id: 1,
+                                    })
+                                    
                                 });
                             }}
                             onCancel={() => toast.error(

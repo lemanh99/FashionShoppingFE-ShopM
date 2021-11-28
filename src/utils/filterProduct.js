@@ -80,14 +80,14 @@ export const simpleProductFilter = (key, arr) => {
 
 export const exitsProduct = (state, item) => {
   let value =
-    state && state.find((product) => Number(product.id) === Number(item.id)&&Number(product.product_id) === Number(item.product_id));
+    state && state.find((product) => Number(product.id) === Number(item.id)&&Number(product.product_sku_id) === Number(item.product_id));
   return value;
 };
 
 export const updateCart = (state, item, type) => {
   const exitsCarts =
     state.carts &&
-    state.carts.find((product) => Number(product.id) === Number(item.id)&&Number(product.product_id) === Number(item.product_id));
+    state.carts.find((product) => Number(product.id) === Number(item.id)&&Number(product.product_sku_id) === Number(item.product_id));
   let result = {};
 
   if (state.carts) {

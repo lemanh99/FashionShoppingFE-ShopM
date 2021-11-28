@@ -16,7 +16,6 @@ export const getProducts = () => async (dispatch) => {
       payload: [],
     });
   }
-
 };
 export const getSingleProduct = (id) => async (dispatch) => {
   console.log("id", id)

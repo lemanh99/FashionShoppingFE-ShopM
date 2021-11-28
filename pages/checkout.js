@@ -31,6 +31,7 @@ const Checkout = ({ setCheckoutData }) => {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
+  const [deliveryFee, setDeliveryFee] = useState(30000);
 
   const [flat, setFlat] = useState(false);
   const price = totalPrice(carts);
@@ -70,6 +71,42 @@ const Checkout = ({ setCheckoutData }) => {
     return []
   }
 
+  const getInfomationOrder = (values) => {
+    let addressUser = null;
+    if (!values.defferentAddress) {
+      addressUser = {
+        city: values.province,
+        district: values.district,
+        village: values.wards,
+        street: values.street,
+        email: values.email,
+        phone_number: values.phoneNumber,
+        first_name: values.firstName,
+        last_name: values.lastName,
+      }
+    } else {
+      addressUser = {
+        city: values.province2,
+        district: values.district2,
+        village: values.wards2,
+        street: values.street2,
+        email: values.email2,
+        phone_number: values.phoneNumber2,
+        first_name: values.firstName2,
+        last_name: values.lastName2,
+      }
+    }
+    const shipping = {
+      ...addressUser,
+      customer_address_id: null,
+      delivery_id: 1,
+      country: "viet_nam",
+      postal_code: "000000",
+
+    }
+    return { shipping: shipping, deliveryFee: deliveryFee };
+  }
+
 
   return (
     <Layout sticky textCenter container footerBg>
@@ -96,16 +133,17 @@ const Checkout = ({ setCheckoutData }) => {
           validationSchema={checkoutSchema.schema}
           onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
-              alert("Checkout successfully completed");
+              const shipping = getInfomationOrder(values)
+              setCheckoutData(shipping);
               Router.push(
                 {
-                  pathname: "/order-success",
+                  pathname: "/payment-cart",
                 },
                 undefined,
                 { shallow: true }
               );
 
-              setCheckoutData(values);
+
               setSubmitting(false);
             }, 400);
           }}
@@ -156,11 +194,11 @@ const Checkout = ({ setCheckoutData }) => {
                                 <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="firstName1"
-                                      id="firstName1"
+                                      name="firstName2"
+                                      id="firstName2"
                                       label="Họ"
-                                      errors={errors.firstName1}
-                                      values={values.firstName1}
+                                      errors={errors.firstName2}
+                                      values={values.firstName2}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -169,11 +207,11 @@ const Checkout = ({ setCheckoutData }) => {
                                 <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="lastName1"
-                                      id="lastName1"
+                                      name="lastName2"
+                                      id="lastName2"
                                       label="Tên"
-                                      errors={errors.lastName1}
-                                      values={values.lastName1}
+                                      errors={errors.lastName2}
+                                      values={values.lastName2}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -185,8 +223,8 @@ const Checkout = ({ setCheckoutData }) => {
                                       name="phoneNumber2"
                                       id="phoneNumber2"
                                       label="Số điện thoại"
-                                      errors={errors.phoneNumber1}
-                                      values={values.phoneNumber1}
+                                      errors={errors.phoneNumber2}
+                                      values={values.phoneNumber2}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -199,8 +237,8 @@ const Checkout = ({ setCheckoutData }) => {
                                       id="email2"
                                       label="Email"
                                       type="email"
-                                      errors={errors.email1}
-                                      values={values.email1}
+                                      errors={errors.email2}
+                                      values={values.email2}
                                       handleBlur={handleBlur}
                                       handleChange={handleChange}
                                     />
@@ -215,13 +253,13 @@ const Checkout = ({ setCheckoutData }) => {
                                       <select
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.province1}
-                                        name="province"
+                                        value={values.province2}
+                                        name="province2"
                                         className="nice-select w-100 primary-bg2 mb-20 mb-0"
                                       >
                                         <option value="">Chọn 1 tỉnh</option>
                                         {provinces.map((province, i) => (
-                                          <option value={province.codename} key={i}>
+                                          <option value={province.codename} key={"province2" + i}>
                                             {province.name}
                                           </option>
                                         ))}
@@ -230,7 +268,7 @@ const Checkout = ({ setCheckoutData }) => {
                                           className="invalid-feedback animated fadeInUp mb-3"
                                           style={{ display: "block" }}
                                         >
-                                          {errors.province && errors.province}
+                                          {errors.province2 && errors.province2}
                                         </div>
                                       </select>
                                     </div>
@@ -243,13 +281,13 @@ const Checkout = ({ setCheckoutData }) => {
                                       <select
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.district1}
+                                        value={values.district2}
                                         name="district"
                                         className="nice-select w-100 primary-bg2 mb-20 mb-0"
                                       >
                                         <option value="">Chọn 1 quận huyện</option>
-                                        {getDistrictByProvinces(values.province).map((district, i) => (
-                                          <option value={district.codename} key={i}>
+                                        {getDistrictByProvinces(values.province2).map((district, i) => (
+                                          <option value={district.codename} key={"district2" + i}>
                                             {district.name}
                                           </option>
                                         ))}
@@ -258,7 +296,7 @@ const Checkout = ({ setCheckoutData }) => {
                                           className="invalid-feedback animated fadeInUp mb-3"
                                           style={{ display: "block" }}
                                         >
-                                          {errors.district}
+                                          {errors.district2}
                                         </div>
                                       </select>
                                     </div>
@@ -271,13 +309,13 @@ const Checkout = ({ setCheckoutData }) => {
                                       <select
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        value={values.wards1}
-                                        name="wards"
+                                        value={values.wards2}
+                                        name="wards2"
                                         className="nice-select w-100 primary-bg2 mb-20 mb-0"
                                       >
                                         <option value="">Chọn 1 phường xã</option>
-                                        {getWardsByDistrict(values.district).map((ward, i) => (
-                                          <option value={ward.codename} key={i}>
+                                        {getWardsByDistrict(values.district2).map((ward, i) => (
+                                          <option value={ward.codename} key={"wards2" + i}>
                                             {ward.name}
                                           </option>
                                         ))}
@@ -286,7 +324,7 @@ const Checkout = ({ setCheckoutData }) => {
                                           className="invalid-feedback animated fadeInUp mb-3"
                                           style={{ display: "block" }}
                                         >
-                                          {errors.wards && errors.wards}
+                                          {errors.wards2 && errors.wards2}
                                         </div>
                                       </select>
                                     </div>
@@ -296,14 +334,15 @@ const Checkout = ({ setCheckoutData }) => {
                                 <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="address1"
-                                      id="address1"
-                                      label="Địa chị cụ th"
+                                      name="street"
+                                      id="street"
+                                      label="Địa chị cụ thể"
                                       placeholder="Địa chỉ cụ thể"
-                                      errors={errors.address1}
-                                      values={values.address1}
-                                      handleBlur={handleBlur}
+                                      errors={errors.street2}
+                                      values={values.street2}
                                       handleChange={handleChange}
+                                      handleBlur={handleBlur}
+
                                     />
                                   </div>
                                 </div>
@@ -317,11 +356,11 @@ const Checkout = ({ setCheckoutData }) => {
                               <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
                                 <div className="checkout-form-list mb-30">
                                   <InputGroup
-                                    name="firstName2"
-                                    id="firstName2"
+                                    name="firstName"
+                                    id="firstName"
                                     label="Họ"
-                                    errors={errors.firstName2}
-                                    values={values.firstName2}
+                                    errors={errors.firstName}
+                                    values={values.firstName}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                   />
@@ -330,11 +369,11 @@ const Checkout = ({ setCheckoutData }) => {
                               <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
                                 <div className="checkout-form-list mb-30">
                                   <InputGroup
-                                    name="lastName2"
-                                    id="lastName2"
+                                    name="lastName"
+                                    id="lastName"
                                     label="Tên"
-                                    errors={errors.lastName2}
-                                    values={values.lastName2}
+                                    errors={errors.lastName}
+                                    values={values.lastName}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                   />
@@ -343,11 +382,11 @@ const Checkout = ({ setCheckoutData }) => {
                               <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                 <div className="checkout-form-list mb-30">
                                   <InputGroup
-                                    name="phoneNumber2"
-                                    id="phoneNumber2"
+                                    name="phoneNumber"
+                                    id="phoneNumber"
                                     label="Số điện thoại"
-                                    errors={errors.phoneNumber2}
-                                    values={values.phoneNumber2}
+                                    errors={errors.phoneNumber}
+                                    values={values.phoneNumber}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                   />
@@ -356,12 +395,12 @@ const Checkout = ({ setCheckoutData }) => {
                               <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                 <div className="checkout-form-list mb-30">
                                   <InputGroup
-                                    name="email2"
-                                    id="email2"
+                                    name="email"
+                                    id="email"
                                     label="Email"
                                     type="email"
-                                    errors={errors.email2}
-                                    values={values.email2}
+                                    errors={errors.email}
+                                    values={values.email}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                   />
@@ -382,7 +421,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     >
                                       <option value="">Chọn 1 tỉnh</option>
                                       {provinces.map((province, i) => (
-                                        <option value={province.codename} key={i}>
+                                        <option value={province.codename} key={"province" + i}>
                                           {province.name}
                                         </option>
                                       ))}
@@ -410,7 +449,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     >
                                       <option value="">Chọn 1 quận huyện</option>
                                       {getDistrictByProvinces(values.province).map((district, i) => (
-                                        <option value={district.codename} key={i}>
+                                        <option value={district.codename} key={"district" + i}>
                                           {district.name}
                                         </option>
                                       ))}
@@ -438,7 +477,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     >
                                       <option value="">Chọn 1 phường xã</option>
                                       {getWardsByDistrict(values.district).map((ward, i) => (
-                                        <option value={ward.codename} key={i}>
+                                        <option value={ward.codename} key={"wards" + i}>
                                           {ward.name}
                                         </option>
                                       ))}
@@ -457,12 +496,12 @@ const Checkout = ({ setCheckoutData }) => {
                               <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                 <div className="checkout-form-list mb-30">
                                   <InputGroup
-                                    name="address2"
-                                    id="address2"
-                                    label="Địa chị cụ th"
+                                    name="street"
+                                    id="street"
+                                    label="Địa chị cụ thể"
                                     placeholder="Địa chỉ cụ thể"
-                                    errors={errors.address2}
-                                    values={values.address2}
+                                    errors={errors.street}
+                                    values={values.street}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                   />
@@ -528,41 +567,37 @@ const Checkout = ({ setCheckoutData }) => {
                                     handleSubmit,
                                     isSubmitting,
                                   }) => (
-                                    <div className="row">
-                                      <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
-                                        <form action="#">
-                                          <p className="checkout-coupon">
+                                    <div className="coupon-and-update-area">
+                                      <div className="row">
+                                        <div className="coupon-code-area">
+                                          <form action="#">
                                             <input
-                                              className="mb-0"
+                                              className="pl-15 mr-10 pt-0 mb-15 d-inline-block width50"
                                               type="text"
                                               onChange={handleChange}
                                               onBlur={handleBlur}
                                               value={values.coupon}
                                               name="coupon"
-                                              placeholder="Coupon Code"
+                                              placeholder="Mã giảm giá"
                                             />
-
-                                            <div
+                                            {/* <div
                                               id="val-username1-error"
                                               className="invalid-feedback animated fadeInUp mb-3"
                                               style={{ display: "block" }}
                                             >
                                               {errors.coupon && errors.coupon}
-                                            </div>
-                                          </p>
-                                        </form>
+                                            </div> */}
+                                            <a
+                                              disabled={isSubmitting}
+                                              href="#"
+                                              className="web-btn h2-theme-border1 d-inline-block text-uppercase white  rounded-0 h2-theme-color cart-c-btn h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17 mr-20"
+                                            >
+                                              Áp dụng
+                                            </a>
+                                          </form>
+                                        </div>
+                                        {/* /col */}
                                       </div>
-                                      {/* /col */}
-                                      <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
-                                        <a
-                                          disabled={isSubmitting}
-                                          href="#"
-                                          className="web-btn h2-theme-border1 d-inline-block text-capitalize white mt-15 rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-60 pr-60 ptb-15 mr-20"
-                                        >
-                                          Apply coupon
-                                        </a>
-                                      </div>
-                                      {/* /col */}
                                     </div>
 
                                   )}
@@ -592,7 +627,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     </td>
                                     <td className="product-total">
                                       <span className="amount">
-                                        ${Number(cart.totalPrice).toFixed(2)}
+                                        {Number(cart.totalPrice).toFixed(2)} VND
                                       </span>
                                     </td>
                                   </tr>
@@ -602,13 +637,14 @@ const Checkout = ({ setCheckoutData }) => {
                               <tr className="cart-subtotal">
                                 <th>Tổng giỏ hàng</th>
                                 <td>
-                                  <span className="amount">${price}</span>
+                                  <span className="amount">{price} VND</span>
                                 </td>
                               </tr>
                               <tr className="shipping">
                                 <th>Phí giao hàng</th>
                                 <td>
-                                  <ul>
+                                  {deliveryFee} VND
+                                  {/* <ul>
                                     <li className="d-flex">
                                       <input
                                         type="radio"
@@ -620,7 +656,7 @@ const Checkout = ({ setCheckoutData }) => {
                                         Flat Rate:{" "}
                                         <span className="amount">
                                           {" "}
-                                          ${flatPrice.toFixed(2)}
+                                          {flatPrice.toFixed(2)} VND
                                         </span>
                                       </label>
                                     </li>
@@ -634,12 +670,12 @@ const Checkout = ({ setCheckoutData }) => {
                                         className="r-inpt mb-2 mr-1"
                                       />
                                       <label>
-                                        Free Shipping: $
-                                        {shppingPrice.toFixed(2)}
+                                        Free Shipping:
+                                        {shppingPrice.toFixed(2)} VND
                                       </label>
                                     </li>
                                     <li />
-                                  </ul>
+                                  </ul> */}
                                 </td>
                               </tr>
                               <tr className="order-total">
@@ -648,8 +684,8 @@ const Checkout = ({ setCheckoutData }) => {
                                   <strong>
                                     {price && (
                                       <span className="amount">
-                                        $
-                                        {flat && freeShpping
+
+                                        {/* {flat && freeShpping
                                           ? (
                                             price -
                                             flatPrice -
@@ -659,7 +695,9 @@ const Checkout = ({ setCheckoutData }) => {
                                             ? (price - flatPrice).toFixed(2)
                                             : freeShpping
                                               ? (price - shppingPrice).toFixed(2)
-                                              : price}
+                                              : price} */}
+                                        {Number(price) + Number(deliveryFee)}
+                                        VND
                                       </span>
                                     )}
                                   </strong>
@@ -669,7 +707,7 @@ const Checkout = ({ setCheckoutData }) => {
                           </table>
                         </div>
 
-                        <div className="payment-method mt-40">
+                        {/* <div className="payment-method mt-40">
                           <Accordion defaultActiveKey="0">
                             <div className="accordion-item">
                               <h2 className="accordion-header">
@@ -731,17 +769,18 @@ const Checkout = ({ setCheckoutData }) => {
                               </Accordion.Collapse>
                             </div>
                           </Accordion>
-                          <div className="order-button-payment mt-20">
-                            <button
-                              type="submit"
-                              className="bt-btn theme-btn"
-                              disabled={
-                                carts && carts.length <= 0 ? true : isSubmitting
-                              }
-                            >
-                              Place order
-                            </button>
-                          </div>
+
+                        </div> */}
+                        <div className="order-button-payment mt-20">
+                          <button
+                            type="submit"
+                            className="bt-btn theme-btn"
+                            disabled={
+                              carts && carts.length <= 0 ? true : isSubmitting
+                            }
+                          >
+                            Tiếp tục
+                          </button>
                         </div>
                       </div>
                     </div>

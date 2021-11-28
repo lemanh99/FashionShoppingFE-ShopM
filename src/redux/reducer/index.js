@@ -5,6 +5,7 @@ import home from "./home";
 import product from "./product";
 import utilis from "./utilis";
 import auth from "./auth";
+import order from "./order";
 
 export default combineReducers({
   auth,
@@ -13,4 +14,5 @@ export default combineReducers({
   filter,
   home,
   utilis,
+  order,
 });

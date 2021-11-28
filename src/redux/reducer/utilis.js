@@ -17,6 +17,7 @@ const initialState = {
   carts: [],
   compares: [],
   wishlist: [],
+  checkoutData: null,
 };
 const utilis = (state = initialState, action) => {
   const { type, payload } = action;
@@ -83,7 +84,7 @@ const utilis = (state = initialState, action) => {
     case CHECKOUT_USER:
       return {
         ...state,
-        chcekoutData: payload,
+        checkoutData: payload,
       };
 
     default:
