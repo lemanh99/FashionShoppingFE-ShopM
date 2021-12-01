@@ -3,6 +3,7 @@ import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_ORDER_BY_I
 const initState = {
     addOrder: false,
     orders: [],
+    order_code: null,
     loading: false,
     error: "",
     messages: "",
@@ -36,6 +37,7 @@ export default (state = initState, action) => {
         case ADD_ORDER_REQUEST:
             state = {
                 ...state,
+                order_code: null,
                 addOrder: false,
                 loading: true,
             };
@@ -44,6 +46,7 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 addOrder: true,
+                order_code: action.order_code,
                 loading: false,
             };
             break;
@@ -51,6 +54,7 @@ export default (state = initState, action) => {
             state = {
                 ...state,
                 loading: false,
+                order_code: null,
                 error: action.payload.error,
             };
             break;

@@ -10,6 +10,7 @@ import {
   GET_COMPARE,
   GET_WISHLIST,
   REMOVE_CART,
+  REMOVE_CART_ALL,
   REMOVE_COMPARE,
 } from "../action/type";
 
@@ -31,6 +32,12 @@ const utilis = (state = initialState, action) => {
       return updateCart(state, payload, "+");
     case DECREASE_CART:
       return updateCart(state, payload, "-");
+    case REMOVE_CART_ALL:
+      setLocalStorage("shopm-ecommerce", []);
+      return {
+        ...state,
+        carts: []
+      }
     case REMOVE_CART:
       const removeItem = state.carts.filter((cart) => (cart.product_id !== payload));
       setLocalStorage("shopm-ecommerce", removeItem);

@@ -137,17 +137,21 @@ export const verifyToken = () => {
 
 export const logout = () => {
     return async (dispatch) => {
-        dispatch({ type: LOGOUT_REQUEST });
-        const res = await axiosIntance.post(`/admin/signout`);
-        console.log("Logout", res)
-        if (res.status === 200) {
+        const refresh = localStorage.getItem("refresh")
+        if (!refresh) {
             localStorage.clear();
             dispatch({ type: LOGOUT_SUCCESS });
         } else {
-            dispatch({
-                type: LOGOUT_FAILURE,
-                payload: res.data.error,
-            });
+            dispatch({ type: LOGOUT_REQUEST });
+            const res = await axiosIntance.post(`/user/logout/`, { refresh: refresh });
+            if (res.status === 200) {
+                localStorage.clear();
+                dispatch({ type: LOGOUT_SUCCESS });
+            } else {
+                dispatch({
+                    type: LOGOUT_FAILURE,
+                });
+            }
         }
     };
 };

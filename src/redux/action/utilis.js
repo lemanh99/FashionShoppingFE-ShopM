@@ -9,6 +9,7 @@ import {
   GET_COMPARE,
   GET_WISHLIST,
   REMOVE_CART,
+  REMOVE_CART_ALL,
   REMOVE_COMPARE,
 } from "./type";
 
@@ -30,6 +31,12 @@ export const removeCart = (id) => (dispatch) => {
   dispatch({
     type: REMOVE_CART,
     payload: id,
+  });
+};
+
+export const removeCartAll = () => (dispatch) => {
+  dispatch({
+    type: REMOVE_CART_ALL
   });
 };
 

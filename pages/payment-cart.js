@@ -12,7 +12,7 @@ import SelectGroup from "../src/components/form/SelectGroup";
 import withAuth from "../src/HOC/withAuth";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
-import { setCheckoutData } from "../src/redux/action/utilis";
+import { removeCartAll, setCheckoutData } from "../src/redux/action/utilis";
 import { totalPrice } from "../src/utils/utils";
 import {
   checkoutSchema,
@@ -24,14 +24,12 @@ import { addOrder } from "../src/redux/action/order";
 
 const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
-const PaymentCart = ({ addOrder }) => {
+const PaymentCart = ({ addOrder, removeCartAll }) => {
   const carts = useSelector((state) => state.utilis.carts);
   const checkoutData = useSelector((state) => state.utilis.checkoutData);
+  const order = useSelector((state) => state.order);
 
   const [convertVND, setConvertVND] = useState(null);
-  const [paymentTotalPayPal, setPaymentTotalPayPal] = useState(0);
-  const [districts, setDistricts] = useState([]);
-  const [wards, setWards] = useState([]);
   const [deliveryFee, setDeliveryFee] = useState(30000);
   const price = totalPrice(carts);
   const [tokenUser, setTokenUser] = useState(null);
@@ -62,6 +60,19 @@ const PaymentCart = ({ addOrder }) => {
     setPaymentTotalPayPal(total)
   }, [convertVND])
 
+  useEffect(() => {
+    if (order.addOrder) {
+      removeCartAll();
+      Router.push(
+        {
+          pathname: `/order-success/${order.order_code}`,
+        },
+        undefined,
+        { shallow: true }
+      );
+    }
+  }, [order])
+
   const paymentUser = (value) => {
     let order_item = []
     for (const cart of carts) {
@@ -72,7 +83,7 @@ const PaymentCart = ({ addOrder }) => {
       }
       order_item.push(item);
     }
-    const order = {
+    const orders = {
       order_status_id: value.order_status_id,
       payment_status_id: value.payment_status_id,
       payment_id: value.payment_id,
@@ -84,7 +95,8 @@ const PaymentCart = ({ addOrder }) => {
       shipping: checkoutData ? checkoutData.shipping : {},
       order_item: order_item
     }
-    addOrder(order);
+
+    addOrder(orders);
   }
 
   return (
@@ -228,8 +240,15 @@ const PaymentCart = ({ addOrder }) => {
                             <div className="accordion-body">
                               <div className="order-button-payment mt-20">
                                 <button
-                                  type="submit"
+                                  type="button"
                                   className="bt-btn theme-btn"
+                                  onClick={(e) => {
+                                    paymentUser({
+                                      order_status_id: 1,
+                                      payment_status_id: 1,
+                                      payment_id: 2,
+                                    })
+                                  }}
                                 >
                                   Xác nhận
                                 </button>
@@ -249,7 +268,7 @@ const PaymentCart = ({ addOrder }) => {
                             </Accordion.Toggle>
                           </h2>
                           <Accordion.Collapse eventKey="2">
-                            <PaymentPaypal total={price} token={tokenUser} paymentUser={paymentUser} />
+                            <PaymentPaypal total={Number((Number(price) + Number(deliveryFee)) / Number(23000)).toFixed(2)} token={tokenUser} paymentUser={paymentUser} />
                           </Accordion.Collapse>
                         </div>
                       </Accordion>
@@ -271,4 +290,5 @@ const PaymentCart = ({ addOrder }) => {
   );
 };
 
-export default connect(null, { addOrder })(withAuth(PaymentCart));
+export default connect(null, { addOrder, removeCartAll })(withAuth(PaymentCart));
+

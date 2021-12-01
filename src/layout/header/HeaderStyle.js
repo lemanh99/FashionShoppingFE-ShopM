@@ -46,12 +46,11 @@ export const HomePageOne = () => {
                       {/* /col */}
                       <div className="col-xxl-4 col-xl-5  col-lg-5  col-md-9  col-sm-0 col-0  pl-0 d-flex  align-items-center justify-content-end">
                         <div className="header-right d-flex align-items-center">
-                          <ul className="header-account d-none d-md-block mr-26">
+                          {/* <ul className="header-account d-none d-md-block mr-26">
                             <li className="d-none d-md-inline-block">
                               {auth.authenticate ? (<AuthorIcon />) : (<LoginIcon />)}
-
                             </li>
-                          </ul>
+                          </ul> */}
                           <ul className="header-compare header-wishlist d-none d-md-block position-relative mr-26 pl-30">
                             <li className="d-none d-md-inline-block">
                               <CompareIcon color="theme-bg" />
@@ -68,7 +67,11 @@ export const HomePageOne = () => {
                               <CartIcon color="theme-bg" />
                             </li>
                           </ul>
-
+                          <ul className="header-wishlist d-none d-md-block mr-26 pl-30 position-relative">
+                          <li className="d-none d-md-inline-block">
+                              {auth.authenticate ? (<AuthorIcon />) : (<LoginIcon />)}
+                            </li>
+                          </ul>
                           {/* /h-shop */}
                         </div>
                         {/* /header-right */}
@@ -102,7 +105,7 @@ export const HomePageOne = () => {
                           {/* /free-order */}
                           <ul className="track-order pl-20 pr-20 position-relative">
                             <li>
-                              <a href="#">Theo dõi đơn hàng</a>
+                              <a href="/my-account">Theo dõi đơn hàng</a>
                             </li>
                           </ul>
                           {/* /news-letter */}
@@ -550,7 +553,11 @@ export const DefaultMenu = () => {
                         <CartIcon />
                       </li>
                     </ul>
-
+                    <ul className="header-wishlist d-none d-md-block pl-25 position-relative">
+                      <li className="position-relative">
+                        <CartIcon />
+                      </li>
+                    </ul>
                     <div className="d-block d-lg-none">
                       <a className="mobile-menubar pt-0 ml-20" href="#">
                         <span className="icon-menu" />

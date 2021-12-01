@@ -31,6 +31,7 @@ export const FILTER_TAG = "FILTER_TAG";
 export const GET_CARTS = "GET_CARTS";
 export const ADD_TO_CART = "ADD_TO_CART";
 export const REMOVE_CART = "REMOVE_CART";
+export const REMOVE_CART_ALL = "REMOVE_CART_ALL";
 export const DECREASE_CART = "DECREASE_CART";
 export const CART_AMOUNT = "CART_AMOUNT";
 export const COMPARE = "COMPARE";
