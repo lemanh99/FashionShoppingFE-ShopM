@@ -62,4 +62,13 @@ export const getOrderHistory = () => {
       }
     };
   };
+
+  export const cancelOrder = (id) => {
+    return async (dispatch) => {
+      const res = await axiosIntance.put(`/order/customer/cancel/${id}`);
+      if (res.status === 200) {
+          dispatch(getOrderHistory())
+      }
+    };
+  };
   

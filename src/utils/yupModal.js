@@ -5,9 +5,11 @@ const username = Yup.string()
   .max(50, "Your username must consist of at least 3 characters ")
   .required("Please enter a username"),
   password = Yup.string()
-    .min(5, "Your password must be at least 5 characters long")
-    .max(50, "Your password must be at least 5 characters long")
-    .required("Please provide a password"),
+    .min(5, "Mật khẩu có ít nhất có 5 ký tự")
+    .max(50, "Mật khẩu không quá 50 ký tự")
+    // .matches(/[a-z1-9]/, 'Mật khẩu phải có chữ và số')
+    .required("Bạn cần nhập password"),
+  repassword = Yup.string().oneOf([Yup.ref('password'), null], 'Mật khẩu không trùng khớp'),
   email = Yup.string().email().required("Please provide your email"),
   tandc = Yup.boolean().oneOf(
     [true],
@@ -152,4 +154,38 @@ export const couponSchema = {
     coupon,
   }),
   initialValue: { coupon: "" },
+};
+
+export const addressSchema = {
+  schema: Yup.object().shape({
+    province,
+    district,
+    wards,
+    street,
+    firstName,
+    lastName,
+    email,
+    phoneNumber,
+  }),
+  initialValue: {
+    province:"",
+    district:"",
+    wards:"",
+    street:"",
+    firstName:"",
+    lastName:"",
+    email:"",
+    phoneNumber:"",
+  },
+};
+
+export const passwordShema = {
+  schema: Yup.object().shape({
+    password,
+    repassword,
+  }),
+  initialValue: {
+    password:"",
+    repassword:"",
+  },
 };

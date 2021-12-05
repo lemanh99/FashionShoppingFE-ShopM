@@ -1,7 +1,8 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import { connect } from "react-redux";
-import { getProducts } from "../../src/redux/action/product";
+import { getProductByCategory, getProducts } from "../../src/redux/action/product";
 import { getProductByFilter } from "../../src/utils/filterProduct";
 import { hideFromArr } from "../../src/utils/utils";
 import Paggination from "../components/Paggination";
@@ -16,21 +17,29 @@ const ShopLayout = ({
   keyValueForQurey,
   value,
   active_,
+  getProductByCategory
 }) => {
+  const router = useRouter();
+  const { name } = router.query;
+
   useEffect(() => {
-    getProducts();
-  }, []);
+    if (name) {
+      console.log("chay day", name);
+      getProductByCategory(name);
+    }
+    else { getProducts() };
+  }, [name]);
   const [active, setActive] = useState(active_ ? active_ : 0);
   let sort = 6;
   let products =
     allProducts && value
       ? allProducts.filter((product) =>
-          product[keyValueForQurey]
-            .toLocaleString()
-            .toLowerCase()
-            .split(",")
-            .includes(value)
-        )
+        product[keyValueForQurey]
+          .toLocaleString()
+          .toLowerCase()
+          .split(",")
+          .includes(value)
+      )
       : allProducts;
   return (
     <div className="product-area shop-product mt-20 mb-100">
@@ -165,4 +174,4 @@ const mapStateToProps = (state) => ({
   ),
 });
 
-export default connect(mapStateToProps, { getProducts })(ShopLayout);
+export default connect(mapStateToProps, { getProducts, getProductByCategory })(ShopLayout);

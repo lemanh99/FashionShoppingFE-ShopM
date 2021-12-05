@@ -37,7 +37,7 @@ const PaymentPaypal = ({ total, token, paymentUser
                                 return actions.order.capture().then(function (details) {
                                     toast.success('Thanh toán thành công ' + details.payer.name.given_name)
                                     paymentUser({
-                                        order_status_id: 1,
+                                        order_status_id: 2,
                                         payment_status_id: 2,
                                         payment_id: 1,
                                     })

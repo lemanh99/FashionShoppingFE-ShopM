@@ -1,13 +1,15 @@
 import Link from "next/dist/client/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import toast from "react-hot-toast";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
+import StarRatings from "react-star-ratings";
 import Reating from "../../src/components/Reating";
 import Layout from "../../src/layout/Layout";
 import PageBanner from "../../src/layout/PageBanner";
 import { getProducts, getSingleProduct } from "../../src/redux/action/product";
+import { getRateByProduct, rateProduct } from "../../src/redux/action/rate";
 import {
   addToCart,
   addWishlist,
@@ -17,12 +19,14 @@ import {
   getCompare,
   getWishlist,
 } from "../../src/redux/action/utilis";
-import time from "../../src/utils/time";
+import time, { convert_datetime_from_timestamp } from "../../src/utils/time";
 const ProductDetails = ({
   getSingleProduct,
   getCarts,
   getCompare,
   getWishlist,
+  getRateByProduct,
+  rates,
   product,
   products,
   carts,
@@ -32,12 +36,22 @@ const ProductDetails = ({
   decreaseCart,
   compare,
   addWishlist,
+  rateProduct,
 }) => {
   const router = useRouter();
   const { id } = router.query;
+  const authenticate = useSelector((state) => state.auth.authenticate)
+  const [rateItem, setRateItem] = useState([])
+  const [comment, setComment] = useState("")
+  const [rateUser, setRateUser] = useState(0)
+
+  const changeRating = (newRating, name) => {
+    setRateUser(newRating)
+  }
   useEffect(() => {
     if (id) {
       getSingleProduct(id);
+      getRateByProduct(id);
     }
 
     getCarts();
@@ -45,6 +59,12 @@ const ProductDetails = ({
     getProducts();
     getCompare();
   }, [id]);
+
+  useEffect(() => {
+    if (rates.item && rates.item.length > 0) { setRateItem(rates.item); }
+
+  }, [rates])
+
   const cart = product && carts && carts.find((cart) => cart.id === product.id);
   const wishlist =
     product &&
@@ -86,6 +106,32 @@ const ProductDetails = ({
     }
   };
   let totalTime = time(product && product.upcoming);
+
+  const onClickComment = (e) => {
+    if (!authenticate) {
+      router.push(
+        {
+          pathname: "/login",
+        },
+        undefined,
+        { shallow: true }
+      );
+
+    } else {
+      e.preventDefault();
+      const data = {
+        "product_id": product.id,
+        "product_sku_id": null,
+        "description": comment,
+        "star": rateUser
+      }
+      rateProduct(product.id, data);
+      setComment("");
+      setRateUser(0);
+      toast.success("Thêm bình luận thành công");
+    }
+
+  };
 
   return (
     <Layout>
@@ -152,13 +198,13 @@ const ProductDetails = ({
                       <div className="product-left-img-info">
                         <h3 className="mb-20">{product && product.name}</h3>
                         <div className="rating rating-shop d-flex align-items-center">
-                          {product && (
+                          {rates && (
                             <Reating
-                              rating={product.reating ? product.reating : 0}
+                              rating={rates && rates.avg_rate ? rates.avg_rate : 0}
                             />
                           )}
                           <span className="gray-color2 ms-1">
-                            ({product && product.reviews ? product.reviews : 0}{" "}
+                            ({rates && rates.total_item ? rates.total_item : 0}{" "}
                             Đánh giá)
                           </span>
                         </div>
@@ -419,7 +465,7 @@ const ProductDetails = ({
                             className="nav-link bg-transparentt pl-0 title position-relative hvr2 font600"
                           >
                             Bình luận (
-                            {product && product.reviews ? product.reviews : 0})
+                            {rates && rates.total_item ? rates.total_item : 0})
                           </Nav.Link>
                         </Nav.Item>
                       </Nav>
@@ -428,7 +474,7 @@ const ProductDetails = ({
                           <div className="describe-area">
                             <div className="product-details-text pr-10 mb-50">
                               <p className="gray-color2 dc-text1 pb-6">
-                              {product && product.description_detail}
+                                {product && product.description_detail}
                               </p>
                               {/* <p className="gray-color2">
                                 <span className="h2-theme-color pr-10">
@@ -598,13 +644,14 @@ const ProductDetails = ({
                           <div className="col-xl-11 col-lg-11  col-md-12  col-sm-12 col-12">
                             <div className="review-comments-area pb-60 mt-20">
                               <h5 className="primary-color font600">
-                                {product && product.reviews
-                                  ? product.reviews
+                                {rates && rates.total_item
+                                  ? rates.total_item
                                   : "Chưa có "}{" "}
                                 đánh giá cho sản phẩm
                               </h5>
-                              {product && product.reviews && (
-                                <div className="review-comments-area mt-35">
+
+                              <div className="review-comments-area mt-35">
+                                {rateItem.map((item) => (
                                   <div className="row align-items-center align-items-sm-start align-items-md-center">
                                     <div className="col-xl-1  col-lg-2  col-md-2  col-sm-2 col-4 mt-15 pr-3 pr-sm-0 pr-md-3">
                                       <div className="client-avatar">
@@ -621,222 +668,87 @@ const ProductDetails = ({
                                         <div className="review-head d-sm-flex justify-content-between align-items-center">
                                           <div className="d-sm-flex">
                                             <h5 className="font600 pr-10">
-                                              Maxxoile D. Silva
+                                              {item.full_name}
                                             </h5>
                                             <div className="rating rating-shop d-flex">
-                                              <ul className="d-flex mr-2">
-                                                <li>
-                                                  <span>
-                                                    <i className="fas fa-star" />
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span>
-                                                    <i className="fas fa-star" />
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span>
-                                                    <i className="fas fa-star" />
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span>
-                                                    <i className="far fa-star" />
-                                                  </span>
-                                                </li>
-                                                <li>
-                                                  <span>
-                                                    <i className="far fa-star" />
-                                                  </span>
-                                                </li>
-                                              </ul>
+                                              <Reating
+                                                rating={item && item.star ? item.star : 0}
+                                              />
                                             </div>
                                             {/* /rating */}
                                           </div>
                                           <span className="primary-color font600">
-                                            20 sep 2020
+                                            {convert_datetime_from_timestamp(item.created_at)}
                                           </span>
                                         </div>
                                         {/* /review-head */}
                                         <p className="dc-text1 gray-color2 mb-2 mt-10">
-                                          Nemo enim ipsam voluptatem quia
-                                          voluptas sit aspernatur aut odit aut
-                                          fugit, sed quia consequuntur magni
-                                          doloreos qui ratione voluptatem sequi
-                                          nesciunt
+                                          {item.description}
                                         </p>
-                                        <a
-                                          href="#"
-                                          className="d-inline-block text-uppercase primary-color font600"
-                                        >
-                                          Reply
-                                          <span className="gray-color2 pl-2">
-                                            <i className="fas fa-long-arrow-alt-right" />
-                                          </span>
-                                        </a>
                                       </div>
                                     </div>
                                     {/* /col */}
                                   </div>
-                                  {/* /row */}
-                                  <div className="row mt-60">
-                                    <div className="col-xl-11  col-lg-11  col-md-12  col-sm-12 col-12 offset-xl-1 offset-lg-1">
-                                      <div className="row align-items-center align-items-sm-start align-items-md-center">
-                                        <div className="col-xl-1  col-lg-2  col-md-2  col-sm-2 col-4 mt-15 pr-3 pr-lg-0 pr-sm-0 pr-md-3">
-                                          <div className="client-avatar client-avatar2">
-                                            <img
-                                              className="avatar-img width100 height100"
-                                              src="/images/bg/client-avater.png"
-                                              alt
-                                            />
-                                          </div>
-                                        </div>
-                                        {/* /col */}
-                                        <div className="col-xl-9  col-lg-10  col-md-10  col-sm-10 col-12 pl-xl-15 mt-15">
-                                          <div className="review-text review-text2 pl-55">
-                                            <div className="review-head d-sm-flex justify-content-between align-items-center">
-                                              <div className="d-sm-flex">
-                                                <h5 className="font600 pr-10">
-                                                  Dennis McCandless
-                                                </h5>
-                                                <div className="rating rating-shop d-flex">
-                                                  <ul className="d-flex mr-2">
-                                                    <li>
-                                                      <span>
-                                                        <i className="fas fa-star" />
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <span>
-                                                        <i className="fas fa-star" />
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <span>
-                                                        <i className="fas fa-star" />
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <span>
-                                                        <i className="far fa-star" />
-                                                      </span>
-                                                    </li>
-                                                    <li>
-                                                      <span>
-                                                        <i className="far fa-star" />
-                                                      </span>
-                                                    </li>
-                                                  </ul>
-                                                </div>
-                                                {/* /rating */}
-                                              </div>
-                                              <span className="primary-color font600">
-                                                20 sep 2020
-                                              </span>
-                                            </div>
-                                            {/* /review-head */}
-                                            <p className="dc-text1 gray-color2 mb-2 mt-10">
-                                              Quis autem vel eum iure
-                                              reprehenderit qui in ea voluptate
-                                              velit esse quam nihil molestiae
-                                              consequatur, vel illum qui dolorem
-                                              eum fugiat quo voluptas nulla
-                                              pariatu
-                                            </p>
-                                            <a
-                                              href="#"
-                                              className="d-inline-block text-uppercase primary-color font600"
-                                            >
-                                              Reply
-                                              <span className="gray-color2 pl-2">
-                                                <i className="fas fa-long-arrow-alt-right" />
-                                              </span>
-                                            </a>
-                                          </div>
-                                        </div>
-                                        {/* /col */}
+                                ))}
+
+                              </div>
+                              {rates && rates.is_rated == true ? (
+                                <div className="product-review mt-80 pb-10">
+                                  <h5 className="mb-30 font600">Thêm bình luận </h5>
+                                  <div className="d-flex">
+                                    <span className="pr-15 mb-15">
+                                      Cám ơn bạn đã đánh giá
+                                    </span>
+                                    {/* /rating */}
+                                  </div>
+                                </div>
+
+                              ) : <>
+                                <div className="product-review mt-80 pb-10">
+                                  <h5 className="mb-30 font600">Thêm bình luận </h5>
+                                  <div className="d-flex">
+                                    <span className="pr-15 mb-15">
+                                      Bạn đánh giá:
+                                    </span>
+                                    <div className="rating rating-shop d-flex mb-15">
+                                      <div className="rating rating-shop d-flex">
+                                        <StarRatings
+                                          rating={rateUser}
+                                          starRatedColor="#febd00"
+                                          starHoverColor="#febd00"
+                                          changeRating={changeRating}
+                                          numberOfStars={5}
+                                          starDimension="28px"
+                                          name='rating'
+                                        />
                                       </div>
-                                      {/* /row */}
                                     </div>
-                                    {/* /col */}
+                                    {/* /rating */}
                                   </div>
-                                  {/* /row */}
                                 </div>
-                              )}
-                              <div className="product-review mt-80 pb-10">
-                                <h5 className="mb-30 font600">Thêm bình luận </h5>
-                                <div className="d-flex">
-                                  <span className="pr-15 mb-15">
-                                    Bạn đánh giá:
-                                  </span>
-                                  <div className="rating rating-shop d-flex mb-15">
-                                    {product && (
-                                      <Reating
-                                        rating={
-                                          product.reating ? product.reating : 0
-                                        }
+                                <div className="reply-form contact-form-right mb-60">
+                                  <div >
+                                    <div className="comment mb-10">
+
+                                      <label>Nhập đánh giá của bạn</label>
+                                      <textarea
+                                        name="message"
+                                        className="form-control  primary-bg2 mt-10"
+                                        id="message"
+                                        value={comment}
+                                        onChange={(e) => setComment(e.target.value)}
                                       />
-                                    )}
+                                    </div>
+                                    <button type="button"
+                                      className="web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17"
+                                      onClick={(e) => onClickComment(e)}
+                                    >
+                                      Đánh giá
+                                    </button>
                                   </div>
-                                  {/* /rating */}
                                 </div>
-                              </div>
-                              <div className="reply-form contact-form-right mb-60">
-                                <form onSubmit={(e) => e.preventDefault()}>
-                                  <div className="comment mb-10">
-                                    <label>Your Review</label>
-                                    <textarea
-                                      name="message"
-                                      className="form-control  primary-bg2 mt-10"
-                                      id="message"
-                                      defaultValue={""}
-                                    />
-                                  </div>
-                                  <div className="name-and-email d-flex  mb-20">
-                                    <div className="name width50 mr-10">
-                                      <label className="mt-15 mb-10 d-block">
-                                        Name *
-                                      </label>
-                                      <input
-                                        type="text"
-                                        name="r-name"
-                                        id="r-name"
-                                        className="width100  primary-bg2"
-                                      />
-                                    </div>
-                                    <div className="email width50 ml-10">
-                                      <label className="mt-15 mb-10 d-block">
-                                        Email *
-                                      </label>
-                                      <input
-                                        type="email"
-                                        name="email"
-                                        id="r-email"
-                                        className=" width100  primary-bg2"
-                                      />
-                                    </div>
-                                  </div>
-                                  {/* /name-and-email */}
-                                  <div className="save-info d-sm-flex align-items-center mb-30 mt-2">
-                                    <input
-                                      className="mr-10"
-                                      type="checkbox"
-                                      aria-label="Checkbox for following text input"
-                                    />
-                                    <p className="mb-0">
-                                      Save my name, email, and website in this
-                                      browser for the next time I comment.
-                                    </p>
-                                  </div>
-                                  <a
-                                    href="#"
-                                    className="web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17"
-                                  >
-                                    Submit
-                                  </a>
-                                </form>
-                              </div>
+                              </>}
+
                             </div>
                           </div>
                           {/* /col */}
@@ -862,6 +774,7 @@ const ProductDetails = ({
 };
 
 const mapStateToProps = (state) => ({
+  rates: state.rate.rates,
   products: state.product.products,
   product: state.product.singleProduct,
   carts: state.utilis.carts,
@@ -879,4 +792,8 @@ export default connect(mapStateToProps, {
   getProducts,
   getCompare,
   compare,
+  getRateByProduct,
+  rateProduct,
 })(ProductDetails);
+
+

@@ -6,6 +6,8 @@ import product from "./product";
 import utilis from "./utilis";
 import auth from "./auth";
 import order from "./order";
+import rate from "./rate";
+import user from "./user";
 
 export default combineReducers({
   auth,
@@ -15,4 +17,6 @@ export default combineReducers({
   home,
   utilis,
   order,
+  rate,
+  user,
 });

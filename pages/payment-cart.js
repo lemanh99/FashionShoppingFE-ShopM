@@ -57,7 +57,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
   useEffect(() => {
     const total = convertVND ? Number((Number(price) + Number(deliveryFee)) / Number(convertVND)).toFixed(2) : (Number(price) + Number(deliveryFee)) / Number(convertVND)
     console.log(total, convertVND)
-    setPaymentTotalPayPal(total)
+    // setPaymentTotalPayPal(total)
   }, [convertVND])
 
   useEffect(() => {
@@ -244,7 +244,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                                   className="bt-btn theme-btn"
                                   onClick={(e) => {
                                     paymentUser({
-                                      order_status_id: 1,
+                                      order_status_id: 2,
                                       payment_status_id: 1,
                                       payment_id: 2,
                                     })

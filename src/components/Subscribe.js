@@ -65,13 +65,13 @@ const Subscribe = ({ getTestimonial, testimonial, bg, inputBg }) => {
             <p className="mb-0 cursor-pinter light-black-color7">
               Tôi đồng ý với
               <Link href="/terms-and-condition">
-                <a className="light-black-color7 line-height-1 mx-1">
+                <a className="light-black-color7 line-height-1 mx-1" style={{color: '#6199e0'}}>
                   Điều khoản &amp; điều kiện
                 </a>
               </Link>
               và 
               <Link href="/privacy-page">
-                <a className="light-black-color7 line-height-1 ms-1">
+                <a className="light-black-color7 line-height-1 ms-1" style={{color: '#6199e0'}}>
                   chính sách
                 </a>
               </Link>

@@ -31,7 +31,7 @@ export const DasktopMenu = () => {
               <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
                 {category.child_category.map((child) => (
                   <li>
-                    <Link href="/">
+                    <Link href={`/shop/category/${child.id}`}>
                       <a>{child.category_name}</a>
                     </Link>
                   </li>

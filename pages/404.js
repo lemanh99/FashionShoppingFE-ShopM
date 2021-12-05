@@ -1,4 +1,5 @@
 import Link from "next/dist/client/link";
+import withoutAuthPublic from "../src/HOC/withoutAuthPublic";
 import Layout from "../src/layout/Layout";
 
 const NotFound = () => {
@@ -7,7 +8,7 @@ const NotFound = () => {
       <div className="slider-area over-hidden">
         <div
           className="single-page not-found-page-height d-flex align-items-center justify-content-center"
-          data-background="images/bg/slider-404.jpg"
+          // data-background="images/bg/slider-404.jpg"
         >
           <div className="container">
             <div className="row">
@@ -35,4 +36,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default withoutAuthPublic(NotFound);

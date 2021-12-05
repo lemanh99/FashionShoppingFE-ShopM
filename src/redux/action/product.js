@@ -10,7 +10,22 @@ export const getProducts = () => async (dispatch) => {
       type: GET_PRODUCT,
       payload: data,
     });
-  }else{
+  } else {
+    dispatch({
+      type: GET_PRODUCT,
+      payload: [],
+    });
+  }
+};
+export const getProductByCategory = (category_id) => async (dispatch) => {
+  const res = await axiosIntance.get(`/product/public/?category_id=${category_id}`)
+  if (res && res.status === 200) {
+    const { data } = res.data;
+    dispatch({
+      type: GET_PRODUCT,
+      payload: data,
+    });
+  } else {
     dispatch({
       type: GET_PRODUCT,
       payload: [],
@@ -19,16 +34,16 @@ export const getProducts = () => async (dispatch) => {
 };
 export const getSingleProduct = (id) => async (dispatch) => {
   console.log("id", id)
-  const res =  await axiosIntance.get(`/product/public/detail/${id}`);
-  
+  const res = await axiosIntance.get(`/product/public/detail/${id}`);
+
   const { data } = res.data;
   console.log(data);
   if (res && res.status === 200) {
     dispatch({
       type: GET_SINGLE,
-      payload:data,
+      payload: data,
     });
-  }else{
+  } else {
     dispatch({
       type: GET_SINGLE,
       payload: {},

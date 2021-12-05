@@ -10,6 +10,7 @@ const InputGroup = ({
   id,
   type,
   name,
+  disabled,
 }) => {
   return (
     <Fragment>
@@ -24,6 +25,7 @@ const InputGroup = ({
         onBlur={handleBlur}
         value={values}
         placeholder={placeholder}
+        disabled={disabled}
         className="form-control primary-bg2 border-gray mb-0"
       />
       <div

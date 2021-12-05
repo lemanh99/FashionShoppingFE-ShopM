@@ -1,28 +1,114 @@
 // import swal from "@sweetalert/with-react";
-import { CardElement, Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { Formik } from "formik";
-import Router from "next/router";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
+import InputGroup from "../../src/components/form/InputGroup";
 import { connect, useSelector } from "react-redux";
+import SideBarMyAccount from "../../src/components/myaccount/sidebar";
 import withAuth from "../../src/HOC/withAuth";
 import Layout from "../../src/layout/Layout";
-import { getOrderHistory } from "../../src/redux/action/order";
-import { setCheckoutData } from "../../src/redux/action/utilis";
 import { convert_datetime_from_timestamp } from "../../src/utils/time";
+import { addressSchema } from "../../src/utils/yupModal";
+import { getCustomerAddress, createCustomerAddress, updateCustomerAddress } from "../../src/redux/action/user";
+import toast from "react-hot-toast";
 
 
-const OrderHistory = ({ getOrderHistory }) => {
-  const orders = useSelector((state) => state.order.orders);
-  const [listOrder, setListOrder] = useState([])
+const MyAccount = ({ getCustomerAddress, createCustomerAddress, updateCustomerAddress }) => {
+  const addressCustomer = useSelector((state) => state.user.address)
+  const auth = useSelector((state) => state.auth)
+  const [provinces, setProvinces] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
+  const [edit, setEdit] = useState(true);
+
+  const formikRef = useRef();
+  async function getCountry() {
+    const res = await axios.get('https://provinces.open-api.vn/api/?depth=3')
+    setProvinces(res.data);
+  }
+
   useEffect(() => {
-    getOrderHistory()
+    getCountry()
+    getCustomerAddress()
   }, [])
 
   useEffect(() => {
-    setListOrder(orders)
-  }, [orders])
+    if (addressCustomer && addressCustomer.length > 0) {
+      if (formikRef.current) {
+        formikRef.current.setFieldValue(
+          "province",
+          addressCustomer[0].city
+        );
+        formikRef.current.setFieldValue(
+          "district",
+          addressCustomer[0].district
+        );
+        formikRef.current.setFieldValue(
+          "wards",
+          addressCustomer[0].village
+        );
+        formikRef.current.setFieldValue(
+          "street",
+          addressCustomer[0].street
+        );
+        formikRef.current.setFieldValue(
+          "firstName",
+          addressCustomer[0].first_name
+        );
+        formikRef.current.setFieldValue(
+          "lastName",
+          addressCustomer[0].last_name
+        );
+        formikRef.current.setFieldValue(
+          "email",
+          addressCustomer[0].email
+        );
+        formikRef.current.setFieldValue(
+          "phoneNumber",
+          addressCustomer[0].phone_number
+        );
+      }
+
+    }
+  }, [addressCustomer])
+
+  const getDistrictByProvinces = (value) => {
+    const province_info = provinces.filter((province) => province.codename == value)[0]
+    if (province_info) {
+      setDistricts(province_info["districts"])
+      return province_info["districts"]
+    }
+    return []
+  }
+  const getWardsByDistrict = (value) => {
+    const district_info = districts.filter((district) => district.codename == value)[0]
+    if (district_info) {
+      setWards(district_info["wards"])
+      return district_info["wards"]
+    }
+    return []
+  }
+
+  const handleAddress = (values) => {
+    const data = {
+      "first_name": values.firstName,
+      "last_name": values.lastName,
+      "country": "viet_nam",
+      "city": values.province,
+      "district": values.district,
+      "village": values.wards,
+      "street": values.street,
+      "postal_code": "000000",
+      "email": values.email,
+      "phone_number": values.phoneNumber
+    }
+    if(addressCustomer && addressCustomer.length>0){
+      updateCustomerAddress(addressCustomer[0].id, data)
+    }else{
+      createCustomerAddress(data)
+    }
+    toast.success("Cập nhật thông tin thành công");
+  }
 
   return (
     <Layout sticky textCenter container footerBg>
@@ -49,26 +135,7 @@ const OrderHistory = ({ getOrderHistory }) => {
             <div action="#">
               <div className="row">
                 {/* /col */}
-                <div className="col-xl-3  col-lg-3  col-md-12  col-sm-12 col-12">
-                  <div className="your-order mb-30 pt-30 pr-40 pb-60 pl-40 mt-15">
-                    <h4 className="pb-10 mb-20 border-b-light-gray3">
-                      Tài khoản của tôi
-                    </h4>
-                    <div className="your-order-table table-responsive">
-                      <table className="width100">
-                        <tbody>
-                          <tr className="cart_item">
-                            <td className="product-name">
-                              <strong className="product-quantity">
-                                Lịch sử đơn hàng
-                              </strong>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
+                <SideBarMyAccount />
                 <div className="col-xl-9  col-lg-9  col-md-12  col-sm-12 col-12">
                   <div className="checkbox-form">
                     <h4 className="pb-10 mb-20 border-b-light-gray2">
@@ -77,120 +144,229 @@ const OrderHistory = ({ getOrderHistory }) => {
                     {/* /row */}
                     <div className="cart-area">
                       <div className="container border-b-light-gray pb-100">
-                        <div className="cart-table text-center table-responsive">
-                          <table className="table table-bordered">
-                            <thead>
-                              <tr>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Tình trạng order</th>
-                                <th scope="col">Tình trạng thanh toán</th>
-                                <th scope="col">Phương thức thanh toán</th>
-                                <th scope="col">Ngày nhận hàng</th>
-                                <th scope="col">Hành động</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {listOrder && listOrder.map((order) => (
-                                <>
-                                  <div key={order.id} className="mt-4 mb-1"><b>Ngày order: </b> {convert_datetime_from_timestamp(order.order_date)}</div>
-                                  {order.order_item && order.order_item.map((item) => (
-                                    <>
-                                      <tr>
-                                        <td key={"item" + item.id}>{item.product_name}</td>
-                                        <td key={"item" + item.id}>{order.order_status_name}</td>
-                                        <td key={"item" + item.id}>{order.payment_status_name}</td>
-                                        <td key={"item" + item.id}>{order.payment_method}</td>
-                                        <td key={"item" + item.id}>{item.shipping_date}</td>
-                                        <td key={"item" + item.id}></td>
+                        <Formik
+                          innerRef={formikRef}
+                          initialValues={addressSchema.initialValue}
+                          // validationSchema={addressSchema.schema}
+                          onSubmit={(values, { setSubmitting }) => {
+                            setTimeout(() => {
+                              handleAddress(values)
+                              setSubmitting(false);
+                            }, 400);
+                          }}
+                        >
+                          {({
+                            values,
+                            errors,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            isSubmitting,
+                          }) => (
+                            <div className="checkout-area mb-60">
+                              <div className="container">
+                                <form action="#" onSubmit={handleSubmit}>
+                                  <div className="row">
+                                    <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                      <div className="checkbox-form">
+                                        <h4 className="pb-10 mb-20 border-b-light-gray2">
+                                          Thông tin giao hàng
+                                        </h4>
+                                        {/* /row */}
+                                        <div className="different-address">
+                                          <div className="row">
+                                            <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
+                                              <div className="checkout-form-list mb-30">
+                                                <InputGroup
+                                                  name="firstName"
+                                                  id="firstName"
+                                                  label="Họ"
+                                                  errors={errors.firstName}
+                                                  values={values.firstName}
+                                                  handleBlur={handleBlur}
+                                                  handleChange={handleChange}
+                                                  disabled={edit}
+                                                />
+                                              </div>
+                                            </div>
+                                            <div className="col-xl-6  col-lg-6  col-md-6  col-sm-6 col-12">
+                                              <div className="checkout-form-list mb-30">
+                                                <InputGroup
+                                                  name="lastName"
+                                                  id="lastName"
+                                                  label="Tên"
+                                                  errors={errors.lastName}
+                                                  values={values.lastName}
+                                                  handleBlur={handleBlur}
+                                                  handleChange={handleChange}
+                                                  disabled={edit}
+                                                />
+                                              </div>
+                                            </div>
+                                            <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                              <div className="checkout-form-list mb-30">
+                                                <InputGroup
+                                                  name="phoneNumber"
+                                                  id="phoneNumber"
+                                                  label="Số điện thoại"
+                                                  errors={errors.phoneNumber}
+                                                  values={values.phoneNumber}
+                                                  handleBlur={handleBlur}
+                                                  handleChange={handleChange}
+                                                  disabled={edit}
+                                                />
+                                              </div>
+                                            </div>
+                                            <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                              <div className="checkout-form-list mb-30">
+                                                <InputGroup
+                                                  name="email"
+                                                  id="email"
+                                                  label="Email"
+                                                  type="email"
+                                                  errors={errors.email}
+                                                  values={values.email}
+                                                  handleBlur={handleBlur}
+                                                  handleChange={handleChange}
+                                                  disabled={edit}
+                                                />
+                                              </div>
+                                            </div>
+                                            <div className="row">
+                                              <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                                <div className="country-select mb-30">
+                                                  <label>
+                                                    Tỉnh/Thành phố <span className="required">*</span>
+                                                  </label>
+                                                  <select
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.province}
+                                                    name="province"
+                                                    className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                                    disabled={edit}
+                                                  >
+                                                    <option value="">Chọn 1 tỉnh</option>
+                                                    {provinces.map((province, i) => (
+                                                      <option value={province.codename} key={"province" + i}>
+                                                        {province.name}
+                                                      </option>
+                                                    ))}
+                                                    <div
+                                                      id="val-username1-error"
+                                                      className="invalid-feedback animated fadeInUp mb-3"
+                                                      style={{ display: "block" }}
+                                                    >
+                                                      {errors.province && errors.province}
+                                                    </div>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                              <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                                <div className="country-select mb-30">
+                                                  <label>
+                                                    Quận/Huyện <span className="required">*</span>
+                                                  </label>
+                                                  <select
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.district}
+                                                    name="district"
+                                                    className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                                    disabled={edit}
+                                                  >
+                                                    <option value="">Chọn 1 quận huyện</option>
+                                                    {getDistrictByProvinces(values.province).map((district, i) => (
+                                                      <option value={district.codename} key={"district" + i}>
+                                                        {district.name}
+                                                      </option>
+                                                    ))}
+                                                    <div
+                                                      id="val-username1-error"
+                                                      className="invalid-feedback animated fadeInUp mb-3"
+                                                      style={{ display: "block" }}
+                                                    >
+                                                      {errors.district}
+                                                    </div>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                              <div className="col-xl-4  col-lg-4  col-md-4  col-sm-4 col-12">
+                                                <div className="country-select mb-30">
+                                                  <label>
+                                                    Phường/xã <span className="required">*</span>
+                                                  </label>
+                                                  <select
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    value={values.wards}
+                                                    name="wards"
+                                                    className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                                    disabled={edit}
+                                                  >
+                                                    <option value="">Chọn 1 phường xã</option>
+                                                    {getWardsByDistrict(values.district).map((ward, i) => (
+                                                      <option value={ward.codename} key={"wards" + i}>
+                                                        {ward.name}
+                                                      </option>
+                                                    ))}
+                                                    <div
+                                                      id="val-username1-error"
+                                                      className="invalid-feedback animated fadeInUp mb-3"
+                                                      style={{ display: "block" }}
+                                                    >
+                                                      {errors.wards && errors.wards}
+                                                    </div>
+                                                  </select>
+                                                </div>
+                                              </div>
+                                            </div>
 
-                                      </tr>
-                                    </>
-                                  ))}
-                                  {/* {order.order_item && order.order_item.map((
-
-                                  ))} */}
-                                </>
-                              ))}
-                              {/* {carts &&
-                    carts.map((cart) => (
-                      <tr key={cart.id}>
-                        <td>
-                          <Link href={`/shop/${cart.id}`}>
-                            <a className="cart-img d-block">
-                              <img src={cart.img} alt="Cart image" />
-                            </a>
-                          </Link>
-                        </td>
-                        <td>
-                          <Link href={`/shop/${cart.id}`}>
-                            <a className="p-name primary-color">{cart.name}</a>
-                          </Link>
-                        </td>
-                        <td>
-                          <div className="cart-price">
-                            {" "}
-                            {Number(cart.mainPrice).toFixed(2)} VND
-                          </div>
-                        </td>
-                        <td>
-                          <div className="cart-price">
-                          {cart.sizeSelected}
-                          </div>
-                        </td>
-                        <td>
-                          <div className="all-info product-view-info text-center mt-35">
-                            <div className="quick-add-to-cart d-sm-flex align-items-centerm-auto  mb-15 mr-10">
-                              <div className="quantity-field position-relative d-inline-block m-auto">
-                                <span
-                                  className="custom-prev c-pointer"
-                                  onClick={(e) => onClickCart(e, cart)}
-                                >
-                                  <i className="icon-plus" />
-                                </span>
-                                <input
-                                  type="text"
-                                  name="select1"
-                                  value={cart.qty}
-                                  disabled
-                                  className="quantity-input-arrow quantity-input text-center border-gray"
-                                />
-                                <span
-                                  className="custom-next enable c-pointer"
-                                  onClick={(e) =>
-                                    cart.qty !== 1 && onClickRemoveCart(e, cart)
-                                  }
-                                >
-                                  <i className="icon-minus" />
-                                </span>
+                                            <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
+                                              <div className="checkout-form-list mb-30">
+                                                <InputGroup
+                                                  name="street"
+                                                  id="street"
+                                                  label="Địa chị cụ thể"
+                                                  placeholder="Địa chỉ cụ thể"
+                                                  errors={errors.street}
+                                                  values={values.street}
+                                                  handleBlur={handleBlur}
+                                                  handleChange={handleChange}
+                                                  disabled={edit}
+                                                />
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div className="order-button-payment mt-20">
+                                        {edit ? 
+                                        <button
+                                          type="button"
+                                          className="bt-btn theme-btn"
+                                          onClick={(e) => setEdit(!edit)}
+                                        >
+                                          Chỉnh sửa
+                                        </button> :
+                                          <button
+                                            type="submit"
+                                            className="bt-btn theme-btn"
+                                            onClick={(e) => setEdit(!edit)}
+                                          >
+                                            Lưu
+                                          </button>
+                                        }
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {/* /row */}
+                                </form>
                               </div>
+                              {/* /container */}
                             </div>
-                          </div>
-                        </td>
-                        <td>
-                          <div className="cart-price">
-                            {" "}
-                            {Number(cart.totalPrice).toFixed(2)} VND
-                          </div>
-                        </td>
-                        <td>
-                          <a
-                            href="#"
-                            className="p-remove theme-color"
-                            onClick={(e) => {
-                              removeCart(cart.product_id);
-                              setaddCart(true);
-                              toast.error("Xóa sản phẩm từ giỏ hàng thành công");
-                              e.preventDefault();
-                            }}
-                          >
-                            <span className="icon-clear" />
-                          </a>
-                        </td>
-                      </tr>
-                    ))} */}
-                            </tbody>
-                          </table>
-                        </div>
+                          )}
+                        </Formik>
                       </div>
                       {/* /container */}
                     </div>
@@ -209,6 +385,5 @@ const OrderHistory = ({ getOrderHistory }) => {
     </Layout>
   );
 };
-
-export default connect(null, { getOrderHistory })(withAuth(OrderHistory));
+export default connect(null, { getCustomerAddress, createCustomerAddress, updateCustomerAddress })(withAuth(MyAccount));
 
