@@ -5,6 +5,7 @@ import { filterByName } from "../../redux/action/filter";
 
 const Search = ({ home, filterByName, setSearch }) => {
   const [text, setText] = useState(false);
+  const [content, setContent] = useState("")
   if (text) {
     Router.push(
       {
@@ -19,6 +20,16 @@ const Search = ({ home, filterByName, setSearch }) => {
     e.preventDefault();
     setText(true);
   };
+  const handerSearch = (e) => {
+    // e.preventDefault();
+    Router.push(
+      {
+        pathname: `/shop/search/${content}`,
+      },
+      undefined,
+      { shallow: true }
+    );
+  }
 
   const funtion_ = () => {
     switch (home) {
@@ -32,30 +43,31 @@ const Search = ({ home, filterByName, setSearch }) => {
               data-placement="bottom"
               title="Search"
             >
-              <form onSubmit={(e) => onSubmit(e)}>
+              <div>
                 <div className="search-form">
                   <div className="d-none  d-lg-inline-block width100">
                     <input
                       type="text"
                       placeholder="Nhập tên sản phẩm"
                       className="border-0 pl-45 width100 gray-bg4"
-                      onChange={(e) => filterByName(e.target.value)}
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
                     />
                     <span className="position-absolute">
                       <span className="icon-search" />
                     </span>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
             {/* /header-search */}
             <div className="float-right d-none d-lg-inline-block ms-1">
-              <a
-                href="#"
+              <button
+                onClick={(e) => handerSearch(e)}
                 className="web-btn header-btn theme-border1 d-inline-block text-capitalize white theme-bg position-relative over-hidden pl-35 pr-35 ptb-12"
               >
                 Tìm kiếm
-              </a>
+              </button>
             </div>
           </div>
         );

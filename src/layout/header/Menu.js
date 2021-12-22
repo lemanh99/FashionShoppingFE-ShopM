@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategory_3 } from "../../redux/action/home";
+import { changeStringPath } from "../../utils/string";
 import { CartIcon, CompareIcon, WishListIcon } from "./Icons";
 
 export const DasktopMenu = () => {
@@ -31,7 +32,7 @@ export const DasktopMenu = () => {
               <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
                 {category.child_category.map((child) => (
                   <li>
-                    <Link href={`/shop/category/${child.id}`}>
+                    <Link href={`/shop/category/${changeStringPath(child.category_name)}`}>
                       <a>{child.category_name}</a>
                     </Link>
                   </li>

@@ -2,21 +2,25 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosIntance from "../helpers/axios";
+import { getCurrentPath } from "../helpers/path";
 import { LOGIN_SUCCESS } from "../redux/action/type";
 
 const withoutAuthPublic = (WrappedComponent) => {
     return (props) => {
         const router = useRouter()
         const dispatch = useDispatch();
-        const Router = useRouter();
         const [verified, setVerified] = useState(false);
         const auth = useSelector((state) => state.auth);
 
         useEffect(async () => {
             const token = localStorage.getItem("token");
             // if no accessToken was found,then we redirect to "/" page.
+            const pathCurrent =getCurrentPath()
+            if(!pathCurrent){
+                pathCurrent =router.pathname
+            }
             if (!token) {
-                Router.replace(`/${router.pathname}`);
+                router.replace(`/${pathCurrent}`);
             } else {
                 // we call the api that verifies the token.
                 if (!auth.authenticate) {
@@ -36,7 +40,7 @@ const withoutAuthPublic = (WrappedComponent) => {
 
                     }
                 }
-                Router.replace(`/${router.pathname}`);
+                router.replace(`/${pathCurrent}`);
             }
         }, []);
         return <WrappedComponent {...props} />;

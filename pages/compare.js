@@ -2,6 +2,7 @@ import Link from "next/dist/client/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { connect, useSelector } from "react-redux";
+import ProductModal from "../src/components/products/ProductModal";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import { addToCart, compare, getCompare } from "../src/redux/action/utilis";
@@ -14,11 +15,23 @@ const Compare = ({ getCompare, addToCart, compare }) => {
 
   const [addCart, setaddCart] = useState(false);
   const [addCompare, setAddCompare] = useState(false);
+  const [quickView, setQuickView] = useState(false);
+  const [product, setProduct] = useState(false);
+  const handerAddToCart = (id) => {
+    const productCompare = compare_.find((compare) => Number(compare.id) === Number(id));
+    setProduct(productCompare);
+    setQuickView(true);
+  }
+
 
   return (
     <Layout>
-      <PageBanner title="Compare" />
-
+      {/* <PageBanner title="Compare" /> */}
+      <ProductModal
+        show={quickView}
+        handleClose={() => setQuickView(false)}
+        product={product}
+      />
       {compare_ && compare_.length > 0 ? (
         <div className="wishlist-area mt-100">
           <div className="container">
@@ -28,12 +41,11 @@ const Compare = ({ getCompare, addToCart, compare }) => {
                   <table className="table table-bordered">
                     <thead>
                       <tr className="text-center">
-                        <th scope="col">Price images</th>
-                        <th scope="col">Product name </th>
-                        <th scope="col">Unit price</th>
-                        <th scope="col">Add to cart</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Remove</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Tên sản phẩm</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col"></th>
+                        <th scope="col">Xóa sản phẩm</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -56,28 +68,20 @@ const Compare = ({ getCompare, addToCart, compare }) => {
                             </td>
                             <td>
                               <div className="cart-price">
-                                ${Number(compare_.mainPrice).toFixed(2)}
+                                {Number(compare_.mainPrice).toFixed(2)} VND
                               </div>
                             </td>
                             <td>
-                              <a
-                                href="#"
+                              <button
+                                type="button"
                                 className="web-btn h2-theme-border1 d-inline-block text-capitalize white rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-30 pr-30 ptb-17"
+                                value={compare_.id}
                                 onClick={(e) => {
-                                  addToCart(compare_);
                                   e.preventDefault();
-                                  setaddCart(true);
-                                  toast.success("Thêm vào giỏ hàng thành công");
-                                }}
-                              >
-                                add to cart
-                              </a>
-                            </td>
-                            <td>
-                              <div className="cart-price">
-                                {" "}
-                                ${Number(compare_.mainPrice).toFixed(2)}
-                              </div>
+                                  handerAddToCart(e.target.value)
+                                }}>
+                                Thêm vào giỏ hàng
+                              </button>
                             </td>
                             <td>
                               <a
@@ -86,7 +90,7 @@ const Compare = ({ getCompare, addToCart, compare }) => {
                                 onClick={(e) => {
                                   compare(compare_);
                                   e.preventDefault();
-                                  toast.error("Remove item in compare.");
+                                  toast.error("Bạn đã xóa 1 sản phẩm so sánh");
                                   setAddCompare(true);
                                 }}
                               >
@@ -104,7 +108,7 @@ const Compare = ({ getCompare, addToCart, compare }) => {
           </div>
         </div>
       ) : (
-        <h2 className="py-5 text-center w-100">No Product Found</h2>
+        <h2 className="py-5 text-center w-100">Không có sản phẩm so sánh</h2>
       )}
     </Layout>
   );

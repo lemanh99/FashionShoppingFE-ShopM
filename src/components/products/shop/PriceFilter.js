@@ -2,7 +2,7 @@ import { Fragment, useState } from "react";
 import InputRange from "react-input-range";
 
 const PriceFilter = ({ filterByPrice, setActive_ }) => {
-  const [price, setPrice] = useState({ value: { min: 0, max: 5000000 } });
+  const [price, setPrice] = useState({ value: { min: 0, max: 50000000 } });
 
   return (
     <Fragment>
@@ -13,7 +13,7 @@ const PriceFilter = ({ filterByPrice, setActive_ }) => {
           </h6>
           <InputRange
             formatLabel={(value) => ``}
-            maxValue={5000000}
+            maxValue={50000000}
             minValue={0}
             value={price.value}
             onChange={(value) => {
@@ -28,7 +28,7 @@ const PriceFilter = ({ filterByPrice, setActive_ }) => {
                 <div className="prc-slider-content mb-15">
                   <div className="d-sm-flex">
                     <label htmlFor="amount" className="mb-0 mr-1">
-                      <b>Price :</b>
+                      <b>Từ :</b>
                     </label>
                     <input
                       type="text"

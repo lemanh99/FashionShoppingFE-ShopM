@@ -10,19 +10,20 @@ const username = Yup.string()
     // .matches(/[a-z1-9]/, 'Mật khẩu phải có chữ và số')
     .required("Bạn cần nhập password"),
   repassword = Yup.string().oneOf([Yup.ref('password'), null], 'Mật khẩu không trùng khớp'),
-  email = Yup.string().email().required("Please provide your email"),
+  email = Yup.string().email(),
   tandc = Yup.boolean().oneOf(
     [true],
     "You must accept the terms and conditions"
   ),
-  phoneNumber = Yup.number().required("Please provide your phone"),
-  country = Yup.string().required("Please provide your country name"),
-  province = Yup.string().required("Please provide your province name"),
-  district = Yup.string().required("Please provide your district name"),
-  wards = Yup.string().required("Please provide your wards name"),
-  street = Yup.string().required("Please provide your street name"),
-  firstName = Yup.string().required("Please provide your first name"),
-  lastName = Yup.string().required("Please provide your last name"),
+  phoneNumber = Yup.number(),
+  gender = Yup.string(),
+  country = Yup.string(),
+  province = Yup.string(),
+  district = Yup.string(),
+  wards = Yup.string(),
+  street = Yup.string(),
+  firstName = Yup.string(),
+  lastName = Yup.string(),
 
   defferentAddress = Yup.boolean(),
   firstName2 = Yup.string().when("defferentAddress", {
@@ -104,8 +105,9 @@ export const registerSchema = {
     phoneNumber,
     password,
     email,
+    gender,
   }),
-  initialValue: { password: "", email: "", firstName: "", lastName: "", phoneNumber: "" },
+  initialValue: { password: "", email: "", firstName: "", lastName: "", phoneNumber: "", gender: "1"},
 };
 
 export const checkoutSchema = {

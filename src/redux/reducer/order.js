@@ -1,4 +1,4 @@
-import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_ORDER_BY_ID_FAILURE, GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_SUCCESS } from "../action/type";
+import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_ORDER_BY_ID_FAILURE, GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_SUCCESS, GET_ORDER_LASTED } from "../action/type";
 
 const initState = {
     addOrder: false,
@@ -7,6 +7,7 @@ const initState = {
     loading: false,
     error: "",
     messages: "",
+    orderLasted: [],
 };
 
 export default (state = initState, action) => {
@@ -56,6 +57,13 @@ export default (state = initState, action) => {
                 loading: false,
                 order_code: null,
                 error: action.payload.error,
+            };
+            break;
+
+        case GET_ORDER_LASTED:
+            state = {
+                ...state,
+                orderLasted: action.payload
             };
             break;
     }

@@ -1,8 +1,10 @@
 import Link from "next/dist/client/link";
 import { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import axiosIntance from "../../../helpers/axios";
 import { filterByPrice } from "../../../redux/action/filter";
 import { getProducts } from "../../../redux/action/product";
+import { changeStringPath } from "../../../utils/string";
 import {
   arrLengthByKey,
   findFilterValue,
@@ -11,28 +13,22 @@ import {
 import PriceFilter from "./PriceFilter";
 
 const Filter = ({ filterByPrice, products, getProducts }) => {
+  const [categoryFilter, setCategoryFilter] = useState({})
   useEffect(() => {
+    getCategoryFilter();
     getProducts();
   }, []);
-  const [active_, setActive_] = useState(0);
-  const tags = findFilterValue(products, "tags"),
-    category = findFilterValue(products, "category", [
-      "home1unmissed",
-      "home1handpicked",
-      "home2bestdeal",
-      "home2featured",
-      "home1purchased",
-      "home3BestDeal",
-      "home3Featured",
-      "home3BestSelling",
-      "home2tranding",
-    ]),
-    size = findFilterValue(products, "size"),
-    colors = findFilterValue(products, "colors");
 
-  const changeString = (value) => {
-    return value.split(" ").join("-").toLowerCase();
-  };
+  async function getCategoryFilter() {
+    const res = await axiosIntance.get(`/product/public/filter`)
+    if (res && res.status === 200) {
+      const { data } = res.data;
+      setCategoryFilter(data)
+    }
+  }
+
+  const [active_, setActive_] = useState(1);
+
 
   return (
     <div className="col-xl-3  col-lg-4  col-md-12  col-sm-12 col-12">
@@ -46,20 +42,20 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                     Phân loại
                   </h6>
                   <ul>
-                    {category &&
-                      category.map((cat, i) => (
+                    {categoryFilter && categoryFilter.category ?
+                      (categoryFilter.category.map((cat, i) => (
                         <li className="pb-15 d-block" key={i}>
-                          <Link href={`/shop/category/${changeString(cat)}`}>
+                          <Link href={`/shop/category/${changeStringPath(cat)}`}>
                             <a className="text-capitalize">
                               {cat}
-                              <span className="ms-1">
+                              {/* <span className="ms-1">
                                 ({arrLengthByKey(products, "category", cat)})
-                              </span>
+                              </span> */}
                             </a>
                           </Link>
                           <span className="accordion" />
                         </li>
-                      ))}
+                      ))) : null}
                   </ul>
                 </div>
               </div>
@@ -77,16 +73,18 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                 Màu sắc
               </h6>
               <ul className="shop-color">
-                {colors &&
-                  colors.map((color, i) => (
+                {categoryFilter && categoryFilter.colors ? (
+                  categoryFilter.colors.map((color, i) => (
                     <li className="pb-10 font13" key={i}>
-                      <Link href={`/shop/color/${changeString(color)}`}>
+                      <Link href={`/shop/color/${changeStringPath(color)}`}>
                         <a className="text-capitalize">
-                          {color} ({arrLengthByKey(products, "colors", color)})
+                          {color}
+                          {/* {color} ({arrLengthByKey(products, "colors", color)}) */}
                         </a>
                       </Link>
                     </li>
-                  ))}
+                  ))
+                ) : null}
               </ul>
             </div>
           </div>
@@ -97,16 +95,18 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                 Kích thước
               </h6>
               <ul className="shop-color">
-                {size &&
-                  size.map((s, i) => (
+                {categoryFilter && categoryFilter.sizes ? (
+                  categoryFilter.sizes.map((s, i) => (
                     <li className="pb-10 font13" key={i}>
-                      <Link href={`/shop/size/${changeString(s)}`}>
+                      <Link href={`/shop/size/${changeStringPath(s)}`}>
                         <a className="text-capitalize">
-                          {s} ({arrLengthByKey(products, "size", s)})
+                          {/* {s} ({arrLengthByKey(products, "size", s)}) */}
+                          {s}
                         </a>
                       </Link>
                     </li>
-                  ))}
+                  ))
+                ) : null}
               </ul>
             </div>
           </div>
@@ -117,14 +117,14 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                 Thẻ tag phổ biến
               </h6>
               <ul className="shop-tag">
-                {tags &&
-                  tags.map((tag, i) => (
+                {categoryFilter && categoryFilter.tags ? (
+                  categoryFilter.tags.map((tag, i) => (
                     <li className="pb-10 font13 d-inline-block" key={i}>
-                      <Link href={`/shop/tag/${changeString(tag)}`}>
+                      <Link href={`/shop/tag/${changeStringPath(tag)}`}>
                         <a className="text-capitalize">{tag}</a>
                       </Link>
                     </li>
-                  ))}
+                  ))) : null}
               </ul>
             </div>
           </div>

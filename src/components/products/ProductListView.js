@@ -33,18 +33,18 @@ const ProductListView = ({
     const exitsItem = compares.find((compare) => compare.id === product.id);
     if (compares.length < 3) {
       if (exitsItem) {
-        toast.error("Remove item from compare.");
+        toast.error("Xóa sản phẩm so sánh thành công");
         compare(product);
       } else {
-        toast.success("Add item in Compare.");
+        toast.success("Thêm sản phẩm so sánh thành công");
         compare(product);
       }
     } else {
       if (exitsItem) {
-        toast.error("Remove item from compare.");
+        toast.error("Xóa sản phẩm so sánh thành công");
         removeCompare(product);
       } else {
-        toast.error("Compare is full please remove item from compare list.");
+        toast.error("Danh mục so sánh đã đầy. Xóa sản phẩm ra khỏi danh sách so sánh.");
       }
     }
   };

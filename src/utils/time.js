@@ -28,6 +28,14 @@ export const convert_datetime_from_timestamp = (timestamps) => {
   return time;
 }
 
+export const convert_datetime_to_day = (datetime) => {
+  if (datetime == null) return null;
+  var year = datetime.getFullYear();
+  var month = datetime.getMonth();
+  var day = datetime.getDate();
+  var time = year + '-' + month + '-' + day;
+  return time;
+}
 
 const Time = (endDateTime) => {
   const [time, setTime] = useState(new Date().toLocaleTimeString());

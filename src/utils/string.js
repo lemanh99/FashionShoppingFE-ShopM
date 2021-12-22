@@ -26,3 +26,7 @@ export const removeVietnameseTones = (str) => {
     str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
     return str;
 }
+
+export const changeStringPath = (value) => {
+    return value.split(" ").join("-").toLowerCase();
+};

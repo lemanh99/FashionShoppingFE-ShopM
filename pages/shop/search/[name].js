@@ -1,8 +1,8 @@
+import withoutAuthPublic from "../../../src/HOC/withoutAuthPublic";
 import { useRouter } from "next/router";
 import Layout from "../../../src/layout/Layout";
 import PageBanner from "../../../src/layout/PageBanner";
 import ShopLayout from "../../../src/layout/ShopLayout";
-import withoutAuthPublic from "../../../src/HOC/withoutAuthPublic";
 
 const Shop = () => {
   const router = useRouter();
@@ -12,7 +12,7 @@ const Shop = () => {
   return (
     <Layout>
       {/* <PageBanner title={name_} pageName="Shop" /> */}
-      <ShopLayout keyValueForQurey="tags" value={name_} active_={0} />
+      <ShopLayout keyValueForQurey="search" value={name} active_={0} />
     </Layout>
   );
 };

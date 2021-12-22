@@ -34,7 +34,7 @@ const Product2 = ({ product, addToCart }) => {
         )}
         {product.new && (
           <div className="single-product-label text-label position-absolute theme-bg text-center  transition-3 z-index1">
-            <span className="white d-block font500">New</span>
+            <span className="white d-block font500">Mới</span>
           </div>
         )}
         {/* /product-label */}

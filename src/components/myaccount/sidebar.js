@@ -15,30 +15,36 @@ const SideBarMyAccount = ({
               <tbody>
                 <tr className="cart_item">
                   <td className="product-name">
-                    <Link href='/my-account'>
-                      <strong className="product-quantity">
-                        Thông tin giao hàng
-                      </strong>
+                    <Link href={`/my-account`}>
+                      <a className="text-capitalize">
+                        <strong className="product-quantity">
+                          Thông tin giao hàng
+                        </strong>
+                      </a>
                     </Link>
                   </td>
                 </tr>
                 <tr className="cart_item">
-                  <Link href='/my-account/history-order'>
-                    <td className="product-name">
-                      <strong className="product-quantity">
-                        Lịch sử đơn hàng
-                      </strong>
-                    </td>
-                  </Link>
+                  <td className="product-name">
+                    <Link href='/my-account/history-order'>
+                      <a className="text-capitalize">
+                        <strong className="product-quantity">
+                          Lịch sử đơn hàng
+                        </strong>
+                      </a>
+                    </Link>
+                  </td>
                 </tr>
                 <tr className="cart_item">
-                  <Link href='/my-account/password'>
-                    <td className="product-name">
-                      <strong className="product-quantity">
-                        Thay đổi mật khẩu
-                      </strong>
-                    </td>
-                  </Link>
+                  <td className="product-name">
+                    <Link href='/my-account/password'>
+                      <a className="text-capitalize">
+                        <strong className="product-quantity">
+                          Thay đổi mật khẩu
+                        </strong>
+                      </a>
+                    </Link>
+                  </td>
                 </tr>
               </tbody>
             </table>

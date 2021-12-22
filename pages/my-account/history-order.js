@@ -1,16 +1,10 @@
 // import swal from "@sweetalert/with-react";
-import { CardElement, Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
-import { Formik } from "formik";
-import Router from "next/router";
 import { Fragment, useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import SideBarMyAccount from "../../src/components/myaccount/sidebar";
 import withAuth from "../../src/HOC/withAuth";
 import Layout from "../../src/layout/Layout";
 import { getOrderHistory, cancelOrder } from "../../src/redux/action/order";
-import { setCheckoutData } from "../../src/redux/action/utilis";
 import { convert_datetime_from_timestamp } from "../../src/utils/time";
 
 

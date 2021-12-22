@@ -89,9 +89,9 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
       payment_id: value.payment_id,
       total: price,
       subtotal: Number(price) + Number(deliveryFee),
-      discount: 0,
+      discount: checkoutData&&checkoutData.discount?Number(checkoutData.discount):0,
       delivery_fee_total: deliveryFee,
-      payment_total: Number(price) + Number(deliveryFee),
+      payment_total: Number(price) + Number(deliveryFee)-Number(checkoutData&&checkoutData.discount?checkoutData.discount:0),
       shipping: checkoutData ? checkoutData.shipping : {},
       order_item: order_item
     }
@@ -170,13 +170,22 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                               {deliveryFee} VND
                             </td>
                           </tr>
+                          {checkoutData && checkoutData.discount > 0 ? (
+                            <tr className="shipping">
+                              <th>Mã giảm giá</th>
+                              <td>
+                                {checkoutData.discount} VND
+                              </td>
+                            </tr>
+                          ) : null}
+
                           <tr className="order-total">
                             <th>Tổng thanh toán</th>
                             <td>
                               <strong>
                                 {price && (
                                   <span className="amount">
-                                    {Number(price) + Number(deliveryFee)}
+                                    {Number(price) + Number(deliveryFee)-Number(checkoutData&&checkoutData.discount?checkoutData.discount:0)}
                                     VND
                                   </span>
                                 )}
@@ -268,7 +277,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                             </Accordion.Toggle>
                           </h2>
                           <Accordion.Collapse eventKey="2">
-                            <PaymentPaypal total={Number((Number(price) + Number(deliveryFee)) / Number(23000)).toFixed(2)} token={tokenUser} paymentUser={paymentUser} />
+                            <PaymentPaypal total={Number((Number(price) + Number(deliveryFee)-Number(checkoutData&&checkoutData.discount?checkoutData.discount:0)) / Number(23000)).toFixed(2)} token={tokenUser} paymentUser={paymentUser} />
                           </Accordion.Collapse>
                         </div>
                       </Accordion>

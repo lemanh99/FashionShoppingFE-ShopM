@@ -4,7 +4,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { Formik } from "formik";
 import Router from "next/router";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Accordion } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
@@ -20,11 +20,14 @@ import {
   loginSchema,
 } from "../src/utils/yupModal";
 import PaymentPaypal from "../src/components/payment/paypal";
+import { getCustomerAddress } from "../src/redux/action/user";
+import axiosIntance from "../src/helpers/axios";
 
 const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
-const Checkout = ({ setCheckoutData }) => {
+const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
   const carts = useSelector((state) => state.utilis.carts);
+  const addressCustomer = useSelector((state) => state.user.address)
   const [freeShpping, setFreeShpping] = useState(false);
   const [differentAddresses, setDifferentAddresses] = useState(false);
   const [country, setCountry] = useState([]);
@@ -32,9 +35,13 @@ const Checkout = ({ setCheckoutData }) => {
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
   const [deliveryFee, setDeliveryFee] = useState(30000);
+  const [discount, setDiscount] = useState(0)
+  const [coupon, setCoupon] = useState("")
+  const [errorCoupon, setErrorCoupon] = useState("")
 
   const [flat, setFlat] = useState(false);
   const price = totalPrice(carts);
+  const formikRef = useRef();
   let shppingPrice = 30, flatPrice = 7;
 
   const [activeId, setActiveId] = useState(false);
@@ -52,7 +59,49 @@ const Checkout = ({ setCheckoutData }) => {
     getCountry()
     const token = localStorage.getItem("token")
     setTokenUser(token);
+    getCustomerAddress();
+    setErrorCoupon("");
   }, [])
+  useEffect(() => {
+    if (addressCustomer && addressCustomer.length > 0) {
+      if (formikRef.current) {
+        formikRef.current.setFieldValue(
+          "province",
+          addressCustomer[0].city
+        );
+        formikRef.current.setFieldValue(
+          "district",
+          addressCustomer[0].district
+        );
+        formikRef.current.setFieldValue(
+          "wards",
+          addressCustomer[0].village
+        );
+        formikRef.current.setFieldValue(
+          "street",
+          addressCustomer[0].street
+        );
+        formikRef.current.setFieldValue(
+          "firstName",
+          addressCustomer[0].first_name
+        );
+        formikRef.current.setFieldValue(
+          "lastName",
+          addressCustomer[0].last_name
+        );
+        formikRef.current.setFieldValue(
+          "email",
+          addressCustomer[0].email
+        );
+        formikRef.current.setFieldValue(
+          "phoneNumber",
+          addressCustomer[0].phone_number
+        );
+      }
+
+    }
+  }, [addressCustomer])
+
 
   const getDistrictByProvinces = (value) => {
     const province_info = provinces.filter((province) => province.codename == value)[0]
@@ -104,9 +153,31 @@ const Checkout = ({ setCheckoutData }) => {
       postal_code: "000000",
 
     }
-    return { shipping: shipping, deliveryFee: deliveryFee };
+    return { shipping: shipping, deliveryFee: deliveryFee, discount: discount };
   }
 
+  async function getCoupon(code) {
+    const res = await axiosIntance.get(`/product/coupon/check/${code}`)
+    if (res && res.status === 200) {
+      const { data } = res.data;
+      setDiscount(data.price)
+      setErrorCoupon("")
+    } else {
+      const { meta } = res.data;
+      if (meta.detail == "Coupon does not exits") {
+        setErrorCoupon("Mã giảm giá không tồn tại")
+      } else if (meta.detail == "Coupon expired") {
+        setErrorCoupon("Mã giảm giá đã hết hạn")
+      } else {
+        setErrorCoupon("Lỗi không xác định")
+      }
+      setDiscount(0)
+    }
+  }
+  const handerCoupon = (e) => {
+    e.preventDefault();
+    getCoupon(coupon);
+  }
 
   return (
     <Layout sticky textCenter container footerBg>
@@ -129,6 +200,7 @@ const Checkout = ({ setCheckoutData }) => {
         </div>
 
         <Formik
+          innerRef={formikRef}
           initialValues={checkoutSchema.initialValue}
           validationSchema={checkoutSchema.schema}
           onSubmit={(values, { setSubmitting }) => {
@@ -187,6 +259,7 @@ const Checkout = ({ setCheckoutData }) => {
                                   name="defferentAddress"
                                   onClick={() => { setDifferentAddresses(!differentAddresses) }}
                                 />
+
                               </div>
                             </div>
                             <Accordion.Collapse eventKey="0" id="ship-box-info">
@@ -282,7 +355,7 @@ const Checkout = ({ setCheckoutData }) => {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         value={values.district2}
-                                        name="district"
+                                        name="district2"
                                         className="nice-select w-100 primary-bg2 mb-20 mb-0"
                                       >
                                         <option value="">Chọn 1 quận huyện</option>
@@ -334,8 +407,8 @@ const Checkout = ({ setCheckoutData }) => {
                                 <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                                   <div className="checkout-form-list mb-30">
                                     <InputGroup
-                                      name="street"
-                                      id="street"
+                                      name="street2"
+                                      id="street2"
                                       label="Địa chị cụ thể"
                                       placeholder="Địa chỉ cụ thể"
                                       errors={errors.street2}
@@ -363,6 +436,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     values={values.firstName}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
+                                    disabled={true}
                                   />
                                 </div>
                               </div>
@@ -376,6 +450,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     values={values.lastName}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
+                                    disabled={true}
                                   />
                                 </div>
                               </div>
@@ -389,6 +464,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     values={values.phoneNumber}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
+                                    disabled={true}
                                   />
                                 </div>
                               </div>
@@ -403,6 +479,7 @@ const Checkout = ({ setCheckoutData }) => {
                                     values={values.email}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
+                                    disabled={true}
                                   />
                                 </div>
                               </div>
@@ -418,6 +495,7 @@ const Checkout = ({ setCheckoutData }) => {
                                       value={values.province}
                                       name="province"
                                       className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                      disabled
                                     >
                                       <option value="">Chọn 1 tỉnh</option>
                                       {provinces.map((province, i) => (
@@ -446,6 +524,7 @@ const Checkout = ({ setCheckoutData }) => {
                                       value={values.district}
                                       name="district"
                                       className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                      disabled
                                     >
                                       <option value="">Chọn 1 quận huyện</option>
                                       {getDistrictByProvinces(values.province).map((district, i) => (
@@ -474,6 +553,7 @@ const Checkout = ({ setCheckoutData }) => {
                                       value={values.wards}
                                       name="wards"
                                       className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                      disabled
                                     >
                                       <option value="">Chọn 1 phường xã</option>
                                       {getWardsByDistrict(values.district).map((ward, i) => (
@@ -504,12 +584,31 @@ const Checkout = ({ setCheckoutData }) => {
                                     values={values.street}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
+                                    disabled={true}
                                   />
                                 </div>
                               </div>
-                            </div>) : null}
+                              {/* <div className="order-button-payment mt-20">
+                                <button
+                                  type="button"
+                                  className="bt-btn theme-btn"
+                                  onClick={(e) => {
+                                    Router.push(
+                                      {
+                                        pathname: "/my-account",
+                                      },
+                                      undefined,
+                                      { shallow: true }
+                                    );
+                                  }}
+                                >
+                                  Chỉnh sửa
+                                </button>
+                              </div> */}
+                            </div>
+                          ) : null}
                         </div>
-                        <div className="order-notes">
+                        {/* <div className="order-notes">
                           <div className="checkout-form-list mb-40">
                             <label>Ghi chú</label>
                             <textarea
@@ -519,7 +618,7 @@ const Checkout = ({ setCheckoutData }) => {
                               defaultValue={""}
                             />
                           </div>
-                        </div>
+                        </div> */}
                       </div>
 
                     </div>
@@ -549,59 +648,41 @@ const Checkout = ({ setCheckoutData }) => {
                               className="checkout-content"
                             >
                               <div className="coupon-info">
-                                <Formik
-                                  initialValues={couponSchema.initialValue}
-                                  validationSchema={couponSchema.schema}
-                                  onSubmit={(values, { setSubmitting }) => {
-                                    setTimeout(() => {
-                                      alert(JSON.stringify(values, null, 2));
-                                      setSubmitting(false);
-                                    }, 400);
-                                  }}
-                                >
-                                  {({
-                                    values,
-                                    errors,
-                                    handleChange,
-                                    handleBlur,
-                                    handleSubmit,
-                                    isSubmitting,
-                                  }) => (
-                                    <div className="coupon-and-update-area">
-                                      <div className="row">
-                                        <div className="coupon-code-area">
-                                          <form action="#">
-                                            <input
-                                              className="pl-15 mr-10 pt-0 mb-15 d-inline-block width50"
-                                              type="text"
-                                              onChange={handleChange}
-                                              onBlur={handleBlur}
-                                              value={values.coupon}
-                                              name="coupon"
-                                              placeholder="Mã giảm giá"
-                                            />
-                                            {/* <div
-                                              id="val-username1-error"
-                                              className="invalid-feedback animated fadeInUp mb-3"
-                                              style={{ display: "block" }}
-                                            >
-                                              {errors.coupon && errors.coupon}
-                                            </div> */}
-                                            <a
-                                              disabled={isSubmitting}
-                                              href="#"
-                                              className="web-btn h2-theme-border1 d-inline-block text-uppercase white  rounded-0 h2-theme-color cart-c-btn h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17 mr-20"
-                                            >
-                                              Áp dụng
-                                            </a>
-                                          </form>
-                                        </div>
-                                        {/* /col */}
+                                <div className="coupon-and-update-area">
+                                  <div className="row">
+                                    <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                                      <div className="coupon-code-area">
+                                        <input
+                                          className="pl-15 mr-10 pt-0 mb-15 d-inline-block width100"
+                                          type="text"
+                                          value={coupon}
+                                          onChange={(e) => setCoupon(e.target.value)}
+                                          name="coupon"
+                                          placeholder="Mã giảm giá"
+                                        />
+                                        {errorCoupon ? (
+                                          <div
+                                            id="val-username1-error"
+                                            className="invalid-feedback animated fadeInUp mb-3"
+                                            style={{ display: "block" }}
+                                          >
+                                            {errorCoupon}
+                                          </div>
+                                        ) : null}
                                       </div>
                                     </div>
-
-                                  )}
-                                </Formik>
+                                    <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                                      <button
+                                        type="button"
+                                        className="web-btn h2-theme-border1 d-inline-block text-uppercase white  rounded-0 h2-theme-color cart-c-btn h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17 mr-20"
+                                        onClick={handerCoupon}
+                                      >
+                                        Áp dụng
+                                      </button>
+                                    </div>
+                                    {/* /col */}
+                                  </div>
+                                </div>
                               </div>
                             </Accordion.Collapse>
                           </Accordion>
@@ -678,6 +759,14 @@ const Checkout = ({ setCheckoutData }) => {
                                   </ul> */}
                                 </td>
                               </tr>
+                              {discount ? (
+                                <tr className="cart-subtotal" >
+                                  <th>Giảm giá</th>
+                                  <td>
+                                    <span className="amount" style={{ color: "#dc3545" }}>-{discount} VND</span>
+                                  </td>
+                                </tr>
+                              ) : null}
                               <tr className="order-total">
                                 <th>Tổng thanh toán</th>
                                 <td>
@@ -696,7 +785,7 @@ const Checkout = ({ setCheckoutData }) => {
                                             : freeShpping
                                               ? (price - shppingPrice).toFixed(2)
                                               : price} */}
-                                        {Number(price) + Number(deliveryFee)}
+                                        {Number(price) + Number(deliveryFee) - Number(discount)}
                                         VND
                                       </span>
                                     )}
@@ -797,5 +886,4 @@ const Checkout = ({ setCheckoutData }) => {
     </Layout>
   );
 };
-
-export default connect(null, { setCheckoutData })(withAuth(Checkout));
+export default connect(null, { setCheckoutData, getCustomerAddress })(withAuth(Checkout));

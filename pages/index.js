@@ -16,7 +16,7 @@ import {
 import Subscribe from "../src/components/Subscribe";
 import Layout from "../src/layout/Layout";
 import { getCategory_1, getHome1 } from "../src/redux/action/home";
-import { getProducts } from "../src/redux/action/product";
+import { getProductFlashSell, getProductMostPurchase, getProductRecommend, getProducts } from "../src/redux/action/product";
 import { simpleProductFilter } from "../src/utils/filterProduct";
 import { createMap } from "../src/utils/utils";
 import time from "../src/utils/time";
@@ -24,27 +24,37 @@ import withoutAuth from "../src/HOC/withoutAuth";
 
 const Index = () => {
   const sliders = useSelector((state) => state.home.home1 && state.home.home1.sliders);
-  const banner_1 = useSelector((state) =>state.home.home1 && state.home.home1.banner_1);
+  const banner_1 = useSelector((state) => state.home.home1 && state.home.home1.banner_1);
   const category_2 = useSelector((state) => state.home.home1 && state.home.home1.category_2);
-  const products = useSelector((state) => state.product.products)
+  // const products = useSelector((state) => state.product.products)
+  const recommendProducts = useSelector((state) => state.product.recommended)
+  const flashSellProducts = useSelector((state) => state.product.flash_sell)
+  const mostPurchaseProducts = useSelector((state) => state.product.most_purchase)
+
+  const products = []
   const [bestDealProduct, setBestDealProductuseState] = useState([])
   const [unmissedProducts, setUnmissedProducts] = useState([])
   const [handpickedProduct, setHandpickedProduct] = useState([])
   const [purchasedProduct, setPurchasedProduct] = useState([])
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(getHome1());
     dispatch(getCategory_1());
-    dispatch(getProducts());
+    dispatch(getProductRecommend());
+    dispatch(getProductFlashSell())
+    dispatch(getProductMostPurchase())
+    // dispatch(getProducts());
   }, []);
 
   useEffect(() => {
-    setBestDealProductuseState(products);
-    setUnmissedProducts(products);
-    setHandpickedProduct(products);
-    setPurchasedProduct(products);
-  }, [products])
+    // setBestDealProductuseState(products);
+    // setUnmissedProducts(products);
+    setHandpickedProduct(recommendProducts);
+    setBestDealProductuseState(flashSellProducts);
+    setPurchasedProduct(mostPurchaseProducts)    
+    // setPurchasedProduct(products);
+  }, [recommendProducts, flashSellProducts, mostPurchaseProducts])
 
   let date = new Date();
   date.setDate(date.getDate() + 7);
@@ -254,16 +264,16 @@ const Index = () => {
               </div>
 
               <div className="col-xxl-8 col-xl-8  col-lg-8  col-md-5  col-sm-12 col-12 pl-0">
-                {purchasedProduct && (
+                {bestDealProduct && (
                   <SliderWithAutoPlay extraClass="row best-deal-product-active  pt-40 mlr-1 ml--20">
-                    {purchasedProduct.map((product) => (
+                    {bestDealProduct.map((product) => (
                       <Product3
                         key={product.id}
                         product={product}
                         productActionOff
                       />
                     ))}
-                    {purchasedProduct.map((product) => (
+                    {bestDealProduct.map((product) => (
                       <Product3
                         key={product.id}
                         product={product}

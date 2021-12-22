@@ -13,3 +13,5 @@
 @import "react-input-range/lib/css/index.css";
 @import "./custom.css";
 @import "./images.css";
+@import "../public/css/step-line.css";
+@import "../public/css/dropdown.css";

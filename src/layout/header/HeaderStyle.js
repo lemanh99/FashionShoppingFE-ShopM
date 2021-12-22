@@ -1,17 +1,31 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { storePathValues } from "../../helpers/path";
+import { getOrderLasted } from "../../redux/action/order";
 import { AuthorIcon, CartIcon, CompareIcon, WishListIcon, LoginIcon } from "./Icons";
 import { DasktopMenu } from "./Menu";
 import Search from "./Search";
 
 export const HomePageOne = () => {
+  const dispatch = useDispatch();
   const [newest, setNewest] = useState(false);
   const auth = useSelector((state) => state.auth);
+  const orderLasted = useSelector((state) => state.order.orderLasted);
   const router = useRouter();
   useEffect(() => storePathValues, [router.asPath]);
+  const [lastOrder, setLastOrder] = useState([]);
+
+  useEffect(() => {
+    if (auth.authenticate) {
+      dispatch(getOrderLasted());
+    }
+  }, [auth])
+
+  useEffect(() => {
+    setLastOrder(orderLasted);
+  }, [orderLasted])
 
   return (
     <header className="d-none d-lg-block">
@@ -68,7 +82,7 @@ export const HomePageOne = () => {
                             </li>
                           </ul>
                           <ul className="header-wishlist d-none d-md-block mr-26 pl-30 position-relative">
-                          <li className="d-none d-md-inline-block">
+                            <li className="d-none d-md-inline-block">
                               {auth.authenticate ? (<AuthorIcon />) : (<LoginIcon />)}
                             </li>
                           </ul>
@@ -105,7 +119,23 @@ export const HomePageOne = () => {
                           {/* /free-order */}
                           <ul className="track-order pl-20 pr-20 position-relative">
                             <li>
-                              <a href="/my-account">Theo dõi đơn hàng</a>
+                              {/* <a href="/my-account">Theo dõi đơn hàng</a> */}
+                              {auth.authenticate ? (<div className="dropdown">
+                                <a className="dropbtn">Theo dõi đơn hàng</a>
+                                <div className="dropdown-content">
+                                  {lastOrder.map((order) => (
+                                    <Link href={`/my-account/history-order/${order.order_code}`}>
+                                      <a className="p-name sky-color">Mã :{order.order_code}</a>
+                                    </Link>
+                                    // <a href="#">Mã: {order.order_code}</a>
+                                  ))}
+                                <Link href={`/my-account/history-order`}>
+                                      <a className="p-name sky-color">Xem tất cả</a>
+                                    </Link>
+                                </div>
+                              </div>) : (<a href="/login">Theo dõi đơn hàng</a>)}
+
+
                             </li>
                           </ul>
                           {/* /news-letter */}

@@ -11,7 +11,7 @@ import {
 
 const initialState = {
   search: "",
-  price: { min: 0, max: 200 },
+  price: { min: 0, max: 5000000 },
   brand: [],
   size: [],
   colors: [],

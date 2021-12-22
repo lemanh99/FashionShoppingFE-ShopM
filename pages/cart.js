@@ -136,40 +136,6 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                 </tbody>
               </table>
             </div>
-            <div className="coupon-and-update-area pt-20">
-              <div className="row">
-                <div className="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12">
-                  <div className="coupon-code-area pt-15">
-                    <form onSubmit={(e) => e.preventDefault()}>
-                      <input
-                        type="text"
-                        placeholder="Mã giảm giá"
-                        className="pl-15 mr-10 pt-0 mb-15 d-inline-block width50"
-                      />
-                      <a
-                        href="#"
-                        className="web-btn h2-theme-border1 d-inline-block text-uppercase white  rounded-0 h2-theme-color cart-c-btn h2-theme-bg position-relative over-hidden pl-40 pr-40 ptb-17 mr-20"
-                      >
-                        Áp dụng
-                      </a>
-                    </form>
-                  </div>
-                </div>
-                {/* /col */}
-                <div className="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12">
-                  <div className="update-area d-flex justify-content-xl-end">
-                    <a
-                      href="#"
-                      className="web-btn h2-theme-border1 d-inline-block text-uppercase white mt-15 rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-60 pr-60 ptb-17 mr-20"
-                    >
-                      Cập nhật sản phẩm
-                    </a>
-                  </div>
-                </div>
-                {/* /col */}
-              </div>
-              {/* /row */}
-            </div>
             <div className="row">
               <div className="col-xl-6  col-lg-6  col-md-12  col-sm-12 col-12 offset-xl-6 offset-lg-6">
                 <div className="total-price-area mt-60">

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import { connect } from "react-redux";
-import { getProductByCategory, getProducts } from "../../src/redux/action/product";
+import { getProductFilterByApi, getProducts } from "../../src/redux/action/product";
 import { getProductByFilter } from "../../src/utils/filterProduct";
 import { hideFromArr } from "../../src/utils/utils";
 import Paggination from "../components/Paggination";
@@ -17,30 +17,28 @@ const ShopLayout = ({
   keyValueForQurey,
   value,
   active_,
-  getProductByCategory
+  getProductFilterByApi
 }) => {
-  const router = useRouter();
-  const { name } = router.query;
-
   useEffect(() => {
-    if (name) {
-      console.log("chay day", name);
-      getProductByCategory(name);
+    if (value) {
+      if(keyValueForQurey=="catagory"){
+        getProductFilterByApi({category_name: value});
+      }else if(keyValueForQurey=="search"){
+        getProductFilterByApi({search_keyword: value})
+      }else if(keyValueForQurey=="colors"){
+        getProductFilterByApi({color_name: value})
+      }else if(keyValueForQurey=="sizes"){
+        getProductFilterByApi({size_name: value})
+      }else if(keyValueForQurey=="tags"){
+        getProductFilterByApi({tag: value})
+      }
     }
     else { getProducts() };
-  }, [name]);
+  }, [value]);
   const [active, setActive] = useState(active_ ? active_ : 0);
   let sort = 6;
-  let products =
-    allProducts && value
-      ? allProducts.filter((product) =>
-        product[keyValueForQurey]
-          .toLocaleString()
-          .toLowerCase()
-          .split(",")
-          .includes(value)
-      )
-      : allProducts;
+  let products = allProducts;
+  console.log(products);
   return (
     <div className="product-area shop-product mt-20 mb-100">
       <div className="container">
@@ -174,4 +172,4 @@ const mapStateToProps = (state) => ({
   ),
 });
 
-export default connect(mapStateToProps, { getProducts, getProductByCategory })(ShopLayout);
+export default connect(mapStateToProps, { getProducts, getProductFilterByApi })(ShopLayout);

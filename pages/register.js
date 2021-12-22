@@ -1,17 +1,21 @@
 import { Formik } from "formik";
+import DatePicker from "react-datepicker";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import { signup } from "../src/redux/action/auth";
 import { registerSchema } from "../src/utils/yupModal";
+import "react-datepicker/dist/react-datepicker.css";
+import { convert_datetime_to_day } from "../src/utils/time";
 
 const Register = () => {
   const Router = useRouter();
   const auth = useSelector((state) => state.auth);
+  const [birthDay, setBirthDay] = useState(new Date());
   const dispatch = useDispatch();
   const submit = (users) => {
     const user = {
@@ -20,6 +24,8 @@ const Register = () => {
       phone_number: users.phoneNumber,
       email: users.email,
       password: users.password,
+      gender_id: users.gender,
+      birth_date: convert_datetime_to_day(birthDay)
     };
     dispatch(signup(user));
   }
@@ -67,33 +73,98 @@ const Register = () => {
                           handleBlur={handleBlur}
                           handleChange={handleChange}
                         />
-                        <InputGroup
-                          label="Họ"
-                          id="firstName"
-                          name="firstName"
-                          type="string"
-                          placeholder="Họ"
-                          values={values.firstName}
-                          errors={values.errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                        />
-                        <InputGroup
-                          label="Tên"
-                          id="lastName"
-                          name="lastName"
-                          type="string"
-                          placeholder="Tên"
-                          values={values.lastName}
-                          errors={values.errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                        />
+                        <div className="row">
+                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                            <InputGroup
+                              label="Họ"
+                              id="firstName"
+                              name="firstName"
+                              type="string"
+                              placeholder="Họ"
+                              values={values.firstName}
+                              errors={values.errors}
+                              handleBlur={handleBlur}
+                              handleChange={handleChange}
+                            />
+                          </div>
+                          {/* /col */}
+                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                            <InputGroup
+                              label="Tên"
+                              id="lastName"
+                              name="lastName"
+                              type="string"
+                              placeholder="Tên"
+                              values={values.lastName}
+                              errors={values.errors}
+                              handleBlur={handleBlur}
+                              handleChange={handleChange}
+                            />
+                          </div>
+                          {/* /col */}
+                        </div>
+                        <div className="row">
+                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                            <div className="country-select">
+                              <label>
+                                Giới tính <span className="required">*</span>
+                              </label>
+                              <select
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                value={values.gender}
+                                name="gender"
+                                className="nice-select w-100 primary-bg2 mb-20 mb-0"
+                                style={{ height: '60px', fontSize: '15px' }}
+                              >
+                                <option value="1">Nam</option>
+                                <option value="2"> Nữ</option>
+                                <option value="3"> Khác</option>
+                                <div
+                                  id="val-username1-error"
+                                  className="invalid-feedback animated fadeInUp mb-3"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.district2}
+                                </div>
+                              </select>
+                            </div>
+                          </div>
+                          {/* /col */}
+                          <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+
+                            <label>
+                              Ngày sinh <span className="required">*</span>
+                            </label>
+                            <DatePicker
+                              style={{ width: 180 }}
+                              selected={birthDay}
+                              onChange={(date) => setBirthDay(date)}
+                              mode="date"
+                              format="YYYY-MM-DD"
+                              maxDate={Date.now.toString()}
+                              confirmBtnText="Confirm"
+                              cancelBtnText="Cancel"
+                              showIcon={true}
+                              customStyles={{
+                                dateInput: {
+                                  marginLeft: 0,
+                                  borderColor: "#fff"
+                                }
+                              }}
+                            // onDateChange={date => setFieldValue("dueDate", date)}
+                            // onTouch={setFieldTouched}
+                            />
+                          </div>
+                          {/* /col */}
+                        </div>
+
+
                         <InputGroup
                           label="Số điện thoại"
                           id="phoneNumber"
                           name="phoneNumber"
-                          type="number"
+                          type="text"
                           placeholder="Số điện thoại"
                           values={values.phoneNumber}
                           errors={values.errors}

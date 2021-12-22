@@ -71,9 +71,9 @@ const ProductModal = ({
     e.preventDefault();
     compare(product);
     if (compare_) {
-      toast.error("Remove item in compare.");
+      toast.error("Bạn đã xóa 1 sản phẩm so sánh");
     } else {
-      toast.success("Add item in compare.");
+      toast.success("Thêm sản phẩm so sánh thành công");
     }
   };
   let removeformCat = [

@@ -1,5 +1,6 @@
 import moment from "moment";
 import Subscribe from "../../components/Subscribe";
+import Link from "next/dist/client/link";
 
 export const DefaultFooter = ({ footerWhite }) => {
   return (
@@ -16,28 +17,32 @@ export const DefaultFooter = ({ footerWhite }) => {
                     <div className="footer-widget pb-30">
                       <ul className="footer-account">
                         <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            Tài khoản của tôi
-                          </a>
+                          <Link href={`/my-account`}>
+                            <a
+                              className="position-relative d-inline-block"
+                            >
+                              Tài khoản của tôi
+                            </a>
+                          </Link>
+                        </li>
+
+                        <li>
+                          <Link href='/my-account/history-order'>
+                            <a
+                              className="position-relative d-inline-block"
+                            >
+                              Đơn hàng của tôi
+                            </a>
+                          </Link>
                         </li>
                         <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            Đơn hàng của tôi
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            href="#"
-                            className="position-relative d-inline-block"
-                          >
-                            Theo dõi đơn hàng
-                          </a>
+                          <Link href='/my-account/history-order'>
+                            <a
+                              className="position-relative d-inline-block"
+                            >
+                              Theo dõi đơn hàng
+                            </a>
+                          </Link>
                         </li>
                       </ul>
                     </div>
