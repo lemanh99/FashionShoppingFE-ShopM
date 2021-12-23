@@ -22,9 +22,9 @@ export const convert_datetime_from_timestamp = (timestamps) => {
   var month = a.getMonth();
   var date = a.getDate();
   var hour = a.getHours();
-  var min = a.getMinutes();
-  var sec = a.getSeconds();
-  var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min + ':' + sec;
+  var min = "0" + a.getMinutes();
+  var sec = "0" + a.getSeconds();
+  var time = date + '/' + month + '/' + year + ' ' + hour + ':' + min.substr(-2) + ':' + sec.substr(-2);
   return time;
 }
 

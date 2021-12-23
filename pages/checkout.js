@@ -49,6 +49,7 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
   const [active3, setActive3] = useState(false);
   const [active4, setActive4] = useState(false);
   const [tokenUser, setTokenUser] = useState(null);
+  const [delivery, setDelivery] = useState([]);
 
   async function getCountry() {
     const res = await axios.get('https://provinces.open-api.vn/api/?depth=3')
@@ -61,7 +62,15 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
     setTokenUser(token);
     getCustomerAddress();
     setErrorCoupon("");
+    axiosIntance.get(`setting/delivery/`).then((res) => {
+      if (res.status == 200) {
+        const { data } = res.data;
+        setDelivery(data);
+      }
+    })
   }, [])
+  console.log("defee", deliveryFee)
+
   useEffect(() => {
     if (addressCustomer && addressCustomer.length > 0) {
       if (formikRef.current) {
@@ -722,43 +731,32 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
                                 </td>
                               </tr>
                               <tr className="shipping">
-                                <th>Phí giao hàng</th>
-                                <td>
-                                  {deliveryFee} VND
-                                  {/* <ul>
-                                    <li className="d-flex">
+                                <th rowSpan={delivery ? delivery.length + 1 : 1}>Đơn vị vận chuyển</th>
+                              </tr>
+                              {delivery && delivery.length > 0 ? (
+                                delivery.map((del) => (
+                                  <tr className="shipping">
+                                    <td className="d-flex">
                                       <input
                                         type="radio"
-                                        checked={flat}
-                                        onClick={() => setFlat(!flat)}
+                                        // checked={flat}
+                                        onClick={(e) => setDeliveryFee(e.target.value)}
                                         className="r-inpt mb-2 mr-1"
+                                        style={{marginTop: '5px'}}
+                                        name="delivery"
+                                        value={del.delivery_fee?del.delivery_fee:0}
                                       />
                                       <label>
-                                        Flat Rate:{" "}
+                                        {del.name}{": "}
                                         <span className="amount">
                                           {" "}
-                                          {flatPrice.toFixed(2)} VND
+                                          {del.delivery_fee?del.delivery_fee:0} VND
                                         </span>
-                                      </label>
-                                    </li>
-                                    <li className="d-flex">
-                                      <input
-                                        type="radio"
-                                        checked={freeShpping}
-                                        onClick={() =>
-                                          setFreeShpping(!freeShpping)
-                                        }
-                                        className="r-inpt mb-2 mr-1"
-                                      />
-                                      <label>
-                                        Free Shipping:
-                                        {shppingPrice.toFixed(2)} VND
-                                      </label>
-                                    </li>
-                                    <li />
-                                  </ul> */}
-                                </td>
-                              </tr>
+                                      </label></td>
+                                  </tr>
+                                ))
+                              ) : null}
+
                               {discount ? (
                                 <tr className="cart-subtotal" >
                                   <th>Giảm giá</th>

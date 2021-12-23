@@ -26,6 +26,7 @@ const OrderHistoryDetail = ({ }) => {
     const [tracking, setTracking] = useState({})
     const [addressApi, setAddressApi] = useState([]);
     const [items, setItems] = useState([])
+    const [status, setStatus] = useState(2);
 
 
     useEffect(() => {
@@ -34,14 +35,25 @@ const OrderHistoryDetail = ({ }) => {
                 setAddressApi(res.data)
             }
         })
-        axiosIntance.get(`order/detail/ORD1638288187672752`).then((res) => {
-            if (res.status == 200) {
-                const { data } = res.data;
-                setOrderDetail(data)
-                setTracking(data.tracking)
-            }
-        })
-    }, [])
+        if (order_code) {
+            axiosIntance.get(`order/detail/${order_code}`).then((res) => {
+                if (res.status == 200) {
+                    const { data } = res.data;
+                    setOrderDetail(data)
+                    setTracking(data.tracking)
+                    if (data && data.shipping) {
+                        if (data.shipping.shipping_status_name === "transported") {
+                            setStatus(3)
+                        } else if (data.shipping.shipping_status_name === "delivered") {
+                            setStatus(4)
+                        }
+                    }
+                } else {
+                    router.push("/my-account/history-order")
+                }
+            })
+        }
+    }, [order_code])
 
     useEffect(() => {
         if (tracking) {
@@ -107,7 +119,7 @@ const OrderHistoryDetail = ({ }) => {
                                 {/* /col */}
                                 <SideBarMyAccount />
                                 <div className="col-xl-9  col-lg-9  col-md-12  col-sm-12 col-12">
-                                    
+
                                     <div className="checkbox-form">
                                         <h4 className="pb-10 mb-20 border-b-light-gray2">
 
@@ -175,8 +187,7 @@ const OrderHistoryDetail = ({ }) => {
                                             </table>
                                         </div>
                                     </div>
-
-                                    <StepLine />
+                                    <StepLine status={status} />
                                     <TimeLine items={items} />
                                 </div>
                                 {/* /col */}
@@ -231,7 +242,11 @@ const OrderHistoryDetail = ({ }) => {
                                                 <table className="width100">
                                                     <thead>
                                                         <tr>
-                                                            <th className="product-name">Mã đơn hàng : {orderDetail ? (orderDetail.order_code) : null}</th>
+                                                            <th className="product-name">Mã đơn hàng : {orderDetail ? (
+                                                                <Link href={`/order-success/${orderDetail.order_code}`}>
+                                                                    <a className="p-name sky-color">{orderDetail.order_code}</a>
+                                                                </Link>
+                                                            ) : null}</th>
                                                             <th className="product-name">Mã vận đơn : {orderDetail && orderDetail.shipping ? (orderDetail.shipping.tracking_number) : null}</th>
                                                         </tr>
                                                     </thead>
@@ -269,13 +284,23 @@ const OrderHistoryDetail = ({ }) => {
                                                                 </strong>
                                                             </td>
                                                         </tr>
-
                                                     </tbody>
+                                                    {orderDetail && orderDetail.order_status_name !== "CANCELLED" ? (
+                                                        <tfoot>
+                                                            <tr className="cart-subtotal">
+                                                                <th>Chi tiết: </th>
+                                                            </tr>
+                                                        </tfoot>
+                                                    ) : null}
+
                                                 </table>
                                             </div>
                                         </div>
 
                                     </div>
+                                    {orderDetail && orderDetail.order_status_name !== "CANCELLED" ? (
+                                        <StepLine status={2} />
+                                    ) : null}
 
                                 </div>
                                 {/* /col */}

@@ -125,13 +125,13 @@ export const HomePageOne = () => {
                                 <div className="dropdown-content">
                                   {lastOrder.map((order) => (
                                     <Link href={`/my-account/history-order/${order.order_code}`}>
-                                      <a className="p-name sky-color">Mã :{order.order_code}</a>
+                                      <a className="p-name drowpdown-text-color">Mã: {order.order_code}</a>
                                     </Link>
                                     // <a href="#">Mã: {order.order_code}</a>
                                   ))}
-                                <Link href={`/my-account/history-order`}>
-                                      <a className="p-name sky-color">Xem tất cả</a>
-                                    </Link>
+                                  <Link href={`/my-account/history-order`}>
+                                    <a className="p-name drowpdown-text-color" style={{textAlign: 'center'}}>Xem tất cả</a>
+                                  </Link>
                                 </div>
                               </div>) : (<a href="/login">Theo dõi đơn hàng</a>)}
 

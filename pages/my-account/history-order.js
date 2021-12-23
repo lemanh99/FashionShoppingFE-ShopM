@@ -1,4 +1,5 @@
 // import swal from "@sweetalert/with-react";
+import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
 import SideBarMyAccount from "../../src/components/myaccount/sidebar";
@@ -20,7 +21,6 @@ const OrderHistory = ({ getOrderHistory, cancelOrder }) => {
   }, [orders])
 
   const handleCancel = (value) => {
-    console.log("dá", value)
     cancelOrder(value)
   }
 
@@ -73,7 +73,18 @@ const OrderHistory = ({ getOrderHistory, cancelOrder }) => {
                             <tbody>
                               {listOrder && listOrder.map((order) => (
                                 <>
-                                  <div key={order.id} className="mt-4 mb-1"><b>Ngày order: </b> {convert_datetime_from_timestamp(order.order_date)}</div>
+                                  <br />
+                                  <tr>
+                                    <td colSpan={2}>
+                                      <b>Mã đơn hàng: </b>
+                                      <Link href={`/my-account/history-order/${order.order_code}`}>
+                                        <a className="p-name sky-color">{order.order_code}</a>
+                                      </Link>
+                                    </td>
+                                    <td colSpan={4}>
+                                      <b>Ngày order: </b> {convert_datetime_from_timestamp(order.order_date)}
+                                    </td>
+                                  </tr>
                                   {order.order_item && order.order_item.map((item) => (
                                     <>
                                       <tr>
@@ -90,7 +101,7 @@ const OrderHistory = ({ getOrderHistory, cancelOrder }) => {
                                                 className="bt-btn theme-btn"
                                                 style={{ padding: '9px 14px' }}
                                                 value={order.id}
-                                                onClick={(e)=>handleCancel(e.target.value)}
+                                                onClick={(e) => handleCancel(e.target.value)}
                                               >Hủy đơn hàng</button>
                                             </div>
                                           ) : null}

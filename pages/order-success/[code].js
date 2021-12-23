@@ -1,3 +1,4 @@
+import axios from "axios";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -7,12 +8,14 @@ import Layout from "../../src/layout/Layout";
 import PageBanner from "../../src/layout/PageBanner";
 import { getOrderByOrderCode } from "../../src/redux/action/order";
 import { getCarts } from "../../src/redux/action/utilis";
+import { getAddressVietNam } from "../../src/utils/address";
 
 const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
   const order = useSelector((state) => state.order);
   const [dataOrder, setDataOrder] = useState({})
   const [shippingAddress, setShippingAddress] = useState({})
   const [orderItem, setOrderItem] = useState([])
+  const [addressApi, setAddressApi] = useState([]);
 
   const router = useRouter();
   const { code } = router.query;
@@ -20,6 +23,11 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
   useEffect(() => {
     if (code) {
       getOrderByOrderCode(code);
+      axios.get('https://provinces.open-api.vn/api/?depth=3').then((res) => {
+        if (res.status == 200) {
+            setAddressApi(res.data)
+        }
+    })
     }
     getCarts();
 
@@ -131,13 +139,12 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
                   <div className="col-md-6">
                     <h5>Thông tin giao hàng</h5>
                     <p className="text-capitalize">
-                    <b>Họ tên người nhận:</b> {" "}
+                      <b>Họ tên người nhận:</b> {" "}
                       {shippingAddress && shippingAddress.first_name}{" "}{shippingAddress && shippingAddress.last_name}
                     </p>
                     <p>
                       <b>Địa chỉ nhận hàng:</b> {" "}
-                      {shippingAddress && shippingAddress.street}{" "}{shippingAddress && shippingAddress.village}{" "}
-                      {shippingAddress && shippingAddress.district}{" "}{shippingAddress && shippingAddress.city}
+                      {shippingAddress && shippingAddress.street}{" "}{shippingAddress?(getAddressVietNam(addressApi, shippingAddress.city, shippingAddress.district, shippingAddress.village)):null}
                     </p>
                     <p>
                       <b>Số điện thoại nhận hàng:</b> {" "}
@@ -145,14 +152,17 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
                     </p>
 
                   </div>
-                  <div className="col-12 mt-4">
-                    <div className="h2-theme-bg  p-3 mt-4 text-center">
-                      <h5 className="text-white">Ngày dự kiến nhận hàng</h5>
-                      <h2 className="text-white">
-                        {moment(date).format("MMMM DD, YYYY")}
-                      </h2>
+                  {shippingAddress && shippingAddress.shipping_status_name != "delivered" &&shippingAddress.shipping_status_name != "cancelled" ? (
+                    <div className="col-12 mt-4">
+                      <div className="h2-theme-bg  p-3 mt-4 text-center">
+                        <h5 className="text-white">Ngày dự kiến nhận hàng</h5>
+                        <h2 className="text-white">
+                          {moment(date).format("DD-MM-YYYY")}
+                        </h2>
+                      </div>
                     </div>
-                  </div>
+                  ) : null}
+
                 </div>
               </div>
             </div>
