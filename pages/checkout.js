@@ -2,6 +2,7 @@
 import { CardElement, Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 import { Formik } from "formik";
 import Router from "next/router";
 import { Fragment, useEffect, useRef, useState } from "react";
@@ -34,7 +35,7 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [wards, setWards] = useState([]);
-  const [deliveryFee, setDeliveryFee] = useState(30000);
+  const [deliveryFee, setDeliveryFee] = useState(0);
   const [discount, setDiscount] = useState(0)
   const [coupon, setCoupon] = useState("")
   const [errorCoupon, setErrorCoupon] = useState("")
@@ -50,6 +51,7 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
   const [active4, setActive4] = useState(false);
   const [tokenUser, setTokenUser] = useState(null);
   const [delivery, setDelivery] = useState([]);
+  const [deliveryId, setDeliveryId] = useState(null);
 
   async function getCountry() {
     const res = await axios.get('https://provinces.open-api.vn/api/?depth=3')
@@ -69,7 +71,6 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
       }
     })
   }, [])
-  console.log("defee", deliveryFee)
 
   useEffect(() => {
     if (addressCustomer && addressCustomer.length > 0) {
@@ -110,7 +111,6 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
 
     }
   }, [addressCustomer])
-
 
   const getDistrictByProvinces = (value) => {
     const province_info = provinces.filter((province) => province.codename == value)[0]
@@ -156,8 +156,8 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
     }
     const shipping = {
       ...addressUser,
-      customer_address_id: null,
-      delivery_id: 1,
+      customer_address_id: !differentAddresses ? addressCustomer[0].id : null,
+      delivery_id: deliveryId,
       country: "viet_nam",
       postal_code: "000000",
 
@@ -187,6 +187,18 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
     e.preventDefault();
     getCoupon(coupon);
   }
+  const handleDeliver = (e) => {
+    const id = e.target.value
+    setDeliveryId(id)
+    const del = delivery.find((d) => Number(d.id) === Number(id))
+    if (del) {
+      setDeliveryFee(del.delivery_fee ? del.delivery_fee : 0)
+    } else {
+      setDeliveryFee(0)
+    }
+    setFlat(true)
+
+  }
 
   return (
     <Layout sticky textCenter container footerBg>
@@ -213,20 +225,23 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
           initialValues={checkoutSchema.initialValue}
           validationSchema={checkoutSchema.schema}
           onSubmit={(values, { setSubmitting }) => {
-            setTimeout(() => {
-              const shipping = getInfomationOrder(values)
-              setCheckoutData(shipping);
-              Router.push(
-                {
-                  pathname: "/payment-cart",
-                },
-                undefined,
-                { shallow: true }
-              );
-
-
-              setSubmitting(false);
-            }, 400);
+            if (flat) {
+              setTimeout(() => {
+                const shipping = getInfomationOrder(values)
+                setCheckoutData(shipping);
+                Router.push(
+                  {
+                    pathname: "/payment-cart",
+                  },
+                  undefined,
+                  { shallow: true }
+                );
+              }, 400);
+            } else {
+              console.log("Loi")
+              toast.error("Vui lòng chọn đơn vị giao hàng")
+            }
+            setSubmitting(false);
           }}
         >
           {({
@@ -735,25 +750,27 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
                               </tr>
                               {delivery && delivery.length > 0 ? (
                                 delivery.map((del) => (
-                                  <tr className="shipping">
-                                    <td className="d-flex">
-                                      <input
-                                        type="radio"
-                                        // checked={flat}
-                                        onClick={(e) => setDeliveryFee(e.target.value)}
-                                        className="r-inpt mb-2 mr-1"
-                                        style={{marginTop: '5px'}}
-                                        name="delivery"
-                                        value={del.delivery_fee?del.delivery_fee:0}
-                                      />
-                                      <label>
-                                        {del.name}{": "}
-                                        <span className="amount">
-                                          {" "}
-                                          {del.delivery_fee?del.delivery_fee:0} VND
-                                        </span>
-                                      </label></td>
-                                  </tr>
+                                  del.visible === true ? (
+                                    <tr className="shipping">
+                                      <td className="d-flex">
+                                        <input
+                                          type="radio"
+                                          // checked={flat}
+                                          onClick={(e) => handleDeliver(e)}
+                                          className="r-inpt mb-2 mr-1"
+                                          style={{ marginTop: '5px' }}
+                                          name="delivery"
+                                          value={del.id}
+                                        />
+                                        <label>
+                                          {del.name}{": "}
+                                          <span className="amount">
+                                            {" "}
+                                            {del.delivery_fee ? del.delivery_fee : 0} VND
+                                          </span>
+                                        </label></td>
+                                    </tr>
+                                  ) : null
                                 ))
                               ) : null}
 

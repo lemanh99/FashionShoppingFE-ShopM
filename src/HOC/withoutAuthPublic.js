@@ -15,7 +15,7 @@ const withoutAuthPublic = (WrappedComponent) => {
         useEffect(async () => {
             const token = localStorage.getItem("token");
             // if no accessToken was found,then we redirect to "/" page.
-            const pathCurrent =getCurrentPath()
+            let pathCurrent =getCurrentPath()
             if(!pathCurrent){
                 pathCurrent =router.pathname
             }

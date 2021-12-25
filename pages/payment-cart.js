@@ -21,6 +21,7 @@ import {
 } from "../src/utils/yupModal";
 import PaymentPaypal from "../src/components/payment/paypal";
 import { addOrder } from "../src/redux/action/order";
+import axiosIntance from "../src/helpers/axios";
 
 const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
@@ -30,9 +31,11 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
   const order = useSelector((state) => state.order);
 
   const [convertVND, setConvertVND] = useState(null);
-  const [deliveryFee, setDeliveryFee] = useState(30000);
+  const [deliveryFee, setDeliveryFee] = useState(0);
   const price = totalPrice(carts);
   const [tokenUser, setTokenUser] = useState(null);
+  const [discount, setDiscount] = useState(null);
+  const [payment, setPayment] = useState([])
 
   async function getPriceVNDOnUSD() {
     const res = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=${process.env.EXCHANGE_RATE_CONVERT_KEY}`)
@@ -52,7 +55,22 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
     getPriceVNDOnUSD()
     const token = localStorage.getItem("token")
     setTokenUser(token);
+    axiosIntance.get(`setting/payment/`).then((res) => {
+      if (res.status == 200) {
+        const { data } = res.data;
+        setPayment(data);
+      }
+    })
   }, [])
+
+  useEffect(() => {
+    if (checkoutData && checkoutData.deliveryFee) {
+      setDeliveryFee(checkoutData.deliveryFee);
+    }
+    if (checkoutData && checkoutData.discount) {
+      setDiscount(checkoutData.discount);
+    }
+  }, [checkoutData])
 
   useEffect(() => {
     const total = convertVND ? Number((Number(price) + Number(deliveryFee)) / Number(convertVND)).toFixed(2) : (Number(price) + Number(deliveryFee)) / Number(convertVND)
@@ -89,14 +107,17 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
       payment_id: value.payment_id,
       total: price,
       subtotal: Number(price) + Number(deliveryFee),
-      discount: checkoutData&&checkoutData.discount?Number(checkoutData.discount):0,
+      discount: checkoutData && checkoutData.discount ? Number(checkoutData.discount) : 0,
       delivery_fee_total: deliveryFee,
-      payment_total: Number(price) + Number(deliveryFee)-Number(checkoutData&&checkoutData.discount?checkoutData.discount:0),
+      payment_total: Number(price) + Number(deliveryFee) - Number(checkoutData && checkoutData.discount ? checkoutData.discount : 0),
       shipping: checkoutData ? checkoutData.shipping : {},
       order_item: order_item
     }
-
     addOrder(orders);
+  }
+  const getPayment = (name) => {
+    const pay = payment.find((p) => String(p.payment_method).toLowerCase() === name && p.visible == true)
+    return pay
   }
 
   return (
@@ -178,14 +199,13 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                               </td>
                             </tr>
                           ) : null}
-
                           <tr className="order-total">
                             <th>Tổng thanh toán</th>
                             <td>
                               <strong>
                                 {price && (
                                   <span className="amount">
-                                    {Number(price) + Number(deliveryFee)-Number(checkoutData&&checkoutData.discount?checkoutData.discount:0)}
+                                    {Number(price) + Number(deliveryFee) - Number(checkoutData && checkoutData.discount ? checkoutData.discount : 0)}
                                     VND
                                   </span>
                                 )}
@@ -254,7 +274,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                                   onClick={(e) => {
                                     paymentUser({
                                       order_status_id: 2,
-                                      payment_status_id: 1,
+                                      payment_status_id: getPayment("cod") ? getPayment("cod").id : null,
                                       payment_id: 2,
                                     })
                                   }}
@@ -277,7 +297,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                             </Accordion.Toggle>
                           </h2>
                           <Accordion.Collapse eventKey="2">
-                            <PaymentPaypal total={Number((Number(price) + Number(deliveryFee)-Number(checkoutData&&checkoutData.discount?checkoutData.discount:0)) / Number(23000)).toFixed(2)} token={tokenUser} paymentUser={paymentUser} />
+                            <PaymentPaypal total={Number((Number(price) + Number(deliveryFee) - Number(checkoutData && checkoutData.discount ? checkoutData.discount : 0)) / Number(23000)).toFixed(2)} token={tokenUser} paymentUser={paymentUser} />
                           </Accordion.Collapse>
                         </div>
                       </Accordion>
