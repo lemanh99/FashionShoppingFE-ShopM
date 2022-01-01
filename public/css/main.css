@@ -2023,10 +2023,11 @@ button.mobile-menubar.bar-style {
   height: 43px;
   line-height: 43px;
   transition: 0.3s; }
-  .product-action li a:hover, .product-action li a.active {
+.product-action li a:hover, .product-action li a.active {
     color: #fff;
     background: #4c80fa;
-    background: #3dbebd; }
+    /* background: #3dbebd;  */
+  }
 
 .nice-select {
   color: #222;

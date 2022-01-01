@@ -52,7 +52,7 @@ export const SliderWithAutoPlay = ({ children, extraClass }) => {
     arrows: false,
     infinite: true,
     autoplay: true,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     responsive: [
       {
@@ -157,6 +157,46 @@ export const SliderWithAutoPlayNumberShow = ({ children, extraClass, slidesToSho
         },
       },
     ],
+  };
+  return (
+    <Slider
+      className={`${extraClass ? extraClass : "slider-active"}`}
+      {...settings}
+    >
+      {children}
+    </Slider>
+  );
+};
+
+export const SliderWithAutoPlayTwoRows = ({ children, extraClass, rows }) => {
+  var settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    autoplay: false,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    rows: rows?rows:2,
+  };
+  return (
+    <Slider
+      className={`${extraClass ? extraClass : "slider-active"}`}
+      {...settings}
+    >
+      {children}
+    </Slider>
+  );
+};
+
+export const SliderWithAutoPlayImplement = ({ children, extraClass }) => {
+  var settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    autoplay: true,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    rows: 2,
   };
   return (
     <Slider

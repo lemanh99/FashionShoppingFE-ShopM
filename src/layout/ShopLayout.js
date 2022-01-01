@@ -7,13 +7,16 @@ import { getProductByFilter } from "../../src/utils/filterProduct";
 import { hideFromArr } from "../../src/utils/utils";
 import Paggination from "../components/Paggination";
 import Product3 from "../components/products/Product3";
+import Product5 from "../components/products/Product5";
 import ProductListView from "../components/products/ProductListView";
 import Filter from "../components/products/shop/Filter";
+import withoutAuthPublic from "../HOC/withoutAuthPublic";
 import { activeData, dblock } from "../utils/utils";
 
 const ShopLayout = ({
   getProducts,
   allProducts,
+  loading,
   keyValueForQurey,
   value,
   active_,
@@ -21,24 +24,23 @@ const ShopLayout = ({
 }) => {
   useEffect(() => {
     if (value) {
-      if(keyValueForQurey=="catagory"){
-        getProductFilterByApi({category_name: value});
-      }else if(keyValueForQurey=="search"){
-        getProductFilterByApi({search_keyword: value})
-      }else if(keyValueForQurey=="colors"){
-        getProductFilterByApi({color_name: value})
-      }else if(keyValueForQurey=="sizes"){
-        getProductFilterByApi({size_name: value})
-      }else if(keyValueForQurey=="tags"){
-        getProductFilterByApi({tag: value})
+      if (keyValueForQurey == "catagory") {
+        getProductFilterByApi({ category_name: value });
+      } else if (keyValueForQurey == "search") {
+        getProductFilterByApi({ search_keyword: value })
+      } else if (keyValueForQurey == "colors") {
+        getProductFilterByApi({ color_name: value })
+      } else if (keyValueForQurey == "sizes") {
+        getProductFilterByApi({ size_name: value })
+      } else if (keyValueForQurey == "tags") {
+        getProductFilterByApi({ tag: value })
       }
     }
     else { getProducts() };
   }, [value]);
   const [active, setActive] = useState(active_ ? active_ : 0);
-  let sort = 6;
+  let sort = 12;
   let products = allProducts;
-  console.log(products);
   return (
     <div className="product-area shop-product mt-20 mb-100">
       <div className="container">
@@ -110,45 +112,53 @@ const ShopLayout = ({
                     </div>
                   </div>
                 </div>
-
-                {products && products.length > 0 ? (
-                  <Tab.Content>
-                    <Tab.Pane eventKey="grid">
-                      <div className="popular-product">
-                        <div className="row shop-page-product-active">
-                          {products &&
-                            products.map((product, i) => (
-                              <div
-                                className={`col-md-4  col-sm-6 ${dblock(
-                                  active,
-                                  i,
-                                  sort
-                                )}`}
-                                key={product.id}
-                              >
-                                {/* <Product product={product} /> */}
-                                <Product3 product={product} productActionOff />
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                    </Tab.Pane>
-
-                    <Tab.Pane eventKey="list">
-                      {products &&
-                        products.map((product, i) => (
-                          <div
-                            className={dblock(active, i, sort)}
-                            key={product.id}
-                          >
-                            <ProductListView product={product} />
-                          </div>
-                        ))}
-                    </Tab.Pane>
-                  </Tab.Content>
+                {loading ? (
+                  <div className="d-flex justify-content-center">
+                    <div className="spinner-border" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
                 ) : (
-                  <h2 className="text-center">Không có sản phẩm nào</h2>
+                  products && products.length > 0 ? (
+                    <Tab.Content>
+                      <Tab.Pane eventKey="grid">
+                        <div className="popular-product">
+                          <div className="row shop-page-product-active">
+                            {products &&
+                              products.map((product, i) => (
+                                <div
+                                  className={`col-md-3  col-sm-6 ${dblock(
+                                    active,
+                                    i,
+                                    sort
+                                  )}`}
+                                  key={product.id}
+                                >
+                                  {/* <Product product={product} /> */}
+                                  <Product5 product={product} productActionOff />
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      </Tab.Pane>
+
+                      <Tab.Pane eventKey="list">
+                        {products &&
+                          products.map((product, i) => (
+                            <div
+                              className={dblock(active, i, sort)}
+                              key={product.id}
+                            >
+                              <ProductListView product={product} />
+                            </div>
+                          ))}
+                      </Tab.Pane>
+                    </Tab.Content>
+                  ) : (
+                    <h2 className="text-center">Không có sản phẩm nào</h2>
+                  )
                 )}
+
               </Tab.Container>
               <div className="mt-5">
                 <Paggination
@@ -170,6 +180,7 @@ const mapStateToProps = (state) => ({
   allProducts: hideFromArr(
     getProductByFilter(state.product.products, state.filter)
   ),
+  loading: state.product.loading
 });
 
-export default connect(mapStateToProps, { getProducts, getProductFilterByApi })(ShopLayout);
+export default connect(mapStateToProps, { getProducts, getProductFilterByApi })( withoutAuthPublic(ShopLayout));

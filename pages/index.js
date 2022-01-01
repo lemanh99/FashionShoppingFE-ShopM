@@ -2,25 +2,20 @@ import Link from "next/link";
 import moment from "moment";
 import { Fragment, useEffect, useState } from "react";
 import { connect, useDispatch, useSelector } from "react-redux";
-import HomePageBlog from "../src/components/blog/HomePageBlog";
-import Product from "../src/components/products/Product";
-import Product2 from "../src/components/products/Product2";
-import Product3 from "../src/components/products/Product3";
-import BrandSlider from "../src/components/sliders/BrandSlider";
 import { HomePageSliderWithOutArrow } from "../src/components/sliders/HomePageBannerSliders";
 import {
-  DoubleSlider,
   SliderWithAutoPlay,
-  SliderWithAutoPlayNumberShow,
+  SliderWithAutoPlayTwoRows,
 } from "../src/components/sliders/HomePageProductSlider";
-import Subscribe from "../src/components/Subscribe";
 import Layout from "../src/layout/Layout";
 import { getCategory_1, getHome1 } from "../src/redux/action/home";
 import { getProductFlashSell, getProductMostPurchase, getProductRecommend, getProducts } from "../src/redux/action/product";
-import { simpleProductFilter } from "../src/utils/filterProduct";
 import { createMap } from "../src/utils/utils";
 import time from "../src/utils/time";
 import withoutAuth from "../src/HOC/withoutAuth";
+import Product4 from "../src/components/products/Product4";
+import Product5 from "../src/components/products/Product5";
+import CategoryHome from "../src/components/products/CategoryHome";
 
 const Index = () => {
   const sliders = useSelector((state) => state.home.home1 && state.home.home1.sliders);
@@ -52,7 +47,7 @@ const Index = () => {
     // setUnmissedProducts(products);
     setHandpickedProduct(recommendProducts);
     setBestDealProductuseState(flashSellProducts);
-    setPurchasedProduct(mostPurchaseProducts)    
+    setPurchasedProduct(mostPurchaseProducts)
     // setPurchasedProduct(products);
   }, [recommendProducts, flashSellProducts, mostPurchaseProducts])
 
@@ -117,30 +112,30 @@ const Index = () => {
       <br />
       {/* Recommend Start */}
       <div
-        className="handpick-items-area pt-60 wow fadeInUp animated"
+        className="handpick-items-area wow fadeInUp animated"
         data-wow-duration="1s"
       >
         <div className="container">
           <div className="row">
             <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12 pb-15">
-              <div className="section-title text-center">
-                <h3 className="font-pt light-black-color2 pb-1">
-                  Gợi ý dành cho bạn
-                </h3>
+            <div className="free-shopping pt-15 pb-15 text-center">
+                <h4 className="theme-color mb-0 font600 title-buy-most">
+                  GỢI Ý DÀNH CHO BẠN
+                </h4>
               </div>
               {/* /section-title */}
             </div>
           </div>
 
           {handpickedProduct && (
-            <SliderWithAutoPlay extraClass="row handpick-items-active theme-border2 pt-30 pb-30 pl-20 mlr-1">
+            <SliderWithAutoPlayTwoRows extraClass="row handpick-items-active theme-border2 pt-30 pb-30 mlr-1">
               {handpickedProduct.map((product) => (
-                <Product2 product={product} key={product.id} />
+                <Product4 product={product} key={product.id} />
               ))}
-              {handpickedProduct.map((product) => (
+              {/* {handpickedProduct.map((product) => (
                 <Product2 product={product} key={product.id} />
-              ))}
-            </SliderWithAutoPlay>
+              ))} */}
+            </SliderWithAutoPlayTwoRows>
           )}
           <div className="row free-shopping-area light-theme-bg  mlr-1">
             <div className="col-xl-12 col-lg-12  col-md-  col-sm- col-">
@@ -226,7 +221,7 @@ const Index = () => {
             <div className="row ">
               <div className="col-xxl-4 col-xl-4  col-lg-4  col-md-7  col-sm-12 col-12 pb-15">
                 <div className="section-title weekly-deal pl-30 pt-50">
-                  <h3 className="font-pt light-black-color2 pb-6">
+                  <h3 className="font-pt light-black-color2 pb-6  hp-mod-card-title">
                     Deal Chớp Nhoáng
                   </h3>
                   <p className="light-black-color7 font300">
@@ -237,24 +232,24 @@ const Index = () => {
                       <div className="d-flex">
                         <span className="cdown days">
                           <span className="time-count">{time(date).days}</span>{" "}
-                          <p>Days</p>
+                          <p>Ngày</p>
                         </span>
                         <span className="cdown hour">
                           <span className="time-count">{time(date).hours}</span>{" "}
-                          <p>HRS</p>
+                          <p>Giờ</p>
                         </span>
                         <span className="cdown minutes">
                           <span className="time-count">
                             {time(date).minutes}
                           </span>{" "}
-                          <p>Min</p>
+                          <p>Phút</p>
                         </span>
                         <span className="cdown second">
                           <span>
                             <span className="time-count">
                               {time(date).seconds}
                             </span>{" "}
-                            <p>Sec</p>
+                            <p>Giây</p>
                           </span>
                         </span>
                       </div>
@@ -267,19 +262,19 @@ const Index = () => {
                 {bestDealProduct && (
                   <SliderWithAutoPlay extraClass="row best-deal-product-active  pt-40 mlr-1 ml--20">
                     {bestDealProduct.map((product) => (
-                      <Product3
+                      <Product5
                         key={product.id}
                         product={product}
                         productActionOff
                       />
                     ))}
-                    {bestDealProduct.map((product) => (
+                    {/* {bestDealProduct.map((product) => (
                       <Product3
                         key={product.id}
                         product={product}
                         productActionOff
                       />
-                    ))}
+                    ))} */}
                   </SliderWithAutoPlay>
                 )}
               </div>
@@ -289,17 +284,42 @@ const Index = () => {
       </div>
       <br />
       {/*Deadsell end */}
+      {/* Banner 1 End */}
 
-      {/* most-purchased-item Start */}
+      {/*Category start */}
       <div
-        className="handpick-items-area pt-60 wow fadeInUp animated"
+        className="handpick-items-area wow fadeInUp animated"
         data-wow-duration="1s"
       >
         <div className="container">
           <div className="row free-shopping-area light-theme-bg  mlr-1">
             <div className="col-xl-12 col-lg-12  col-md-  col-sm- col-">
               <div className="free-shopping pt-15 pb-15 text-center">
-                <h4 className="theme-color mb-0 font600">
+                <h4 className="theme-color mb-0 font600 title-buy-most">
+                  Danh mục sản phẩm
+                </h4>
+              </div>
+            </div>
+          </div>
+          <div className="col-xxl-12 col-xl-12  col-lg-12  col-md-5  col-sm-12 col-12 pl-0">
+            <CategoryHome />
+          </div>
+
+        </div>
+      </div>
+      <br />
+      {/*Category end */}
+
+      {/* most-purchased-item Start */}
+      <div
+        className="handpick-items-area wow fadeInUp animated"
+        data-wow-duration="1s"
+      >
+        <div className="container">
+          <div className="row free-shopping-area light-theme-bg  mlr-1">
+            <div className="col-xl-12 col-lg-12  col-md-  col-sm- col-">
+              <div className="free-shopping pt-15 pb-15 text-center">
+                <h4 className="theme-color mb-0 font600 title-buy-most">
                   Sản phẩm được mua nhiều nhất
                 </h4>
               </div>
@@ -307,10 +327,10 @@ const Index = () => {
           </div>
           <div className="col-xxl-12 col-xl-12  col-lg-12  col-md-5  col-sm-12 col-12 pl-0">
             {purchasedProduct && (
-              <SliderWithAutoPlayNumberShow extraClass="row best-deal-product-active  pt-40 mlr-1 ml--20" slidesToShow={5}>
+              <SliderWithAutoPlayTwoRows extraClass="row best-deal-product-active  pt-40 mlr-1 ml--20" slidesToShow={5} rows={3}>
                 {purchasedProduct &&
                   purchasedProduct.map((product) => (
-                    <Product3
+                    <Product4
                       key={product.id}
                       product={product}
                       productActionOff
@@ -318,13 +338,13 @@ const Index = () => {
                   ))}
                 {purchasedProduct &&
                   purchasedProduct.map((product) => (
-                    <Product3
+                    <Product4
                       key={product.id}
                       product={product}
                       productActionOff
                     />
                   ))}
-              </SliderWithAutoPlayNumberShow>
+              </SliderWithAutoPlayTwoRows>
             )}
           </div>
 

@@ -1,0 +1,205 @@
+.fs-card-img {
+    height: 100%;
+    width: 188px !important;
+    height: 188px !important;
+}
+.fs-card-title {
+    height: 36px !important;
+    line-height: 18px !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    overflow: hidden !important;
+    margin-bottom: 4px !important;
+    font-size: 14px !important;
+}
+
+.card-fs-content-body-unit {
+    height: 290px !important;
+    width: 188px !important;
+    float: left !important;
+    margin-right: 12px !important;
+    position: relative !important;
+}
+.border-item-bottom {
+    border-bottom: 0px !important;
+}
+
+.border-item-top {
+    border-top: 0px !important;
+}
+
+.heart a.hover, .heart a.active {
+    color: #fff;
+    background: #f37ba9 !important;
+    /* background: #3dbebd;  */
+  }
+
+.hp-mod-card-title {
+    /* float: left; */
+    font-family: Roboto-Regular !important;
+    /* font-size: 22px !important; */
+    color: #424242 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.hp-mod-card-subscription {
+    /* font-family: Roboto-Regular!important; */
+    font-size: 13px;
+   text-transform: uppercase;
+}
+
+.title-buy-most{
+    font-size: 20px !important;
+}
+
+.card-categories-ul {
+    width: 100%;
+    background-color: rgb(145, 125, 125);
+    min-height: 149px;
+}
+.card-categories-li {
+    width: 12.5%;
+    height: 148.5px;
+    border-right: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
+    background-color: #fff;
+}
+.align-left {
+    float: left;
+}
+
+.card-categories-li-content {
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding-top: 16px;
+}
+
+.card-categories-image-container {
+    margin: 0 auto;
+    width: 80px;
+    height: 80px;
+}
+
+.card-categories-image-container .image {
+    width: 100%;
+    height: 100%;
+}
+
+.card-banner-slider img, .hp-mod-card img, .img-wrap {
+    background-image: url(//lzd-img-global.slatic.net/g/tps/tfs/TB1wkpOf5qAXuNjy1XdXXaYcVXa-720-720.png_200x200.jpg);
+    background-size: contain;
+    line-height: 2;
+    text-indent: -9999px;
+    color: transparent!important;
+    background-position: 50% 50%;
+    text-align: center;
+    background-color: #f5f5f5;
+    background-repeat: no-repeat;
+    display: block;
+}
+.card-categories-name {
+    text-align: center;
+    margin-top: 10px;
+}
+.card-categories-name .text {
+    margin: 8px 12px 0;
+    font-size: 14px;
+    color: #212121;
+    line-height: 18px;
+    height: 36px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.card-categories-name {
+    text-align: center;
+    margin-top: 10px;
+}
+.theme-border-categories{
+    border:1px solid #c5cad4
+}
+
+.hp-mod-card-hover:hover {
+    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 25%);
+    -webkit-transform: all .3s ease-in-out;
+    -ms-transform: all .3s ease-in-out;
+    transform: all .3s ease-in-out;
+    position: relative;
+}
+
+.rate-product-home{
+    color: #9e9e9e !important;
+    margin-top: 2.5px !important;
+}
+
+.product-variation {
+    cursor: pointer;
+    min-width: 5rem;
+    min-height: 2.125rem;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.25rem 0.75rem;
+    margin: 0 8px 8px 0;
+    color: rgba(0,0,0,.8);
+    text-align: left;
+    border-radius: 2px;
+    border: 1px solid rgba(0,0,0,.09);
+    position: relative;
+    background: #fff;
+    outline: 0;
+    word-break: break-word;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-toolbar input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+  }
+
+.radio-toolbar label {
+    cursor: pointer;
+    min-width: 5rem;
+    min-height: 2.125rem;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0.25rem 0.75rem;
+    margin: 0 8px 8px 0;
+    color: rgba(0,0,0,.8);
+    text-align: left;
+    border-radius: 2px;
+    border: 1px solid rgba(0,0,0,.09);
+    position: relative;
+    background: #fff;
+    outline: 0;
+    word-break: break-word;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.radio-toolbar input[type="radio"]:checked + label {
+    background-color:rgb(103, 110, 103);
+    border-color: rgb(74, 95, 74);
+}
+.radio-toolbar input[type="radio"]:focus + label {
+    border: 2px dashed #444;
+}
+.radio-toolbar label:hover {
+    background-color: rgb(110, 116, 110);
+  }
+
+.sidebar-widget .active::after {
+    content: none!important;
+}
+
+.show-text-more {
+    color: #4a88e4;
+ }

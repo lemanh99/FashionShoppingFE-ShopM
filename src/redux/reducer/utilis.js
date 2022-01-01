@@ -39,7 +39,7 @@ const utilis = (state = initialState, action) => {
         carts: []
       }
     case REMOVE_CART:
-      const removeItem = state.carts.filter((cart) => (cart.product_id !== payload));
+      const removeItem = state.carts.filter((cart) => (cart.product_sku_id !== payload));
       setLocalStorage("shopm-ecommerce", removeItem);
       return {
         ...state,

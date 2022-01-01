@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { ButtonGroup, ButtonToolbar, Modal, Nav, Tab, ToggleButton } from "react-bootstrap";
+import ShowMoreText from "react-show-more-text";
 import toast from "react-hot-toast";
 import { connect } from "react-redux";
 import {
@@ -189,7 +190,22 @@ const ProductModal = ({
                           </div>
                           <div className="p-info-text pr-55">
                             <p className="gray-color2">
-                              {product && product.description_list}
+                              <ShowMoreText
+                                /* Default options */
+                                lines={5}
+                                more={<><br/> {"Xem thêm"}</>}
+                                less={<><br/> {"Thu gọn"}</>}
+                                className="content-css"
+                                anchorClass="my-anchor-css-class show-text-more"
+                                // onClick={this.executeOnClick}
+                                expanded={false}
+                                
+                                truncatedEndingComponent={"... "}
+                              >
+                                 <span style={{whiteSpace: 'pre-line'}}>{product && product.description_detail}</span>
+                                
+                              </ShowMoreText>
+                              {/* {product && product.description_detail} */}
                             </p>
                           </div>
                           {product.upcoming && (
@@ -227,10 +243,10 @@ const ProductModal = ({
                           <div className="all-info d-sm-flex align-items-center mt-35">
                             <div className="sidebar-widget">
                               <h6 className="mb-25 title font600 sidebar-title d-inline-block position-relative pb-1">
-                                Kích thước
+                                Loại
                               </h6>
                               <ButtonToolbar>
-                                <ButtonGroup className="me-2">
+                                <ButtonGroup className="me-2 radio-toolbar">
                                   {product.size &&
                                     product.size.map((size, i) => (
                                       <ToggleButton
@@ -288,8 +304,8 @@ const ProductModal = ({
                                 className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15 `}
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  sizeSelected?addToCart(productCart(product, sizeSelected)):null;
-                                  sizeSelected?toast.success("Thêm vào giỏ hàng thành công"):toast.error("Vui lòng chọn size");
+                                  sizeSelected ? addToCart(productCart(product, sizeSelected)) : null;
+                                  sizeSelected ? toast.success("Thêm vào giỏ hàng thành công") : toast.error("Vui lòng chọn size");
                                 }}
                               >
                                 <span className="icon-shopping-bag" />

@@ -1,8 +1,9 @@
 import { fatchData } from "../../utils/fatchData";
-import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_SINGLE } from "./type";
+import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_PRODUCT_REQUEST, GET_SINGLE } from "./type";
 import axiosIntance from "../../helpers/axios";
 
 export const getProducts = () => async (dispatch) => {
+  dispatch({ type: GET_PRODUCT_REQUEST });
   const res = await axiosIntance.get(`/product/public/`)
   if (res && res.status === 200) {
     const { data } = res.data;
@@ -18,8 +19,7 @@ export const getProducts = () => async (dispatch) => {
   }
 };
 export const getProductFilterByApi = (filters) => async (dispatch) => {
-  console.log(filters)
-  
+  dispatch({ type: GET_PRODUCT_REQUEST });
   const category_name = filters && filters.category_name?filters.category_name:"";
   const search_keyword = filters && filters.search_keyword?filters.search_keyword:"";
   const color_name = filters && filters.color_name?filters.color_name:"";

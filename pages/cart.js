@@ -122,7 +122,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                             href="#"
                             className="p-remove theme-color"
                             onClick={(e) => {
-                              removeCart(cart.product_id);
+                              removeCart(cart.product_sku_id);
                               setaddCart(true);
                               toast.error("Xóa sản phẩm từ giỏ hàng thành công");
                               e.preventDefault();

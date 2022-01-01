@@ -1,4 +1,19 @@
 const Paggination = ({ setActive, active, length, sort }) => {
+  console.log(active, sort);
+  const page_number = 15;
+  const arrayNumber = (a, b) => {
+    var foo = [];
+
+    for (var i = a; i < b; i++) {
+      foo.push(i);
+    }
+    return foo;
+  }
+  const max_length = Math.ceil(length / sort)
+  const number_current = Math.floor((active+1)/15)
+  const first = number_current>0?15*(number_current)-1:15*(number_current);
+  const last = 15*number_current+15<max_length?15*number_current+15:max_length
+  const arrayList = arrayNumber(first, last)
   return length ? (
     <div className="pagination-area mt-20 mb-120 over-hidden">
       <div className="container position-relative">
@@ -22,27 +37,27 @@ const Paggination = ({ setActive, active, length, sort }) => {
                     Trước
                   </a>
                 </li>
-                {Array(Math.ceil(length / sort))
-                  .fill("p")
+                {arrayList
                   .map((m, i) => (
                     <li
-                      key={i}
-                      className={`page-item ${active === i ? "active" : ""}`}
+                      key={m}
+                      className={`page-item ${active === m ? "active" : ""}`}
                     >
                       <a
                         className="page-link"
                         href="#"
                         onClick={(e) => {
-                          setActive(i);
+                          setActive(m);
                           e.preventDefault();
                         }}
                       >
-                        {i < 9 ? `0${i + 1}` : i + 1}
+                        {m < 9 ? `0${m + 1}` : m + 1}
                       </a>
                     </li>
                   ))}
 
                 <li className="page-item">
+                  
                   <a
                     className="page-link next"
                     href="#"

@@ -9,6 +9,8 @@ export const storePathValues = () => {
 }
 
 export const getCurrentPath = () => {
+    let path = window.location.pathname
+    if(path) return path;
     const storage = globalThis?.sessionStorage;
     if (!storage) return;
     return storage.getItem("currentPath");

@@ -1,12 +1,23 @@
-import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_SINGLE } from "../action/type";
+import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_PRODUCT_REQUEST, GET_SINGLE } from "../action/type";
 
-const product = (state = [], action) => {
+const initState = {
+  products: [],
+  loading: false,
+};
+
+const product = (state = initState, action) => {
   const { type, payload } = action;
   switch (type) {
+    case GET_PRODUCT_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
     case GET_PRODUCT:
       return {
         ...state,
         products: payload,
+        loading: false
       };
     case GET_SINGLE:
       return {

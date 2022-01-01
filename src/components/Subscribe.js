@@ -42,8 +42,8 @@ const Subscribe = ({ getTestimonial, testimonial, bg, inputBg }) => {
   return (
     <div className="">
       <div className="section-title mb-30">
-        <h4 className="light-black-color2 pb-1 font300">
-          Đăng ký thông báo
+        <h4 className="light-black-color2 font300 hp-mod-card-subscription">
+          
         </h4>
         <p className="light-black-color7 font300">
           Nhận thông báo ưu đãi mới nhất của cửa hàng

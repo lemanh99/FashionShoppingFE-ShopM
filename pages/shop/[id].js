@@ -132,6 +132,21 @@ const ProductDetails = ({
     }
 
   };
+  const handleDetailList = (content) => {
+    let data = []
+    let str_split = String(content).split('\n');
+    for (const text of str_split) {
+      var text_split = text.split(":")
+      if (text_split && text_split[0] && text_split[1]) {
+        var detail = {
+          "name": text_split[0],
+          "content": text_split[1],
+        }
+        data.push(detail)
+      }
+    }
+    return data;
+  }
 
   return (
     <Layout>
@@ -221,10 +236,11 @@ const ProductDetails = ({
                         </div>
                         <div className="p-info-text pr-55">
                           <p className="gray-color2">
-                            {product && product.description_list}
+                            {/* <span style={{whiteSpace: 'pre-line'}}>{product && product.description_list}</span> */}
+                            {/* {replaceDescription(product && product.description_list)} */}
                           </p>
                           <p className="gray-color2">
-                            {product && product.description_detail}
+                            {/* {product && product.description_detail} */}
                           </p>
                         </div>
                         {product.upcoming && (
@@ -474,7 +490,7 @@ const ProductDetails = ({
                           <div className="describe-area">
                             <div className="product-details-text pr-10 mb-50">
                               <p className="gray-color2 dc-text1 pb-6">
-                                {product && product.description_detail}
+                                <span style={{ whiteSpace: 'pre-line' }}>{product && product.description_detail}</span>
                               </p>
                               {/* <p className="gray-color2">
                                 <span className="h2-theme-color pr-10">
@@ -551,6 +567,19 @@ const ProductDetails = ({
                                 </h5>
                                 <table className="table border mt-25 table-responsive">
                                   <tbody>
+                                    {handleDetailList(product.description_list) && handleDetailList(product.description_list).map((data) => (
+
+                                      <tr className="add-color-area aditional-info border-bottom border-top ">
+                                        <td className="tbl-title pl-5">
+                                          <h6 className="add-title">{data.name}</h6>
+                                        </td>
+                                        <td className="tbl-content">
+                                          <ul className="add-color d-flex">
+                                            <li>{data.content}</li>
+                                          </ul>
+                                        </td>
+                                      </tr>
+                                    ))}
                                     {product && product.colors && (
                                       <tr className="add-color-area aditional-info border-bottom border-top ">
                                         <td className="tbl-title pl-5">
@@ -657,7 +686,7 @@ const ProductDetails = ({
                                       <div className="client-avatar">
                                         <img
                                           className="avatar-img width100 height100"
-                                          src="/images/bg/avater2.png"
+                                          src="/images/bg/avater3.png"
                                           alt=""
                                         />
                                       </div>
@@ -767,7 +796,7 @@ const ProductDetails = ({
           {/* /container */}
         </div>
       ) : (
-        <h2 className="text-center mt-100 mb-100">Product Not Found</h2>
+        <h2 className="text-center mt-100 mb-100">Không tìm thấy sản phẩm</h2>
       )}
     </Layout>
   );
