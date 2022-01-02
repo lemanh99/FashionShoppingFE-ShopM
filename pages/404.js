@@ -1,20 +1,21 @@
 import Link from "next/dist/client/link";
-import withoutAuthPublic from "../src/HOC/withoutAuthPublic";
+import withoutAuthNotPath from "../src/HOC/withoutAuthNotPath";
 import Layout from "../src/layout/Layout";
 
 const NotFound = () => {
   return (
-    <Layout hadeText="Page not found - shopm">
+    <Layout hadeText="Không tìm thấy trang - Shopm">
       <div className="slider-area over-hidden">
         <div
           className="single-page not-found-page-height d-flex align-items-center justify-content-center"
-          // data-background="images/bg/slider-404.jpg"
+        // data-background="images/bg/slider-404.jpg"
         >
           <div className="container">
             <div className="row">
               <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
-                <div className="page-content text-center">
-                  <h2 className="mt--45 font-pt">404</h2>
+                <div className="page-content text-center mt--100">
+                  <img src="/images/product/notfound.png" alt="notfound" className="d-block m-auto fs-card-img" />
+                  <h3 className=" font-pt">404 </h3>
                   <h3 className="text-dark dark-black-color pb-15 font-pt">
                     Không tìm thấy trang.
                   </h3>
@@ -36,4 +37,4 @@ const NotFound = () => {
   );
 };
 
-export default withoutAuthPublic(NotFound);
+export default withoutAuthNotPath(NotFound);

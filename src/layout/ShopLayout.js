@@ -10,7 +10,7 @@ import Product3 from "../components/products/Product3";
 import Product5 from "../components/products/Product5";
 import ProductListView from "../components/products/ProductListView";
 import Filter from "../components/products/shop/Filter";
-import withoutAuthPublic from "../HOC/withoutAuthPublic";
+import withoutAuthNotPath from "../HOC/withoutAuthNotPath";
 import { activeData, dblock } from "../utils/utils";
 
 const ShopLayout = ({
@@ -185,4 +185,4 @@ const mapStateToProps = (state) => ({
   loading: state.product.loading
 });
 
-export default connect(mapStateToProps, { getProducts, getProductFilterByApi })( withoutAuthPublic(ShopLayout));
+export default connect(mapStateToProps, { getProducts, getProductFilterByApi })( withoutAuthNotPath(ShopLayout));

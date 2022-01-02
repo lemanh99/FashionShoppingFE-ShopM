@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { connect } from "react-redux";
 import Layout from "../../src/layout/Layout";
@@ -11,6 +12,10 @@ const Shop = ({ getProducts, products }) => {
   useEffect(() => {
     getProducts();
   }, []);
+  // const router = useRouter();
+  // const { categories, price } = router.query;
+  // console.log(categories,price );
+
   return (
     <Layout>
       <PageBanner title="Our Shop" pageName="Shop" />

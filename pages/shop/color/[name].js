@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import withoutAuthPublic from "../../../src/HOC/withoutAuthPublic";
+import withoutAuthNotPath from "../../../src/HOC/withoutAuthNotPath";
 import Layout from "../../../src/layout/Layout";
 import PageBanner from "../../../src/layout/PageBanner";
 import ShopLayout from "../../../src/layout/ShopLayout";
@@ -17,4 +17,4 @@ const Shop = () => {
   );
 };
 
-export default withoutAuthPublic(Shop);
+export default withoutAuthNotPath(Shop);

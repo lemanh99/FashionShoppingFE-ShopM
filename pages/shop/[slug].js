@@ -42,7 +42,8 @@ const ProductDetails = ({
   loading,
 }) => {
   const router = useRouter();
-  const { slug, id } = router.query;
+  const { slug } = router.query;
+  console.log(slug);
   const authenticate = useSelector((state) => state.auth.authenticate)
   const [rateItem, setRateItem] = useState([])
   const [comment, setComment] = useState("")
@@ -51,21 +52,18 @@ const ProductDetails = ({
   const changeRating = (newRating, name) => {
     setRateUser(newRating)
   }
+  console.log("Day", slug)
   useEffect(() => {
     if (slug) {
       getSingleProductBySlug(String(slug));
       getRateByProductBySlug(String(slug));
-    } else if (id) {
-      getSingleProduct(id);
-      getRateByProduct(id);
     }
-
     getCarts();
     getWishlist();
     getProducts();
     getCompare();
-  }, [slug, id]);
-  console.log(loading)
+  }, [slug]);
+  console.log(slug)
 
   useEffect(() => {
     if (rates.item && rates.item.length > 0) { setRateItem(rates.item); }

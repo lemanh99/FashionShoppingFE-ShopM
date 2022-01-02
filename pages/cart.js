@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { connect, useSelector } from "react-redux";
-import withoutAuthPublic from "../src/HOC/withoutAuthPublic";
+import withoutAuthNotPath from "../src/HOC/withoutAuthNotPath";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import {
@@ -170,5 +170,5 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
 };
 
 export default connect(null, { removeCart, addToCart, decreaseCart, getCarts })(
-  withoutAuthPublic(Cart)
+  withoutAuthNotPath(Cart)
 );
