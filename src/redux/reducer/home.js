@@ -3,6 +3,7 @@ import {
   CATEGORY_1,
   CATEGORY_2,
   CATEGORY_3,
+  CATEGORY_4,
   HOME_1,
   HOME_2,
   HOME_3,
@@ -63,6 +64,12 @@ const home = (state = [], action) => {
         return {
           ...state,
           category_3: payload,
+        };
+
+    case CATEGORY_4:
+        return {
+          ...state,
+          category_4: payload,
         };
     default:
       return state;

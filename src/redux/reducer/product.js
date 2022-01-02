@@ -1,8 +1,9 @@
-import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_PRODUCT_REQUEST, GET_SINGLE } from "../action/type";
+import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_PRODUCT_REQUEST, GET_SINGLE, GET_SINGLE_REQUEST } from "../action/type";
 
 const initState = {
   products: [],
   loading: false,
+  loading_single: false,
 };
 
 const product = (state = initState, action) => {
@@ -19,9 +20,15 @@ const product = (state = initState, action) => {
         products: payload,
         loading: false
       };
+    case GET_SINGLE_REQUEST:
+      return {
+        ...state,
+        loading_single:true,
+      };
     case GET_SINGLE:
       return {
         ...state,
+        loading_single:false,
         singleProduct: payload,
       };
     case GET_PRODUCT_RECOMMENDED:

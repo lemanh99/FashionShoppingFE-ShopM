@@ -90,7 +90,7 @@ const Product4 = ({
           </div>
         )}
         <div className="position-relative">
-          <Link href={`/shop/${product.id}`}>
+          <Link href={`/shop/${product.slug}`}>
             <a className="d-block">
               <img src={product.img} alt="product" className="d-block m-auto fs-card-img" />
             </a>
@@ -106,7 +106,7 @@ const Product4 = ({
           </div>
           {/* /rating */}
           <h6 className="light-black-color2 fs-card-title">
-            <Link href={`/shop/${product.id}`}>
+            <Link href={`/shop/${product.slug}`}>
               <a>{product.name}</a>
             </Link>
           </h6>

@@ -64,9 +64,9 @@ const Product5 = ({
     setAddWishlist_(true);
     const wishlist_ = wishlist.find((wishlist) => wishlist.id === product.id);
     if (wishlist_) {
-      toast.error("Remove item in wishlist.");
+      toast.error("Xóa sản phẩm yêu thích thành công");
     } else {
-      toast.success("Add item in wishlist.");
+      toast.success("Thêm sản phẩm yêu thích thành công.");
     }
   };
   return (
@@ -90,7 +90,7 @@ const Product5 = ({
           </div>
         )}
         <div className="position-relative">
-          <Link href={`/shop/${product.id}`}>
+          <Link href={`/shop/${product.slug}`}>
             <a className="d-block">
               <img src={product.img} alt="product" className="d-block m-auto fs-card-img" />
             </a>
@@ -183,7 +183,7 @@ const Product5 = ({
           </div>
           {/* /rating */}
           <h6 className="light-black-color2 fs-card-title">
-            <Link href={`/shop/${product.id}`}>
+            <Link href={`/shop/${product.slug}`}>
               <a>{product.name}</a>
             </Link>
           </h6>

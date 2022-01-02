@@ -8,8 +8,8 @@ import StarRatings from "react-star-ratings";
 import Reating from "../../src/components/Reating";
 import Layout from "../../src/layout/Layout";
 import PageBanner from "../../src/layout/PageBanner";
-import { getProducts, getSingleProduct } from "../../src/redux/action/product";
-import { getRateByProduct, rateProduct } from "../../src/redux/action/rate";
+import { getProducts, getSingleProduct, getSingleProductBySlug } from "../../src/redux/action/product";
+import { getRateByProduct, rateProduct, getRateByProductBySlug } from "../../src/redux/action/rate";
 import {
   addToCart,
   addWishlist,
@@ -22,10 +22,12 @@ import {
 import time, { convert_datetime_from_timestamp } from "../../src/utils/time";
 const ProductDetails = ({
   getSingleProduct,
+  getSingleProductBySlug,
   getCarts,
   getCompare,
   getWishlist,
   getRateByProduct,
+  getRateByProductBySlug,
   rates,
   product,
   products,
@@ -37,9 +39,10 @@ const ProductDetails = ({
   compare,
   addWishlist,
   rateProduct,
+  loading,
 }) => {
   const router = useRouter();
-  const { id } = router.query;
+  const { slug, id } = router.query;
   const authenticate = useSelector((state) => state.auth.authenticate)
   const [rateItem, setRateItem] = useState([])
   const [comment, setComment] = useState("")
@@ -49,7 +52,10 @@ const ProductDetails = ({
     setRateUser(newRating)
   }
   useEffect(() => {
-    if (id) {
+    if (slug) {
+      getSingleProductBySlug(String(slug));
+      getRateByProductBySlug(String(slug));
+    } else if (id) {
       getSingleProduct(id);
       getRateByProduct(id);
     }
@@ -58,7 +64,8 @@ const ProductDetails = ({
     getWishlist();
     getProducts();
     getCompare();
-  }, [id]);
+  }, [slug, id]);
+  console.log(loading)
 
   useEffect(() => {
     if (rates.item && rates.item.length > 0) { setRateItem(rates.item); }
@@ -82,7 +89,7 @@ const ProductDetails = ({
     "home2tranding",
   ];
   let cat_ =
-    product &&
+    product && product.category &&
     product.category.filter(
       (cat) => !removeformCat.join("").includes(cat) && cat
     );
@@ -150,8 +157,7 @@ const ProductDetails = ({
 
   return (
     <Layout>
-      {/* <PageBanner title="Product Details" /> */}
-      {product && product ? (
+      {product && JSON.stringify(product) !== JSON.stringify({}) ? (
         <div className="product-details-area pro-top-thamb pro-bottom-thamb pt-80">
           <div className="container">
             {/* product-details-tab-area start */}
@@ -169,7 +175,7 @@ const ProductDetails = ({
                             as="div"
                             className="nav flex-column nav-pills me-4"
                           >
-                            {product &&
+                            {product && product.images &&
                               product.images.map((img, i) => (
                                 <Nav.Link
                                   as="button"
@@ -185,7 +191,7 @@ const ProductDetails = ({
                               ))}
                           </Nav>
                           <Tab.Content className="w-100">
-                            {product &&
+                            {product && product.images &&
                               product.images.map((img, i) => (
                                 <Tab.Pane
                                   eventKey={`tab-${i}`}
@@ -333,7 +339,7 @@ const ProductDetails = ({
                               Phân loại  :
                             </span>
                           </li>
-                          {product &&
+                          {product && cat_ &&
                             cat_.map(
                               (cat, i) =>
                                 !"home1purchasedhome2tranding".includes(
@@ -796,7 +802,49 @@ const ProductDetails = ({
           {/* /container */}
         </div>
       ) : (
-        <h2 className="text-center mt-100 mb-100">Không tìm thấy sản phẩm</h2>
+        loading ? (
+          <div className="d-flex justify-content-center">
+            <div className="spinner-border" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <>
+            <PageBanner title="Product Details" />
+            <div className="container">
+              <div className="row">
+                <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12 d-flex align-items-center justify-content-center">
+                  <div className="page-title-not-found mt-50 text-center">
+                    <div className="position-relative">
+                      <Link href={`/`}>
+                        <a className="d-block">
+                        {/* <img src= alt="" /> */}
+                          <img src="/images/product/notfound.png" alt="notfound" className="d-block m-auto fs-card-img" />
+                        </a>
+                      </Link>
+                    </div>
+                    <h2 className="text-capitalize font600 mb-10">Không tìm thấy sản phẩm</h2>
+                    <nav aria-label="breadcrumb">
+                      <ol className="breadcrumb justify-content-center bg-transparent">
+                        <li
+                          className="breadcrumb-item active text-capitalize"
+                          aria-current="page"
+                        >
+                          <Link href="/">
+                            <a className="text-center mt-100 mb-100">Quay lại trang chủ</a>
+                          </Link>
+                        </li>
+                      </ol>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* <h2 className="text-center mt-100 mb-100">Không tìm thấy sản phẩm</h2> */}
+          </>
+        )
+
+
       )}
     </Layout>
   );
@@ -806,6 +854,7 @@ const mapStateToProps = (state) => ({
   rates: state.rate.rates,
   products: state.product.products,
   product: state.product.singleProduct,
+  loading: state.product.loading_single,
   carts: state.utilis.carts,
   wishlists: state.utilis.wishlist,
   compares: state.utilis.compares,
@@ -823,6 +872,8 @@ export default connect(mapStateToProps, {
   compare,
   getRateByProduct,
   rateProduct,
+  getSingleProductBySlug,
+  getRateByProductBySlug,
 })(ProductDetails);
 
 

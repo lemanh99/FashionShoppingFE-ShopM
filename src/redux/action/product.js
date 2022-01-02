@@ -1,5 +1,5 @@
 import { fatchData } from "../../utils/fatchData";
-import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_PRODUCT_REQUEST, GET_SINGLE } from "./type";
+import { GET_PRODUCT, GET_PRODUCT_FLASH_SELL, GET_PRODUCT_MOST_PURCHASE, GET_PRODUCT_RECOMMENDED, GET_PRODUCT_REQUEST, GET_SINGLE, GET_SINGLE_REQUEST } from "./type";
 import axiosIntance from "../../helpers/axios";
 
 export const getProducts = () => async (dispatch) => {
@@ -40,9 +40,29 @@ export const getProductFilterByApi = (filters) => async (dispatch) => {
   }
 };
 export const getSingleProduct = (id) => async (dispatch) => {
-  console.log("id", id)
   const res = await axiosIntance.get(`/product/public/detail/${id}`);
 
+  const { data } = res.data;
+  console.log(data);
+  if (res && res.status === 200) {
+    dispatch({
+      type: GET_SINGLE,
+      payload: data,
+    });
+  } else {
+    dispatch({
+      type: GET_SINGLE,
+      payload: {},
+    });
+  }
+
+};
+
+export const getSingleProductBySlug = (slug) => async (dispatch) => {
+  const res = await axiosIntance.get(`/product/public/detail/slug/${slug}`);
+  dispatch({
+    type: GET_SINGLE_REQUEST
+  });
   const { data } = res.data;
   console.log(data);
   if (res && res.status === 200) {

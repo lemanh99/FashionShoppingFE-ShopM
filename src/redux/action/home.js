@@ -5,6 +5,7 @@ import {
   CATEGORY_1,
   CATEGORY_2,
   CATEGORY_3,
+  CATEGORY_4,
   HOME_1,
   HOME_2,
   HOME_3,
@@ -68,6 +69,31 @@ export const getCategory_3 = () => async (dispatch) => {
       payload: [],
     });
   }
+
+  
+  // dispatch({
+  //   type: CATEGORY_2,
+  //   payload: await fatchData("/static/catagory.json"),
+  // });
+};
+
+export const getCategory_4 = () => async (dispatch) => {
+  const res = await axiosIntance.get(`/product/category/public/most`)
+  if (res && res.status === 200) {
+    const { data } = res.data;
+    console.log("Data", data)
+    dispatch({
+      type: CATEGORY_4,
+      payload: data,
+    });
+  } else {
+    dispatch({
+      type: CATEGORY_4,
+      payload: [],
+    });
+  }
+
+  
   // dispatch({
   //   type: CATEGORY_2,
   //   payload: await fatchData("/static/catagory.json"),

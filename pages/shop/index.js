@@ -13,7 +13,7 @@ const Shop = ({ getProducts, products }) => {
   }, []);
   return (
     <Layout>
-      {/* <PageBanner title="Our Shop" pageName="Shop" /> */}
+      <PageBanner title="Our Shop" pageName="Shop" />
       <ShopLayout />
     </Layout>
   );

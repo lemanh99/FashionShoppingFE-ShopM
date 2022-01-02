@@ -62,7 +62,7 @@
 }
 .card-categories-li {
     width: 12.5%;
-    height: 148.5px;
+    height: 166.5px;
     border-right: 1px solid #e2e2e2;
     border-bottom: 1px solid #e2e2e2;
     background-color: #fff;
@@ -203,3 +203,23 @@
 .show-text-more {
     color: #4a88e4;
  }
+
+ .page-height4 {
+    min-height: 367px;
+  }
+
+  .fs-card-title-recommend {
+    height: 80px !important;
+    line-height: 18px !important;
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 2 !important;
+    overflow: hidden !important;
+    margin-bottom: 4px !important;
+    font-size: 14px !important;
+  }
+
+  .page-title-not-found h2 {
+    font-size: 30px;
+    font-weight: 500; }
+  

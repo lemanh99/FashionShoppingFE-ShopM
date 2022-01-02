@@ -207,3 +207,37 @@ export const SliderWithAutoPlayImplement = ({ children, extraClass }) => {
     </Slider>
   );
 };
+
+export const SliderWithBannerAutoPlay = ({ children, extraClass }) => {
+  var settings = {
+    dots: false,
+    arrows: false,
+    infinite: false,
+    autoplay: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    rows:1,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+  return (
+    <Slider
+      className={`${extraClass ? extraClass : "slider-active"}`}
+      {...settings}
+    >
+      {children}
+    </Slider>
+  );
+};

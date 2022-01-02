@@ -11,7 +11,7 @@ const Shop = () => {
 
   return (
     <Layout>
-      {/* <PageBanner title={name_} pageName="Shop" /> */}
+      <PageBanner title={name_} pageName="Shop" />
       <ShopLayout keyValueForQurey="sizes" value={name_} active_={0} />
     </Layout>
   );

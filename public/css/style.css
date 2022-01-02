@@ -1885,6 +1885,9 @@ button:focus {
 .page-height3 {
   min-height: 460px;
 }
+.page-height4 {
+  min-height: 367px!important;
+}
 
 .slider-img {
   right: 9%;

@@ -3,20 +3,22 @@ import { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import axiosIntance from "../../../helpers/axios";
 import { filterByPrice } from "../../../redux/action/filter";
-import { getProducts } from "../../../redux/action/product";
+import { getProductRecommend, getProducts } from "../../../redux/action/product";
 import { changeStringPath } from "../../../utils/string";
 import {
   arrLengthByKey,
   findFilterValue,
   hideFromArr,
 } from "../../../utils/utils";
+import Reating from "../../Reating";
 import PriceFilter from "./PriceFilter";
 
-const Filter = ({ filterByPrice, products, getProducts }) => {
+const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, product_recommendations }) => {
   const [categoryFilter, setCategoryFilter] = useState({})
   useEffect(() => {
     getCategoryFilter();
     getProducts();
+    getProductRecommend();
   }, []);
 
   async function getCategoryFilter() {
@@ -39,7 +41,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
               <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12">
                 <div className="sidebar-widget mb-20">
                   <h6 className="mb-15 title font600 sidebar-title d-inline-block position-relative pb-1">
-                    Phân loại
+                    Tất cả danh mục
                   </h6>
                   <ul>
                     {categoryFilter && categoryFilter.category ?
@@ -66,7 +68,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
               />
             </div>
           </div>
-
+          {/* 
           <div className="col-xl-12  col-lg-12  col-md-6  col-sm-12 col-12">
             <div className="sidebar-widget">
               <h6 className="mb-25 title font600 sidebar-title d-inline-block position-relative pb-1">
@@ -79,7 +81,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                       <Link href={`/shop/color/${changeStringPath(color)}`}>
                         <a className="text-capitalize">
                           {color}
-                          {/* {color} ({arrLengthByKey(products, "colors", color)}) */}
+                          {color} ({arrLengthByKey(products, "colors", color)})
                         </a>
                       </Link>
                     </li>
@@ -87,16 +89,16 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                 ) : null}
               </ul>
             </div>
-          </div>
+          </div> */}
 
           <div className="col-xl-12  col-lg-12  col-md-6  col-sm-12 col-12">
             <div className="sidebar-widget mt-25">
               <h6 className="mb-15 title font600 sidebar-title d-inline-block position-relative pb-1">
-                Kích thước
+                Loại
               </h6>
               <ul className="shop-color">
                 {categoryFilter && categoryFilter.sizes ? (
-                  categoryFilter.sizes.map((s, i) => (
+                  categoryFilter.sizes.slice(0, 25).map((s, i) => (
                     <li className="pb-10 font13" key={i}>
                       <Link href={`/shop/size/${changeStringPath(s)}`}>
                         <a className="text-capitalize">
@@ -135,8 +137,8 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                 Có thể bạn thích
               </h6>
               <div className="side-product mb-50">
-                {products &&
-                  products.map(
+                {product_recommendations &&
+                  product_recommendations.map(
                     (product, i) =>
                       i < 3 && (
                         <div
@@ -144,7 +146,7 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                           key={i}
                         >
                           <div className="side-pro-img border-gray1 mr-10">
-                            <Link href={`/shop/${product.id}`}>
+                            <Link href={`/shop/${product.slug}`}>
                               <a>
                                 <img
                                   src={product.img}
@@ -155,15 +157,22 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
                             </Link>
                           </div>
                           <div className="side-pro-text">
-                            <h6 className="pb-10">
+                            <h6 className="pb-10 light-black-color2 fs-card-title-recommend">
                               <Link href={`/shop/${product.id}`}>
                                 <a href="#">{product.name}</a>
                               </Link>
                             </h6>
+
+                            <div className="rating rating-shop d-flex">
+                              <Reating rating={product.reating} />
+                              <span className="gray-color2 ms-1 rate-product-home">
+                                ({product && product.reviews ? product.reviews : 0}{""})
+                              </span>
+                            </div>
                             <span className="price font500">
-                              ${Number(product.mainPrice).toFixed(2)}{" "}
+                              {Number(product.mainPrice).toFixed(2)}{"VND"}
                               {product.price && (
-                                <del>${Number(product.price).toFixed(2)}</del>
+                                <del>{Number(product.price).toFixed(2)} VND</del>
                               )}
                             </span>
                           </div>
@@ -181,6 +190,8 @@ const Filter = ({ filterByPrice, products, getProducts }) => {
 
 const mapStateToProps = (state) => ({
   products: hideFromArr(state.product.products),
+  product_recommendations: state.product.recommended,
 });
 
-export default connect(mapStateToProps, { filterByPrice, getProducts })(Filter);
+
+export default connect(mapStateToProps, { filterByPrice, getProducts, getProductRecommend })(Filter);

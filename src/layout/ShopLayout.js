@@ -160,6 +160,7 @@ const ShopLayout = ({
                 )}
 
               </Tab.Container>
+              {!loading ? (
               <div className="mt-5">
                 <Paggination
                   length={products && products.length}
@@ -168,6 +169,7 @@ const ShopLayout = ({
                   setActive={setActive}
                 />
               </div>
+              ):(null)}
             </div>
           </div>
         </div>

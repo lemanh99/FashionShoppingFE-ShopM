@@ -8,7 +8,7 @@ import {
   SliderWithAutoPlayTwoRows,
 } from "../src/components/sliders/HomePageProductSlider";
 import Layout from "../src/layout/Layout";
-import { getCategory_1, getHome1 } from "../src/redux/action/home";
+import { getCategory_1, getCategory_4, getHome1 } from "../src/redux/action/home";
 import { getProductFlashSell, getProductMostPurchase, getProductRecommend, getProducts } from "../src/redux/action/product";
 import { createMap } from "../src/utils/utils";
 import time from "../src/utils/time";
@@ -20,7 +20,7 @@ import CategoryHome from "../src/components/products/CategoryHome";
 const Index = () => {
   const sliders = useSelector((state) => state.home.home1 && state.home.home1.sliders);
   const banner_1 = useSelector((state) => state.home.home1 && state.home.home1.banner_1);
-  const category_2 = useSelector((state) => state.home.home1 && state.home.home1.category_2);
+  const category_4 = useSelector((state) => state.home && state.home.category_4);
   // const products = useSelector((state) => state.product.products)
   const recommendProducts = useSelector((state) => state.product.recommended)
   const flashSellProducts = useSelector((state) => state.product.flash_sell)
@@ -31,11 +31,12 @@ const Index = () => {
   const [unmissedProducts, setUnmissedProducts] = useState([])
   const [handpickedProduct, setHandpickedProduct] = useState([])
   const [purchasedProduct, setPurchasedProduct] = useState([])
+  const [mostCategory, setMostCategory] = useState([])
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getHome1());
-    dispatch(getCategory_1());
+    dispatch(getCategory_4());
     dispatch(getProductRecommend());
     dispatch(getProductFlashSell())
     dispatch(getProductMostPurchase())
@@ -48,8 +49,9 @@ const Index = () => {
     setHandpickedProduct(recommendProducts);
     setBestDealProductuseState(flashSellProducts);
     setPurchasedProduct(mostPurchaseProducts)
+    setMostCategory(category_4);
     // setPurchasedProduct(products);
-  }, [recommendProducts, flashSellProducts, mostPurchaseProducts])
+  }, [recommendProducts, flashSellProducts, mostPurchaseProducts, category_4])
 
   let date = new Date();
   date.setDate(date.getDate() + 7);
@@ -112,13 +114,13 @@ const Index = () => {
       <br />
       {/* Recommend Start */}
       <div
-        className="handpick-items-area wow fadeInUp animated"
+        className="handpick-items-area wow  animated"
         data-wow-duration="1s"
       >
         <div className="container">
           <div className="row">
             <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12 pb-15">
-            <div className="free-shopping pt-15 pb-15 text-center">
+              <div className="free-shopping pt-15 pb-15 text-center">
                 <h4 className="theme-color mb-0 font600 title-buy-most">
                   GỢI Ý DÀNH CHO BẠN
                 </h4>
@@ -287,26 +289,29 @@ const Index = () => {
       {/* Banner 1 End */}
 
       {/*Category start */}
-      <div
-        className="handpick-items-area wow fadeInUp animated"
-        data-wow-duration="1s"
-      >
-        <div className="container">
-          <div className="row free-shopping-area light-theme-bg  mlr-1">
-            <div className="col-xl-12 col-lg-12  col-md-  col-sm- col-">
-              <div className="free-shopping pt-15 pb-15 text-center">
-                <h4 className="theme-color mb-0 font600 title-buy-most">
-                  Danh mục sản phẩm
-                </h4>
+      {mostCategory ? (
+        <div
+          className="handpick-items-area wow fadeInUp animated"
+          data-wow-duration="1s"
+        >
+          <div className="container">
+            <div className="row free-shopping-area light-theme-bg  mlr-1">
+              <div className="col-xl-12 col-lg-12  col-md-  col-sm- col-">
+                <div className="free-shopping pt-15 pb-15 text-center">
+                  <h4 className="theme-color mb-0 font600 title-buy-most">
+                    Danh mục sản phẩm
+                  </h4>
+                </div>
               </div>
             </div>
-          </div>
-          <div className="col-xxl-12 col-xl-12  col-lg-12  col-md-5  col-sm-12 col-12 pl-0">
-            <CategoryHome />
-          </div>
+            <div className="col-xxl-12 col-xl-12  col-lg-12  col-md-5  col-sm-12 col-12 pl-0">
+              <CategoryHome category={mostCategory}/>
+            </div>
 
+          </div>
         </div>
-      </div>
+      ) : null}
+
       <br />
       {/*Category end */}
 
