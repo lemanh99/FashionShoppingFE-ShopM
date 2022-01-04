@@ -147,26 +147,26 @@ const Product5 = ({
                   <span className="time-count">
                     {time(product.upcoming).days}
                   </span>
-                  <p>Days</p>
+                  <p>Ngày</p>
                 </span>
                 <span className="cdown hour">
                   <span className="time-count">
                     {time(product.upcoming).hours}
                   </span>
-                  <p>HRS</p>
+                  <p>giờ</p>
                 </span>
                 <span className="cdown minutes">
                   <span className="time-count">
                     {time(product.upcoming).minutes}
                   </span>
-                  <p>Min</p>
+                  <p>Phút</p>
                 </span>
                 <span className="cdown second mr-0">
                   <span>
                     <span className="time-count">
                       {time(product.upcoming).seconds}
                     </span>
-                    <p>Sec</p>
+                    <p>giây</p>
                   </span>
                 </span>
               </div>

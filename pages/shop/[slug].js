@@ -5,6 +5,7 @@ import { Nav, Tab } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { connect, useSelector } from "react-redux";
 import StarRatings from "react-star-ratings";
+import ProductModal from "../../src/components/products/ProductModal";
 import Reating from "../../src/components/Reating";
 import Layout from "../../src/layout/Layout";
 import PageBanner from "../../src/layout/PageBanner";
@@ -20,6 +21,8 @@ import {
   getWishlist,
 } from "../../src/redux/action/utilis";
 import time, { convert_datetime_from_timestamp } from "../../src/utils/time";
+import withoutAuthNotPath from "../../src/HOC/withoutAuthNotPath";
+
 const ProductDetails = ({
   getSingleProduct,
   getSingleProductBySlug,
@@ -41,18 +44,18 @@ const ProductDetails = ({
   rateProduct,
   loading,
 }) => {
+  
   const router = useRouter();
   const { slug } = router.query;
-  console.log(slug);
   const authenticate = useSelector((state) => state.auth.authenticate)
   const [rateItem, setRateItem] = useState([])
   const [comment, setComment] = useState("")
-  const [rateUser, setRateUser] = useState(0)
+  const [rateUser, setRateUser] = useState(0);
+  const [quickView, setQuickView] = useState(false);
 
   const changeRating = (newRating, name) => {
     setRateUser(newRating)
   }
-  console.log("Day", slug)
   useEffect(() => {
     if (slug) {
       getSingleProductBySlug(String(slug));
@@ -63,7 +66,6 @@ const ProductDetails = ({
     getProducts();
     getCompare();
   }, [slug]);
-  console.log(slug)
 
   useEffect(() => {
     if (rates.item && rates.item.length > 0) { setRateItem(rates.item); }
@@ -105,9 +107,9 @@ const ProductDetails = ({
     e.preventDefault();
     addWishlist(product);
     if (wishlist) {
-      toast.error("Remove item in wishlist.");
+      toast.error("Xóa sản phẩm yêu thích thành công");
     } else {
-      toast.success("Add item in wishlist.");
+      toast.success("Thêm sản phẩm yêu thích thành công");
     }
   };
   let totalTime = time(product && product.upcoming);
@@ -130,10 +132,12 @@ const ProductDetails = ({
         "description": comment,
         "star": rateUser
       }
-      rateProduct(product.id, data);
+      rateProduct(product.id, data).then(()=>{
+        toast.success("Thêm bình luận thành công")
+      });
       setComment("");
       setRateUser(0);
-      toast.success("Thêm bình luận thành công");
+      ;
     }
 
   };
@@ -155,6 +159,11 @@ const ProductDetails = ({
 
   return (
     <Layout>
+      <ProductModal
+        show={quickView}
+        handleClose={() => setQuickView(false)}
+        product={product}
+      />
       {product && JSON.stringify(product) !== JSON.stringify({}) ? (
         <div className="product-details-area pro-top-thamb pro-bottom-thamb pt-80">
           <div className="container">
@@ -279,9 +288,9 @@ const ProductDetails = ({
                             </div>
                           </div>
                         )}
-                        <div className="all-info d-sm-flex align-items-center mt-35">
-                          <div className="quick-add-to-cart d-sm-flex align-items-center mb-15 mr-10">
-                            <div className="quantity-field position-relative d-inline-block mr-3">
+                        <div className="all-info d-sm-flex align-items-center">
+                          <div className="quick-add-to-cart d-sm-flex align-items-center mb-15">
+                            {/* <div className="quantity-field position-relative d-inline-block mr-3">
                               <button
                                 className="custom-prev"
                                 onClick={(e) => onClickCart(e)}
@@ -305,7 +314,7 @@ const ProductDetails = ({
                               >
                                 <i className="icon-minus" />
                               </button>
-                            </div>
+                            </div> */}
                           </div>
                           <div className="pro-list-btn d-inline-block mr-10 mb-15">
                             <a
@@ -313,8 +322,7 @@ const ProductDetails = ({
                               className="web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden pl-35 pr-35 ptb-17"
                               onClick={(e) => {
                                 e.preventDefault();
-                                addToCart(product);
-                                toast.success("Thêm vào giỏ hàng thành công");
+                                setQuickView(true);
                               }}
                             >
                               Thêm vào giỏ hàng
@@ -816,7 +824,7 @@ const ProductDetails = ({
                     <div className="position-relative">
                       <Link href={`/`}>
                         <a className="d-block">
-                        {/* <img src= alt="" /> */}
+                          {/* <img src= alt="" /> */}
                           <img src="/images/product/notfound.png" alt="notfound" className="d-block m-auto fs-card-img" />
                         </a>
                       </Link>
@@ -872,6 +880,6 @@ export default connect(mapStateToProps, {
   rateProduct,
   getSingleProductBySlug,
   getRateByProductBySlug,
-})(ProductDetails);
+})(withoutAuthNotPath(ProductDetails));
 
 

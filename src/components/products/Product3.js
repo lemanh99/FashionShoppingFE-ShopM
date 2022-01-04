@@ -64,9 +64,9 @@ const Product3 = ({
     setAddWishlist_(true);
     const wishlist_ = wishlist.find((wishlist) => wishlist.id === product.id);
     if (wishlist_) {
-      toast.error("Remove item in wishlist.");
+      toast.error("Xóa sản phẩm yêu thích thành công");
     } else {
-      toast.success("Add item in wishlist.");
+      toast.success("Thêm sản phẩm yêu thích thành công");
     }
   };
   return (

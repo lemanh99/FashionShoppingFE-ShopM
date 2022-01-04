@@ -19,7 +19,7 @@ export const convert_datetime_from_timestamp = (timestamps) => {
   if (timestamps == null) return null;
   var a = new Date(timestamps);
   var year = a.getFullYear();
-  var month = a.getMonth();
+  var month = a.getMonth()+1;
   var date = a.getDate();
   var hour = a.getHours();
   var min = "0" + a.getMinutes();

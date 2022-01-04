@@ -90,7 +90,7 @@ const Wishlist = ({ getWishlist, addToCart, addWishlist }) => {
                                 onClick={(e) => {
                                   addWishlist(wishlist);
                                   e.preventDefault();
-                                  toast.error("Remove item in wishlist.");
+                                  toast.error("Xóa sản phẩm yêu thích thành công");
                                   setAddWishlist_(true);
                                 }}
                               >

@@ -13,16 +13,45 @@ import {
 import Reating from "../../Reating";
 import PriceFilter from "./PriceFilter";
 
-const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, product_recommendations }) => {
+const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, product_recommendations, query }) => {
   const [categoryFilter, setCategoryFilter] = useState({})
   useEffect(() => {
-    getCategoryFilter();
-    getProducts();
-    getProductRecommend();
-  }, []);
+    if (query != null) {
+      getCategoryFilterByParam();
+      // getProducts();
+      getProductRecommend();
+    }
+
+  }, [query]);
+  const replaceUrlParam = (paramName, paramValue, url) => {
+
+    if (paramValue == null) {
+      paramValue = '';
+    }
+
+    var pattern = new RegExp('\\b(' + paramName + '=).*?(&|#|$)');
+    if (url.search(pattern) >= 0) {
+      return url.replace(pattern, '$1' + paramValue + '$2');
+    }
+    url = url.replace(/[?#]$/, '');
+    return url + (url.indexOf('?') > -1 ? '&' : '?') + paramName + '=' + paramValue;
+  }
+
+
 
   async function getCategoryFilter() {
     const res = await axiosIntance.get(`/product/public/filter`)
+    if (res && res.status === 200) {
+      const { data } = res.data;
+      setCategoryFilter(data)
+    }
+  }
+
+  async function getCategoryFilterByParam() {
+    const query_split = query.split('&');
+    const query_category = query_split ? query_split[0] : query;
+
+    const res = await axiosIntance.get(`/product/public/brand${query_category}`)
     if (res && res.status === 200) {
       const { data } = res.data;
       setCategoryFilter(data)
@@ -47,7 +76,7 @@ const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, pro
                     {categoryFilter && categoryFilter.category ?
                       (categoryFilter.category.map((cat, i) => (
                         <li className="pb-15 d-block" key={i}>
-                          <Link href={`/shop/category/${changeStringPath(cat)}`}>
+                          <Link href={`/shop${replaceUrlParam('category_name', cat, query)}`}>
                             <a className="text-capitalize">
                               {cat}
                               {/* <span className="ms-1">
@@ -100,7 +129,7 @@ const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, pro
                 {categoryFilter && categoryFilter.sizes ? (
                   categoryFilter.sizes.slice(0, 25).map((s, i) => (
                     <li className="pb-10 font13" key={i}>
-                      <Link href={`/shop/size/${changeStringPath(s)}`}>
+                      <Link href={`/shop${replaceUrlParam('size_name', s, query)}`}>
                         <a className="text-capitalize">
                           {/* {s} ({arrLengthByKey(products, "size", s)}) */}
                           {s}
@@ -122,7 +151,7 @@ const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, pro
                 {categoryFilter && categoryFilter.tags ? (
                   categoryFilter.tags.map((tag, i) => (
                     <li className="pb-10 font13 d-inline-block" key={i}>
-                      <Link href={`/shop/tag/${changeStringPath(tag)}`}>
+                      <Link href={`/shop${replaceUrlParam('tag', changeStringPath(tag), query)}`}>
                         <a className="text-capitalize">{tag}</a>
                       </Link>
                     </li>

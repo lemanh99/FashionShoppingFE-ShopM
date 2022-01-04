@@ -343,14 +343,14 @@ const MyAccount = ({ getCustomerAddress, createCustomerAddress, updateCustomerAd
                                       <div className="order-button-payment mt-20">
                                         {edit ? 
                                         <button
-                                          type="button"
+                                          type="submit"
                                           className="bt-btn theme-btn"
                                           onClick={(e) => setEdit(!edit)}
                                         >
                                           Chỉnh sửa
                                         </button> :
                                           <button
-                                            type="submit"
+                                            type="button"
                                             className="bt-btn theme-btn"
                                             onClick={(e) => setEdit(!edit)}
                                           >

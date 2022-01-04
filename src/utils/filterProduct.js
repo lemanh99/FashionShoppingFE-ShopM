@@ -92,8 +92,9 @@ export const updateCart = (state, item, type) => {
 
   if (state.carts) {
     if (exitsCarts) {
+      let quantity = item.qty?item.qty:1
       exitsCarts.qty =
-        type === "+" ? (exitsCarts.qty += 1) : (exitsCarts.qty -= 1);
+        type === "+" ? (exitsCarts.qty += quantity) : (exitsCarts.qty -= 1);
       exitsCarts.totalPrice =
         Number(exitsCarts.qty) * Number(exitsCarts.mainPrice);
       setLocalStorage("shopm-ecommerce", state.carts);
@@ -102,7 +103,7 @@ export const updateCart = (state, item, type) => {
         carts: [...state.carts],
       };
     } else {
-      item.qty = 1;
+      item.qty = item.qty?item.qty:1;
       item.totalPrice = Number(item.mainPrice);
       setLocalStorage("shopm-ecommerce", [...state.carts, item]);
       result = {
