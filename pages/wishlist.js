@@ -2,6 +2,7 @@ import Link from "next/dist/client/link";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { connect, useSelector } from "react-redux";
+import ProductModal from "../src/components/products/ProductModal";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import {
@@ -12,17 +13,24 @@ import {
 
 const Wishlist = ({ getWishlist, addToCart, addWishlist }) => {
   const wishlist = useSelector((state) => state.utilis.wishlist);
+
   useEffect(() => {
     getWishlist();
   }, []);
 
+  const [quickView, setQuickView] = useState(false);
   const [addCart, setaddCart] = useState(false);
   const [addWishlist_, setAddWishlist_] = useState(false);
+  const [product, setProduct] = useState({});
 
   return (
     <Layout>
-      <PageBanner title="Wishlist" />
-
+      <PageBanner title="Yêu thích" />
+      <ProductModal
+        show={quickView}
+        handleClose={() => setQuickView(false)}
+        product={product}
+      />
       {wishlist && wishlist.length > 0 ? (
         <div className="wishlist-area mt-100">
           <div className="container">
@@ -32,12 +40,11 @@ const Wishlist = ({ getWishlist, addToCart, addWishlist }) => {
                   <table className="table table-bordered">
                     <thead>
                       <tr className="text-center">
-                        <th scope="col">Price images</th>
-                        <th scope="col">Product name </th>
-                        <th scope="col">Unit price</th>
-                        <th scope="col">Add to cart</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Remove</th>
+                        <th scope="col">Hình ảnh</th>
+                        <th scope="col">Tên sản phẩm </th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Thêm vào giỏ hàng</th>
+                        <th scope="col">Xóa</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,7 +67,8 @@ const Wishlist = ({ getWishlist, addToCart, addWishlist }) => {
                             </td>
                             <td>
                               <div className="cart-price">
-                                ${Number(wishlist.mainPrice).toFixed(2)}
+                                {" "}
+                                {Number(wishlist.mainPrice).toFixed(2)}VND
                               </div>
                             </td>
                             <td>
@@ -68,21 +76,15 @@ const Wishlist = ({ getWishlist, addToCart, addWishlist }) => {
                                 href="#"
                                 className="web-btn h2-theme-border1 d-inline-block text-capitalize white rounded-0 h2-theme-color h2-theme-bg position-relative over-hidden pl-30 pr-30 ptb-17"
                                 onClick={(e) => {
-                                  addToCart(wishlist);
+                                  setProduct(wishlist);
                                   e.preventDefault();
-                                  setaddCart(true);
-                                  toast.success("Thêm vào giỏ hàng thành công");
+                                  setQuickView(true);
                                 }}
                               >
-                                add to cart
+                                Thêm vào giỏ hàng
                               </a>
                             </td>
-                            <td>
-                              <div className="cart-price">
-                                {" "}
-                                ${Number(wishlist.mainPrice).toFixed(2)}
-                              </div>
-                            </td>
+
                             <td>
                               <a
                                 href="#"
@@ -108,7 +110,35 @@ const Wishlist = ({ getWishlist, addToCart, addWishlist }) => {
           </div>
         </div>
       ) : (
-        <h2 className="py-5 text-center w-100">No Product Found</h2>
+        <div className="container">
+          <div className="row">
+            <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12 d-flex align-items-center justify-content-center">
+              <div className="page-title-not-found mt-50 text-center">
+                <div className="position-relative">
+                  <Link href={`/`}>
+                    <a className="d-block">
+                      {/* <img src= alt="" /> */}
+                      <img src="/images/product/notfound.png" alt="notfound" className="d-block m-auto fs-card-img" />
+                    </a>
+                  </Link>
+                </div>
+                <h2 className="text-capitalize font600 mb-10">Không có sản phẩm nào</h2>
+                <nav aria-label="breadcrumb">
+                  <ol className="breadcrumb justify-content-center bg-transparent">
+                    <li
+                      className="breadcrumb-item active text-capitalize"
+                      aria-current="page"
+                    >
+                      <Link href="/">
+                        <a className="text-center mt-100 mb-100">Quay lại trang chủ</a>
+                      </Link>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </Layout>
   );

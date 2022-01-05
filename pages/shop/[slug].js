@@ -22,6 +22,7 @@ import {
 } from "../../src/redux/action/utilis";
 import time, { convert_datetime_from_timestamp } from "../../src/utils/time";
 import withoutAuthNotPath from "../../src/HOC/withoutAuthNotPath";
+import { FacebookShareButton, TwitterShareButton } from "react-share";
 
 const ProductDetails = ({
   getSingleProduct,
@@ -44,7 +45,7 @@ const ProductDetails = ({
   rateProduct,
   loading,
 }) => {
-  
+
   const router = useRouter();
   const { slug } = router.query;
   const authenticate = useSelector((state) => state.auth.authenticate)
@@ -52,6 +53,8 @@ const ProductDetails = ({
   const [comment, setComment] = useState("")
   const [rateUser, setRateUser] = useState(0);
   const [quickView, setQuickView] = useState(false);
+  const [loadingFirst, setLoadingFirst] = useState(true);
+  const url = typeof window !== 'undefined' && window.location.href ? window.location.href : '';
 
   const changeRating = (newRating, name) => {
     setRateUser(newRating)
@@ -60,6 +63,7 @@ const ProductDetails = ({
     if (slug) {
       getSingleProductBySlug(String(slug));
       getRateByProductBySlug(String(slug));
+      setLoadingFirst(false);
     }
     getCarts();
     getWishlist();
@@ -132,7 +136,7 @@ const ProductDetails = ({
         "description": comment,
         "star": rateUser
       }
-      rateProduct(product.id, data).then(()=>{
+      rateProduct(product.id, data).then(() => {
         toast.success("Thêm bình luận thành công")
       });
       setComment("");
@@ -155,6 +159,18 @@ const ProductDetails = ({
       }
     }
     return data;
+  }
+  if (loadingFirst) {
+    return (
+      <Layout>
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </Layout>
+
+    )
   }
 
   return (
@@ -384,14 +400,21 @@ const ProductDetails = ({
                             data-placement="bottom"
                             title="Facebook"
                           >
-                            <a
+
+                            <FacebookShareButton url={url} quote={product && product.name}>
+                              <a className="d-inline-block font13 text-uppercase transition-3 mb-20">
+                                <i className="fab fa-facebook-f" />
+                              </a>
+                            </FacebookShareButton>
+
+                            {/* <a
                               className="d-inline-block font13 text-uppercase transition-3 mb-20"
                               href="#"
                             >
                               <span className="d-inline-block text-center">
                                 <i className="fab fa-facebook-f" />
                               </span>
-                            </a>
+                            </a> */}
                           </li>
                           <li
                             className="d-inline-block"
@@ -400,16 +423,23 @@ const ProductDetails = ({
                             data-placement="bottom"
                             title="Twitter"
                           >
-                            <a
-                              className="d-inline-block font13 text-uppercase transition-3 mb-20"
-                              href="#"
-                            >
-                              <span className="d-inline-block text-center">
-                                <i className="fab fa-twitter" />
-                              </span>
-                            </a>
+                            <TwitterShareButton
+                              url={url}
+                              title={product && product.name}
+                              hashtags= {["#shopm", "SHOPM"]}
+                              >
+                              <a
+                                className="d-inline-block font13 text-uppercase transition-3 mb-20"
+                                href="#"
+                              >
+                                <span className="d-inline-block text-center">
+                                  <i className="fab fa-twitter" />
+                                </span>
+                              </a>
+                            </TwitterShareButton>
+
                           </li>
-                          <li
+                          {/* <li
                             className="d-inline-block"
                             data-toggle="tooltip"
                             data-selector="true"
@@ -456,7 +486,7 @@ const ProductDetails = ({
                                 <i className="fab fa-google-plus-g" />
                               </span>
                             </a>
-                          </li>
+                          </li> */}
                         </ul>
                       </div>
                     </div>

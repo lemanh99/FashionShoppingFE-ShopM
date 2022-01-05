@@ -83,7 +83,7 @@ const ProductModal = ({
   const handleBuyNow = (product)=>{
     addToCart({ ...productCart(product, sizeSelected), qty: quantity });
     toast.success("Thêm vào giỏ hàng thành công");
-    handleClose();
+    
     Router.push(
       {
         pathname: "/cart",
@@ -91,6 +91,7 @@ const ProductModal = ({
       undefined,
       { shallow: true }
     );
+    handleClose();
   }
   let removeformCat = [
     "home1unmissed",
@@ -309,6 +310,7 @@ const ProductModal = ({
                                 href="#"
                                 className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15 `}
                                 alt="Mua ngay"
+                                title="Mua ngay"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   sizeSelected ? handleBuyNow(product) : toast.error("Vui lòng chọn size");
@@ -323,6 +325,7 @@ const ProductModal = ({
                                 href="#"
                                 className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15 `}
                                 alt="Thêm vào giỏ hàng"
+                                title="Thêm vào giỏ hàng"
                                 onClick={(e) => {
                                   e.preventDefault();
                                   sizeSelected ? addToCart({ ...productCart(product, sizeSelected), qty: quantity }) : null;
