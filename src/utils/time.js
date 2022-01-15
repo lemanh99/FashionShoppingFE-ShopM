@@ -31,7 +31,7 @@ export const convert_datetime_from_timestamp = (timestamps) => {
 export const convert_datetime_to_day = (datetime) => {
   if (datetime == null) return null;
   var year = datetime.getFullYear();
-  var month = datetime.getMonth();
+  var month = datetime.getMonth()+1;
   var day = datetime.getDate();
   var time = year + '-' + month + '-' + day;
   return time;

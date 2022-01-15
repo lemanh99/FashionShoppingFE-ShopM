@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import NotifyMe from "../../components/notification/notification";
 import { storePathValues } from "../../helpers/path";
 import { getOrderLasted } from "../../redux/action/order";
 import { AuthorIcon, CartIcon, CompareIcon, WishListIcon, LoginIcon } from "./Icons";
@@ -42,9 +43,9 @@ export const HomePageOne = () => {
                         data-toggle="tooltip"
                         data-selector="true"
                         data-placement="bottom"
-                        title="stepmeds"
+                        title="shopm"
                       >
-                        <img src="/images/logo/logo.png" alt="stepmeds" />
+                        <img src="/images/logo/logo.png" alt="shopm" />
                       </a>
                     </Link>
                   </div>
@@ -65,6 +66,11 @@ export const HomePageOne = () => {
                               {auth.authenticate ? (<AuthorIcon />) : (<LoginIcon />)}
                             </li>
                           </ul> */}
+                          <ul className="header-compare header-wishlist d-none d-md-block position-relative mr-26 pl-30">
+                            <li className="d-none d-md-inline-block">
+                              <NotifyMe color="theme-bg" />
+                            </li>
+                          </ul>
                           <ul className="header-compare header-wishlist d-none d-md-block position-relative mr-26 pl-30">
                             <li className="d-none d-md-inline-block">
                               <CompareIcon color="theme-bg" />
@@ -130,7 +136,7 @@ export const HomePageOne = () => {
                                     // <a href="#">Mã: {order.order_code}</a>
                                   ))}
                                   <Link href={`/my-account/history-order`}>
-                                    <a className="p-name drowpdown-text-color" style={{textAlign: 'center'}}>Xem tất cả</a>
+                                    <a className="p-name drowpdown-text-color" style={{ textAlign: 'center' }}>Xem tất cả</a>
                                   </Link>
                                 </div>
                               </div>) : (<a href="/login">Theo dõi đơn hàng</a>)}
