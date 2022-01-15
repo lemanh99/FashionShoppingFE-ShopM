@@ -39,6 +39,22 @@ export const getProductFilterByApi = (filters) => async (dispatch) => {
     });
   }
 };
+export const getProductByParams = (query) => async (dispatch) => {
+  dispatch({ type: GET_PRODUCT_REQUEST });
+  const res = await axiosIntance.get(`/product/public/${query}`)
+  if (res && res.status === 200) {
+    const { data } = res.data;
+    dispatch({
+      type: GET_PRODUCT,
+      payload: data,
+    });
+  } else {
+    dispatch({
+      type: GET_PRODUCT,
+      payload: [],
+    });
+  }
+};
 export const getSingleProduct = (id) => async (dispatch) => {
   const res = await axiosIntance.get(`/product/public/detail/${id}`);
 

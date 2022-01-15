@@ -66,7 +66,7 @@ const Product4 = ({
     if (wishlist_) {
       toast.error("Xóa sản phẩm yêu thích thành công.");
     } else {
-      toast.success("Xóa sản phẩm yêu thích thành công");
+      toast.success("Them sản phẩm yêu thích thành công");
     }
   };
   return (

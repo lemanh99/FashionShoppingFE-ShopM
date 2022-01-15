@@ -28,15 +28,14 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
     e.preventDefault();
     addToCart(cart);
     setaddCart(true);
-    toast.success("Thêm vào giỏ hàng thành công");
+    toast.success("Thêm số lượng thành công", { duration: 500 });
   };
   const onClickRemoveCart = (e, cart) => {
     e.preventDefault();
     decreaseCart(cart);
     setaddCart(true);
-    toast.error("Xóa sản phẩm từ giỏ hàng thành công");
+    toast.success("Giảm số lượng thành công", { duration: 500 });
   };
-  console.log(carts)
   return (
     <Layout>
       {carts && carts.length > 0 ? (
@@ -49,7 +48,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                     <th scope="col">Hình ảnh</th>
                     <th scope="col">Tên sản phẩm</th>
                     <th scope="col">Giá</th>
-                    <th scope="col">Kích thước</th>
+                    <th scope="col">Loại</th>
                     <th scope="col">Số lượng</th>
                     <th scope="col">Tổng</th>
                     <th scope="col">Xóa</th>
@@ -60,7 +59,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                     carts.map((cart) => (
                       <tr key={cart.id}>
                         <td>
-                          <Link href={`/shop/${cart.id}`}>
+                          <Link href={`/shop/${cart.slug}`}>
                             <a className="cart-img d-block">
                               <img src={cart.img} alt="Cart image" />
                             </a>
@@ -79,7 +78,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                         </td>
                         <td>
                           <div className="cart-price">
-                          {cart.sizeSelected}
+                            {cart.sizeSelected}
                           </div>
                         </td>
                         <td>
@@ -124,7 +123,7 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
                             onClick={(e) => {
                               removeCart(cart.product_sku_id);
                               setaddCart(true);
-                              toast.error("Xóa sản phẩm từ giỏ hàng thành công");
+                              toast.error("Xóa sản phẩm từ giỏ hàng thành công" , { duration: 500 });
                               e.preventDefault();
                             }}
                           >
@@ -163,7 +162,35 @@ const Cart = ({ removeCart, addToCart, decreaseCart, getCarts }) => {
           {/* /container */}
         </div>
       ) : (
-        <h2 className="py-5 text-center w-100">Không có sản phẩm nào</h2>
+        <div className="container">
+          <div className="row">
+            <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12 d-flex align-items-center justify-content-center">
+              <div className="page-title-not-found mt-50 text-center">
+                <div className="position-relative">
+                  <Link href={`/`}>
+                    <a className="d-block">
+                      {/* <img src= alt="" /> */}
+                      <img src="/images/product/notfound.png" alt="notfound" className="d-block m-auto fs-card-img" />
+                    </a>
+                  </Link>
+                </div>
+                <h2 className="text-capitalize font600 mb-10">Không có sản phẩm nào</h2>
+                <nav aria-label="breadcrumb">
+                  <ol className="breadcrumb justify-content-center bg-transparent">
+                    <li
+                      className="breadcrumb-item active text-capitalize"
+                      aria-current="page"
+                    >
+                      <Link href="/">
+                        <a className="text-center mt-100 mb-100">Quay lại trang chủ</a>
+                      </Link>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </Layout>
   );

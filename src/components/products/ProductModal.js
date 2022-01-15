@@ -15,6 +15,7 @@ import {
 import { productCart } from "../../utils/addCartProduct";
 import time from "../../utils/time";
 import Reating from "../Reating";
+import Router from "next/router";
 const ProductModal = ({
   show,
   handleClose,
@@ -33,11 +34,13 @@ const ProductModal = ({
   price,
 }) => {
   const [sizeSelected, setSizeSelected] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   useEffect(() => {
     getCarts();
     getWishlist();
     getCompare();
     setSizeSelected(null);
+    setQuantity(1);
   }, []);
   const cart = product && carts && carts.find((cart) => cart.id === product.id);
   const wishlist =
@@ -51,8 +54,8 @@ const ProductModal = ({
 
   const onClickCart = (e) => {
     e.preventDefault();
-    const products = { ...product, sizeSelected: sizeSelected }
-    console.log(products);
+    // const products = { ...product, sizeSelected: sizeSelected }
+    const products = productCart(product, sizeSelected)
     addToCart(products);
   };
   const onClickRemoveCart = (e) => {
@@ -63,9 +66,9 @@ const ProductModal = ({
     e.preventDefault();
     addWishlist(product);
     if (wishlist) {
-      toast.error("Remove item in wishlist.");
+      toast.error("Xóa sản phẩm yêu thích thành công");
     } else {
-      toast.success("Add item in wishlist.");
+      toast.success("Thêm sản phẩm yêu thích thành công");
     }
   };
   const onClickCompares = (e) => {
@@ -77,6 +80,19 @@ const ProductModal = ({
       toast.success("Thêm sản phẩm so sánh thành công");
     }
   };
+  const handleBuyNow = (product)=>{
+    addToCart({ ...productCart(product, sizeSelected), qty: quantity });
+    toast.success("Thêm vào giỏ hàng thành công");
+    
+    Router.push(
+      {
+        pathname: "/cart",
+      },
+      undefined,
+      { shallow: true }
+    );
+    handleClose();
+  }
   let removeformCat = [
     "home1unmissed",
     "home1handpicked",
@@ -88,11 +104,6 @@ const ProductModal = ({
     "home3BestSelling",
     "home2tranding",
   ];
-  let cat_ =
-    product &&
-    product.category.filter(
-      (cat) => !removeformCat.join("").includes(cat) && cat
-    );
   let totalTime = time(product && product.upcoming);
 
   return (
@@ -122,7 +133,7 @@ const ProductModal = ({
                               as="div"
                               className="nav flex-column nav-pills me-4"
                             >
-                              {product &&
+                              {product && product.images &&
                                 product.images.map((img, i) => (
                                   <Nav.Link
                                     as="button"
@@ -138,7 +149,7 @@ const ProductModal = ({
                                 ))}
                             </Nav>
                             <Tab.Content className="w-100">
-                              {product &&
+                              {product && product.images &&
                                 product.images.map((img, i) => (
                                   <Tab.Pane
                                     eventKey={`tab-${i}`}
@@ -193,22 +204,22 @@ const ProductModal = ({
                               <ShowMoreText
                                 /* Default options */
                                 lines={5}
-                                more={<><br/> {"Xem thêm"}</>}
-                                less={<><br/> {"Thu gọn"}</>}
+                                more={<><br /> {"Xem thêm"}</>}
+                                less={<><br /> {"Thu gọn"}</>}
                                 className="content-css"
                                 anchorClass="my-anchor-css-class show-text-more"
                                 // onClick={this.executeOnClick}
                                 expanded={false}
-                                
+
                                 truncatedEndingComponent={"... "}
                               >
-                                 <span style={{whiteSpace: 'pre-line'}}>{product && product.description_detail}</span>
-                                
+                                <span style={{ whiteSpace: 'pre-line' }}>{product && product.description_detail}</span>
+
                               </ShowMoreText>
                               {/* {product && product.description_detail} */}
                             </p>
                           </div>
-                          {product.upcoming && (
+                          {product && product.upcoming && (
                             <div className="countdown-time d-flex mt-4  justify-content-start details-page-count">
                               <div className="timer">
                                 <div className="d-flex">
@@ -247,7 +258,7 @@ const ProductModal = ({
                               </h6>
                               <ButtonToolbar>
                                 <ButtonGroup className="me-2 radio-toolbar">
-                                  {product.size &&
+                                  {product && product.size &&
                                     product.size.map((size, i) => (
                                       <ToggleButton
                                         key={i}
@@ -257,7 +268,7 @@ const ProductModal = ({
                                         name="radio"
                                         value={size}
                                         checked={sizeSelected === size}
-                                        onChange={(e) => setSizeSelected(e.currentTarget.value)}
+                                        onChange={(e) => { setSizeSelected(e.currentTarget.value); setQuantity(1) }}
                                       >
                                         {size}
                                       </ToggleButton>
@@ -272,40 +283,54 @@ const ProductModal = ({
                               <div className="quantity-field position-relative d-inline-block mr-3">
                                 <button
                                   className="custom-prev"
-                                  onClick={(e) => onClickCart(e)}
-                                  disabled={cart ? false : true}
+                                  onClick={(e) => { setQuantity(quantity + 1) }}
+                                  disabled={quantity <= 100 ? false : true}
                                 >
                                   <i className="icon-plus" />
                                 </button>
                                 <input
                                   type="text"
                                   name="select1"
-                                  value={cart ? cart.qty : 1}
+                                  value={quantity ? quantity : 1}
                                   disabled
                                   className="quantity-input-arrow quantity-input text-center border-gray"
                                 />
                                 <button
                                   className="custom-next enable"
-                                  onClick={(e) =>
-                                    cart &&
-                                    cart.qty !== 1 &&
-                                    onClickRemoveCart(e)
+                                  onClick={(e) => { setQuantity(quantity - 1) }
                                   }
-                                  disabled={cart ? false : true}
+                                  disabled={quantity > 1 ? false : true}
                                 >
                                   <i className="icon-minus" />
                                 </button>
                               </div>
                             </div>
-
                             <div className="pro-wishlist d-inline-block mb-15">
                               <a
                                 href="#"
                                 className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15 `}
+                                alt="Mua ngay"
+                                title="Mua ngay"
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  sizeSelected ? addToCart(productCart(product, sizeSelected)) : null;
+                                  sizeSelected ? handleBuyNow(product) : toast.error("Vui lòng chọn size");
+                                }}
+                              >
+                                <span className="fas fa-shopping-cart" />
+                              </a>
+                            </div>
+                            <div className="pro-wishlist d-inline-block mb-15 ms-2">
+
+                              <a
+                                href="#"
+                                className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15 `}
+                                alt="Thêm vào giỏ hàng"
+                                title="Thêm vào giỏ hàng"
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  sizeSelected ? addToCart({ ...productCart(product, sizeSelected), qty: quantity }) : null;
                                   sizeSelected ? toast.success("Thêm vào giỏ hàng thành công") : toast.error("Vui lòng chọn size");
+                                  sizeSelected ? handleClose() : null;
                                 }}
                               >
                                 <span className="icon-shopping-bag" />

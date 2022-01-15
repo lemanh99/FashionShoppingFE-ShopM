@@ -36,7 +36,7 @@ const Layout = ({
         <link
           rel="shortcut icon"
           type="image/x-icon"
-          href="/images/logo/favicon.png"
+          href="/images/logo/shop.png"
         />
       </Head>
       <Header homePage={homePage} withoutContainer={withoutContainer} />

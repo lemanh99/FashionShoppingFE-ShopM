@@ -24,7 +24,8 @@ const Search = ({ home, filterByName, setSearch }) => {
     // e.preventDefault();
     Router.push(
       {
-        pathname: `/shop/search/${content}`,
+        pathname: `/shop`,
+        query: { search_keyword: content },
       },
       undefined,
       { shallow: true }

@@ -1,4 +1,4 @@
-import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_SUCCESS, GET_ORDER_LASTED } from "./type";
+import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_HISTORY_ORDER_REQUEST, GET_HISTORY_ORDER_SUCCESS, GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_SUCCESS, GET_ORDER_LASTED } from "./type";
 import axiosIntance from "../../helpers/axios";
 
 export const addOrder = (order) => {
@@ -43,21 +43,21 @@ export const getOrderByOrderCode = (code) => {
 
 export const getOrderHistory = () => {
     return async (dispatch) => {
-      dispatch({ type: GET_ORDER_BY_ID_REQUEST });
+      dispatch({ type: GET_HISTORY_ORDER_REQUEST });
       const res = await axiosIntance.get(`/order/customer/history`);
       if (res.status === 200) {
         console.log(res.data);
         const { data } = res.data;
         dispatch({
-          type: GET_ORDER_BY_ID_SUCCESS,
+          type: GET_HISTORY_ORDER_SUCCESS,
           payload: {
             orders: data,
           },
         });
       } else {
         dispatch({
-          type: orderConstants.GET_ORDER_BY_ID_FAILURE,
-          payload: { error: res.data.error },
+          type: GET_HISTORY_ORDER_FAILURE,
+          payload: "",
         });
       }
     };

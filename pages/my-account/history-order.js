@@ -10,7 +10,7 @@ import { convert_datetime_from_timestamp } from "../../src/utils/time";
 
 
 const OrderHistory = ({ getOrderHistory, cancelOrder }) => {
-  const orders = useSelector((state) => state.order.orders);
+  const orders = useSelector((state) => state.order.historyOrder);
   const [listOrder, setListOrder] = useState([])
   useEffect(() => {
     getOrderHistory()
@@ -19,6 +19,7 @@ const OrderHistory = ({ getOrderHistory, cancelOrder }) => {
   useEffect(() => {
     setListOrder(orders)
   }, [orders])
+  console.log("Order,", listOrder)
 
   const handleCancel = (value) => {
     cancelOrder(value)

@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Nav, Tab } from "react-bootstrap";
 import { connect } from "react-redux";
-import { getProductFilterByApi, getProducts } from "../../src/redux/action/product";
+import { getProductFilterByApi, getProducts, getProductByParams } from "../../src/redux/action/product";
 import { getProductByFilter } from "../../src/utils/filterProduct";
 import { hideFromArr } from "../../src/utils/utils";
 import Paggination from "../components/Paggination";
@@ -20,24 +20,39 @@ const ShopLayout = ({
   keyValueForQurey,
   value,
   active_,
-  getProductFilterByApi
+  getProductFilterByApi,
+  query,
+  getProductByParams
 }) => {
   useEffect(() => {
-    if (value) {
-      if (keyValueForQurey == "catagory") {
-        getProductFilterByApi({ category_name: value });
-      } else if (keyValueForQurey == "search") {
-        getProductFilterByApi({ search_keyword: value })
-      } else if (keyValueForQurey == "colors") {
-        getProductFilterByApi({ color_name: value })
-      } else if (keyValueForQurey == "sizes") {
-        getProductFilterByApi({ size_name: value })
-      } else if (keyValueForQurey == "tags") {
-        getProductFilterByApi({ tag: value })
+    if (query !== null) {
+      if (query) {
+        console.log("Khong chay day", query);
+        getProductByParams(query);
+      } else {
+        
+        if (value) {
+          if (keyValueForQurey == "catagory") {
+            getProductFilterByApi({ category_name: value });
+          } else if (keyValueForQurey == "search") {
+            getProductFilterByApi({ search_keyword: value })
+          } else if (keyValueForQurey == "colors") {
+            getProductFilterByApi({ color_name: value })
+          } else if (keyValueForQurey == "sizes") {
+            getProductFilterByApi({ size_name: value })
+          } else if (keyValueForQurey == "tags") {
+            getProductFilterByApi({ tag: value })
+          }
+        }
+        else { 
+          getProducts() 
+        };
       }
+
     }
-    else { getProducts() };
-  }, [value]);
+
+
+  }, [query]);
   const [active, setActive] = useState(active_ ? active_ : 0);
   let sort = 12;
   let products = allProducts;
@@ -46,7 +61,7 @@ const ShopLayout = ({
       <div className="container">
         <div className="product-wrapper mt-1">
           <div className="row">
-            <Filter />
+            <Filter query={query}/>
             <div className="col-xl-9  col-lg-8  col-md-12  col-sm-12 col-12">
               <Tab.Container defaultActiveKey="grid">
                 <div className="row">
@@ -161,15 +176,15 @@ const ShopLayout = ({
 
               </Tab.Container>
               {!loading ? (
-              <div className="mt-5">
-                <Paggination
-                  length={products && products.length}
-                  sort={sort}
-                  active={active}
-                  setActive={setActive}
-                />
-              </div>
-              ):(null)}
+                <div className="mt-5">
+                  <Paggination
+                    length={products && products.length}
+                    sort={sort}
+                    active={active}
+                    setActive={setActive}
+                  />
+                </div>
+              ) : (null)}
             </div>
           </div>
         </div>
@@ -185,4 +200,4 @@ const mapStateToProps = (state) => ({
   loading: state.product.loading
 });
 
-export default connect(mapStateToProps, { getProducts, getProductFilterByApi })( withoutAuthNotPath(ShopLayout));
+export default connect(mapStateToProps, { getProducts, getProductFilterByApi, getProductByParams })(withoutAuthNotPath(ShopLayout));

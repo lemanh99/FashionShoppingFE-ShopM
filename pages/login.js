@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
 import { getPrevPath } from "../src/helpers/path";
 import withoutAuth from "../src/HOC/withoutAuth";
+import withoutAuthNotPath from "../src/HOC/withoutAuthNotPath";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import { login } from "../src/redux/action/auth";
@@ -26,12 +27,13 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (auth.authenticate && token) {
-      const prevPath = getPrevPath()
-      if (prevPath && prevPath !== "null") {
-        Router.push(`${prevPath}`)
-      } else {
-        Router.push("/")
-      }
+      Router.push("/")
+      // const prevPath = getPrevPath()
+      // if (prevPath && prevPath !== "null") {
+      //   Router.push(`${prevPath}`)
+      // } else {
+      //   Router.push("/")
+      // }
     }
 
   }, [auth])
@@ -126,4 +128,4 @@ const Login = () => {
   );
 };
 
-export default withoutAuth(Login);
+export default withoutAuthNotPath(Login);

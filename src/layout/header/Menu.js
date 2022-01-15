@@ -26,13 +26,13 @@ export const DasktopMenu = () => {
           // <Product2 product={product} key={product.id} />
           category.child_category.length > 0 ? (
             <li>
-              <Link href="/">
+              <Link  href={`/shop?category_parent=${category.slug}`}>
                 <a className="active dp-menu">{category.category_name}</a>
               </Link>
               <ul className="mega-menu box-shadow-gray pt-25 pb-20 pl-30 pr-30">
                 {category.child_category.map((child) => (
                   <li>
-                    <Link href={`/shop/category/${changeStringPath(child.category_name)}`}>
+                    <Link href={`/shop?category_name=${child.category_name}`}>
                       <a>{child.category_name}</a>
                     </Link>
                   </li>

@@ -27,6 +27,7 @@ const OrderHistoryDetail = ({ }) => {
     const [addressApi, setAddressApi] = useState([]);
     const [items, setItems] = useState([])
     const [status, setStatus] = useState(2);
+    const [loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -48,6 +49,7 @@ const OrderHistoryDetail = ({ }) => {
                             setStatus(4)
                         }
                     }
+                    setLoading(false)
                 } else {
                     router.push("/my-account/history-order")
                 }
@@ -90,6 +92,62 @@ const OrderHistoryDetail = ({ }) => {
             return getAddressVietNam(addressApi, city, district, ward)
         }
         return null
+    }
+    if (loading) {
+        return <Layout sticky textCenter container footerBg>
+            <main>
+                {/* <PageBanner title="Checkout" /> */}
+                <div className="coupon-area mt-80">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+                            </div>
+                            {/* /col */}
+                            <div className="col-xl-6  col-lg-6  col-md-6  col-sm-12 col-12">
+
+                            </div>
+                            {/* /col */}
+                        </div>
+                        {/* /row */}
+                    </div>
+                    {/* /container */}
+                </div>
+
+                <div className="checkout-area mb-60">
+                    <div className="container">
+                        <div action="#">
+                            <div className="row">
+                                {/* /col */}
+                                <SideBarMyAccount />
+                                <div className="col-xl-9  col-lg-9  col-md-12  col-sm-12 col-12">
+
+                                    <div className="checkbox-form">
+                                        <h4 className="pb-10 mb-20 border-b-light-gray2">
+
+                                        </h4>
+                                        {/* /row */}
+                                    </div>
+                                    <div className="your-order mb-30 pt-30 pr-40 pb-60 pl-40 mt-15">
+                                        <h4 className="pb-10 mb-20 border-b-light-gray3">
+                                            Chi tiết đơn hàng
+                                        </h4>
+                                        <div className="d-flex justify-content-center">
+                                            <div className="spinner-border" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* /col */}
+                            </div>
+                            {/* /row */}
+                        </div>
+                    </div>
+                    {/* /container */}
+                </div>
+
+            </main>
+        </Layout>
     }
 
     if (items.length > 0) {

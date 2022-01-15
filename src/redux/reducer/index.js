@@ -8,6 +8,7 @@ import auth from "./auth";
 import order from "./order";
 import rate from "./rate";
 import user from "./user";
+import notification from "./notification";
 
 export default combineReducers({
   auth,
@@ -19,4 +20,5 @@ export default combineReducers({
   order,
   rate,
   user,
+  notification,
 });
