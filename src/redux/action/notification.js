@@ -1,5 +1,5 @@
 import axiosIntance from "../../helpers/axios";
-import { NOTIFICATION_FAILURE, NOTIFICATION_REQUEST, NOTIFICATION_SUCCESS } from "./type";
+import { NOTIFICATION_FAILURE, NOTIFICATION_REQUEST, NOTIFICATION_RESET, NOTIFICATION_SUCCESS } from "./type";
 
 export const getNotification = () => {
     return async (dispatch) => {
@@ -17,8 +17,15 @@ export const getNotification = () => {
         } else {
             dispatch({
                 type: NOTIFICATION_FAILURE,
-                payload: { error: res.data.error },
+                payload: { error: "Error" },
+                notifications: [],
             });
         }
+    };
+};
+
+export const getNotificationReset = () => {
+    return async (dispatch) => {
+        dispatch({ type: NOTIFICATION_RESET });
     };
 };

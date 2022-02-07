@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
 import { getPrevPath } from "../src/helpers/path";
@@ -15,7 +15,13 @@ import { loginSchema } from "../src/utils/yupModal";
 const Login = () => {
   const Router = useRouter();
   const auth = useSelector((state) => state.auth);
-  console.log(auth)
+
+  const [submitForm, setSumitForm] = useState(false);
+
+  useEffect(() => {
+    setSumitForm(false)
+  }, [])
+
   const dispatch = useDispatch();
   const submit = (users) => {
     const user = {
@@ -46,7 +52,12 @@ const Login = () => {
             <div className="row">
               <div className="col-lg-8 offset-lg-2">
                 <div className="basic-login">
-                  <h3 className="text-center mb-60">Đăng nhập tài khoản</h3>
+                  <h3 className="text-center mb-45">Đăng nhập tài khoản</h3>
+                  {submitForm && auth && auth.error?(
+                    <div>
+                      <label className="notification-message">Tài khoản hoặc mật khẩu chưa đúng, vui lòng thử lại</label>
+                    </div>
+                  ):null}
                   <Formik
                     initialValues={loginSchema.initialValue}
                     validationSchema={loginSchema.schema}
@@ -54,6 +65,7 @@ const Login = () => {
                       setTimeout(() => {
                         submit(values);
                         setSubmitting(false);
+                        setSumitForm(true);
                       }, 400);
                     }}
                   >
@@ -88,7 +100,7 @@ const Login = () => {
                           handleBlur={handleBlur}
                           handleChange={handleChange}
                         />
-                        <div className="login-action mb-20 fix ">
+                        {/* <div className="login-action mb-20 fix ">
                           <span className="log-rem f-left">
                             <input id="remember" type="checkbox" />
                             <label htmlFor="remember">Ghi nhớ tài khoản!</label>
@@ -98,7 +110,7 @@ const Login = () => {
                               Quên mật khẩu?
                             </a>
                           </span>
-                        </div>
+                        </div> */}
 
                         <button
                           disabled={isSubmitting}
@@ -108,7 +120,7 @@ const Login = () => {
                           Đăng nhập
                         </button>
                         <div className="or-divide">
-                          <span>or</span>
+                          <span>hoặc</span>
                         </div>
                         <Link href="/register">
                           <a className="bt-btn bt-btn-black w-100 text-center">

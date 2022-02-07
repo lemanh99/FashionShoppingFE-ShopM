@@ -1,4 +1,4 @@
-import { NOTIFICATION_FAILURE, NOTIFICATION_REQUEST, NOTIFICATION_SUCCESS } from "../action/type";
+import { NOTIFICATION_FAILURE, NOTIFICATION_REQUEST, NOTIFICATION_RESET, NOTIFICATION_SUCCESS } from "../action/type";
 
 const initState = {
     notifications: [],
@@ -26,6 +26,12 @@ export default (state = initState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error,
+            };
+            break;
+
+        case NOTIFICATION_RESET:
+            state = {
+                ...initState,
             };
             break;
     }

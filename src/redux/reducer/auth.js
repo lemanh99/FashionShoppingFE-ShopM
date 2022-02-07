@@ -6,8 +6,9 @@ const initState = {
     authenticating: false,
     register: false,
     loading: false,
-    error: "",
+    error: null,
     message: "",
+    app_status: null,
 };
 
 
@@ -30,7 +31,7 @@ export default (state = initState, action) => {
         case REGISTER_FAILURE:
             state = {
                 ...initState,
-                error: action.payload.error,
+                app_status: action.payload.app_status,
                 loading: false,
             };
             break;

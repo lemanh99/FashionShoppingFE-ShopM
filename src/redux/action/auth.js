@@ -2,7 +2,6 @@ import axiosIntance from "../../helpers/axios";
 import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT_FAILURE, LOGOUT_REQUEST, LOGOUT_SUCCESS, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "./type";
 
 export const signup = (user) => {
-    console.log(user);
     return async (dispatch) => {
         try {
             dispatch({
@@ -14,18 +13,17 @@ export const signup = (user) => {
 
             if (res.status === 200) {
                 const { message } = res.data;
+                
                 dispatch({
                     type: REGISTER_SUCCESS,
                     payload: { message },
                 });
                 dispatch(signin(user));
             } else {
-                if (res.status === 400) {
-                    dispatch({
-                        type: REGISTER_FAILURE,
-                        payload: { error: res.data.error },
-                    });
-                }
+                dispatch({
+                    type: REGISTER_FAILURE,
+                    payload: { app_status: res.data.meta.app_status },
+                });
             }
         } catch (error) { }
     };
@@ -62,7 +60,7 @@ export const login = (user) => {
                     dispatch({
                         type: LOGIN_FAILURE,
                         payload: {
-                            error: res.data.error,
+                            error: "Login false",
                         },
                     });
                 }

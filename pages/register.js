@@ -15,8 +15,10 @@ import { convert_datetime_to_day } from "../src/utils/time";
 const Register = () => {
   const Router = useRouter();
   const auth = useSelector((state) => state.auth);
+  const [submitForm, setSumitForm] = useState(false);
   const [birthDay, setBirthDay] = useState(new Date());
   const dispatch = useDispatch();
+  
   const submit = (users) => {
     const user = {
       first_name: users.firstName,
@@ -29,11 +31,17 @@ const Register = () => {
     };
     dispatch(signup(user));
   }
+
   useEffect(() => {
-    if (auth.register) {
+    setSumitForm(false);
+  }, [])
+
+  useEffect(() => {
+    if (auth.register&&submitForm) {
       Router.push("/login")
     }
   }, [auth])
+
   return (
     <Layout>
       <main>
@@ -42,7 +50,12 @@ const Register = () => {
             <div className="row">
               <div className="col-lg-8 offset-lg-2">
                 <div className="basic-login">
-                  <h3 className="text-center mb-60">Đăng ký tài khoản</h3>
+                  <h3 className="text-center mb-45">Đăng ký tài khoản</h3>
+                  {submitForm && auth && auth.app_status?(
+                    <div>
+                      <label className="notification-message">{auth.app_status=="ERROR_USER_EMAIL_ALREADY_EXIST"?("Tài khoản email đã tồn tại"):("Thông tin nhập không hợp lệ")}</label>
+                    </div>
+                  ):null}
                   <Formik
                     initialValues={registerSchema.initialValue}
                     validationSchema={registerSchema.schema}
@@ -50,6 +63,7 @@ const Register = () => {
                       setTimeout(() => {
                         submit(values);
                         setSubmitting(false);
+                        setSumitForm(true);
                       }, 400);
                     }}
                   >

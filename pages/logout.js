@@ -6,13 +6,16 @@ import { connect, useSelector } from "react-redux";
 import { getPrevPath } from "../src/helpers/path";
 import withAuth from "../src/HOC/withAuth";
 import { logout } from "../src/redux/action/auth";
+import { getNotificationReset } from "../src/redux/action/notification";
 
 
-const Logout = ({ logout }) => {
+const Logout = ({ logout, getNotificationReset }) => {
     const Router = useRouter();
     const auth = useSelector((state) => state.auth);
+
     useEffect(() => {
         logout();
+        getNotificationReset();
     }, [])
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -30,5 +33,4 @@ const Logout = ({ logout }) => {
         <></>
     );
 };
-
-export default connect(null, { logout })(withAuth(Logout));
+export default connect(null, { logout, getNotificationReset })(withAuth(Logout));

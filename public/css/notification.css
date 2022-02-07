@@ -239,3 +239,9 @@
    width:33.33333%;
    text-align:right;
   }
+
+  .notification-message {
+    text-align: center;
+    color: red !important;
+    font-size: 16px;
+  }
