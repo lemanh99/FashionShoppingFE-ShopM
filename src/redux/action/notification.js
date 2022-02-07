@@ -6,7 +6,7 @@ export const getNotification = () => {
         dispatch({ type: NOTIFICATION_REQUEST });
         const res = await axiosIntance.get(`/notification/user`);
         
-        if (res.status === 200) {
+        if (res && res.status === 200) {
             const { data } = res.data;
             dispatch({
                 type: NOTIFICATION_SUCCESS,

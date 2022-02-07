@@ -14,6 +14,7 @@ import { convert_datetime_to_day } from '../../utils/time';
 
 const NotifyMe = props => {
     const notification = useSelector((state) => state.notification);
+    const auth = useSelector((state) => state.auth);
     // State variabls
     const [showCount, setShowCount] = useState(false);
     const [messageCount, setMessageCount] = useState(0);
@@ -166,50 +167,57 @@ const NotifyMe = props => {
                                 <div className="notification-ui_dd-header">
                                     <h3 className="text-notification">Thông báo</h3>
                                 </div>
-                                <div className="notification-ui_dd-content">
-                                    {
-                                        data && data.length > 0 ?
-                                            data.map((message, index) =>
-                                            (
-                                                <a href="#!" className="notification-list notification-list--unread text-dark">
-                                                    <div className="notification-list_img">
-                                                        <i className="far fa-comment-alt" />
-                                                    </div>
-                                                    <div className="notification-list_detail">
-                                                        <p><b>{message && message.title}</b> <br /><span className="text-muted">{message && message.content}</span></p>
-                                                    </div>
-                                                    <p><small>{message && getDayDiff(message.created_at)}</small></p>
-                                                </a>
-                                            )
-                                            ) :
-                                            <>
-                                                {/* <AlertTriangle color='#000000' size={32} /> */}
-                                                <div className="notification-list notification-list--unread text-dark">
-                                                    <div className="text-center">Không có thông báo nào!</div>
-                                                </div>
-
-                                            </>
-                                    }
-
-                                    {/* <a href="#!" className="notification-list text-dark">
-                                        <div className="notification-list_img">
-                                            <i className="far fa-comment-alt" />
+                                {!auth.authenticate ? (
+                                    <>
+                                        <div className="notification-ui_dd-content">
+                                            <div className="notification-list notification-list--unread text-dark">
+                                                <div className="text-center">Đăng nhập để xem thông báo !</div>
+                                            </div>
                                         </div>
-                                        <div className="notification-list_detail">
-                                            <p><b>Giao hàng miễn phí</b> <br /><span className="text-muted">Nhập mã FREESHIP để giảm 30000Đ phí giao hàng</span></p>
+                                        <div className="notification-ui_dd-content">
+                                            <a href="/login" className="btn-notification btn-success-notification btn-block-notification">Đăng nhập</a>
                                         </div>
-                                        <p><small>10 mins ago</small></p>
-                                    </a> */}
-                                </div>
-                                <div className="notification-ui_dd-content">
-                                    <a href="#!" className="btn-notification btn-success-notification btn-block-notification">Xem tất cả</a>
-                                </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="notification-ui_dd-content">
+                                            {
+                                                data && data.length > 0 ?
+                                                    data.map((message, index) =>
+                                                    (
+                                                        <a href="#!" className="notification-list notification-list--unread text-dark">
+                                                            <div className="notification-list_img">
+                                                                <i className="far fa-comment-alt" />
+                                                            </div>
+                                                            <div className="notification-list_detail">
+                                                                <p><b>{message && message.title}</b> <br /><span className="text-muted">{message && message.content}</span></p>
+                                                            </div>
+                                                            <p><small>{message && getDayDiff(message.created_at)}</small></p>
+                                                        </a>
+                                                    )
+                                                    ) :
+                                                    <>
+                                                        {/* <AlertTriangle color='#000000' size={32} /> */}
+                                                        <div className="notification-list notification-list--unread text-dark">
+                                                            <div className="text-center">Không có thông báo nào!</div>
+                                                        </div>
+
+                                                    </>
+                                            }
+                                        </div>
+                                        <div className="notification-ui_dd-content">
+                                            <a href="#!" className="btn-notification btn-success-notification btn-block-notification">Xem tất cả</a>
+                                        </div>
+                                    </>
+                                )
+                                }
+
                             </div>
 
                         </Popover.Content>
                     </Popover>
                 </Overlay>
-            </div>
+            </div >
         </>
     )
 };
