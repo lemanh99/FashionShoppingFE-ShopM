@@ -1,6 +1,6 @@
 // import swal from "@sweetalert/with-react";
 import { CardElement, Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { Formik } from "formik";
 import Router from "next/router";
@@ -14,18 +14,23 @@ import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import { removeCartAll, setCheckoutData } from "../src/redux/action/utilis";
 import { totalPrice } from "../src/utils/utils";
+import toast from "react-hot-toast";
 import {
   checkoutSchema,
   couponSchema,
   loginSchema,
 } from "../src/utils/yupModal";
 import PaymentPaypal from "../src/components/payment/paypal";
+import PaymentMomo from "../src/components/payment/momo";
 import { addOrder } from "../src/redux/action/order";
 import axiosIntance from "../src/helpers/axios";
 
-const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+
+
+// const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
 const PaymentCart = ({ addOrder, removeCartAll }) => {
+
   const carts = useSelector((state) => state.utilis.carts);
   const checkoutData = useSelector((state) => state.utilis.checkoutData);
   const order = useSelector((state) => state.order);
@@ -37,10 +42,19 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
   const [discount, setDiscount] = useState(null);
   const [payment, setPayment] = useState([])
 
+  const [showMomo, setShowMomo] = useState(false);
+  const [urlMomo, setUrlMomo] = useState('');
+  const [dataMomo, setDataMomo] = useState(null);
+  const [paymentMomoSucess, setPaymentMomoSuccess] = useState(0)
+
+
+  
+
   async function getPriceVNDOnUSD() {
-    const res = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=${process.env.EXCHANGE_RATE_CONVERT_KEY}`)
-    const { USD_VND } = res.data
-    setConvertVND(USD_VND);
+    // const res = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=${process.env.EXCHANGE_RATE_CONVERT_KEY}`)
+    // const { USD_VND } = res.data
+    // setConvertVND(USD_VND);
+    setConvertVND(23000);
   }
   useEffect(() => {
     if (!checkoutData) {
@@ -74,7 +88,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
 
   useEffect(() => {
     const total = convertVND ? Number((Number(price) + Number(deliveryFee)) / Number(convertVND)).toFixed(2) : (Number(price) + Number(deliveryFee)) / Number(convertVND)
-    console.log(total, convertVND)
+    // console.log(total, convertVND)
     // setPaymentTotalPayPal(total)
   }, [convertVND])
 
@@ -115,10 +129,49 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
     }
     addOrder(orders);
   }
+
+  
   const getPayment = (name) => {
-    const pay = payment.find((p) => String(p.payment_method).toLowerCase() === name && p.visible == true)
+    const pay = payment.find((p) => String(p.payment_method).toLowerCase() === name.toLowerCase() && p.visible == true)
     return pay
   }
+
+  const handleClick = () => {
+    axiosIntance.post('setting/payment/momo/create', {
+      order_code: "Payment",
+      amount: String(Number(price) + Number(deliveryFee))
+
+    }).then((res) => {
+      if (res.status == 200) {
+        const { data } = res.data;
+        if (data) {
+          setUrlMomo(data)
+          setShowMomo(true)
+        } else {
+          toast.error("Thanh toán bằng momo đang lỗi, vui lòng thử lại sau", { duration: 500 });
+        }
+      } else {
+        toast.error("Thanh toán bằng momo đang lỗi, vui lòng thử lại sau", { duration: 500 });
+      }
+    })
+  }
+  const handleCloseMomo = (status) => {
+    setShowMomo(false);
+    setDataMomo(null);
+    if(status==1){
+      paymentUser({
+        order_status_id: 2,
+        payment_status_id: 2,
+        payment_id: getPayment("momo") ? getPayment("momo").id : null,
+      })
+      toast.success("Thanh toán bằng ví diện tử momo thành công", { duration: 1000 });
+    }else{
+      toast.error("Thanh toán bằng ví diện tử momo không thành công", { duration: 1000 });
+    }
+    setPaymentMomoSuccess(0)
+  };
+  const handleShowMomo = () => setShowMomo(true);
+
 
   return (
     <Layout sticky textCenter container footerBg>
@@ -139,7 +192,14 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
           </div>
           {/* /container */}
         </div>
-
+        <PaymentMomo
+          url={urlMomo}
+          show={showMomo}
+          data={dataMomo}
+          setData={setDataMomo}
+          handleClose={handleCloseMomo}
+          setPaymentMomoSuccess={setPaymentMomoSuccess}
+        />
 
         <div className="checkout-area mb-60">
           <div className="container">
@@ -223,8 +283,40 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                       Chọn phương thức thanh toán
                     </h4>
                     <div className="payment-method mt-40">
-                      <Accordion defaultActiveKey="0">
+                      <Accordion defaultActiveKey="4">
                         <div className="accordion-item">
+                          <h2 className="accordion-header">
+                            <Accordion.Toggle
+                              className="accordion-button"
+                              as="button"
+                              eventKey="0"
+                              aria-expanded="false"
+                            >
+                              Thanh toán qua ví điện tử momo
+                            </Accordion.Toggle>
+                          </h2>
+                          <Accordion.Collapse eventKey="0">
+                            <div className="accordion-body">
+
+                              <div className="mt-3">
+                                <div className="logo-momo">
+                                  <img src="/images/logo/momo.png" alt="" />
+                                </div>
+                              </div>
+                              <div className="order-button-payment mt-20">
+                                <button
+                                  type="submit"
+                                  className="bt-btn theme-btn payment-btn"
+                                  style={{ background: '#8d0a56' }}
+                                  onClick={() => handleClick()}
+                                >
+                                  Thanh toán
+                                </button>
+                              </div>
+                            </div>
+                          </Accordion.Collapse>
+                        </div>
+                        {/* <div className="accordion-item">
                           <h2 className="accordion-header">
                             <Accordion.Toggle
                               className="accordion-button"
@@ -247,13 +339,14 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                                 <button
                                   type="submit"
                                   className="bt-btn theme-btn"
+                                  onClick={() => handleClick()}
                                 >
                                   Tiếp tục
                                 </button>
                               </div>
                             </div>
                           </Accordion.Collapse>
-                        </div>
+                        </div> */}
 
                         <div className="accordion-item">
                           <h2 className="accordion-header">
@@ -270,12 +363,12 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                               <div className="order-button-payment mt-20">
                                 <button
                                   type="button"
-                                  className="bt-btn theme-btn"
+                                  className="bt-btn theme-btn payment-btn"
                                   onClick={(e) => {
                                     paymentUser({
                                       order_status_id: 2,
-                                      payment_status_id: getPayment("cod") ? getPayment("cod").id : null,
-                                      payment_id: 2,
+                                      payment_status_id: 1,
+                                      payment_id: getPayment("cod") ? getPayment("cod").id : null,
                                     })
                                   }}
                                 >
