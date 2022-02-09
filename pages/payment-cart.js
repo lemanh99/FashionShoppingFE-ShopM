@@ -22,8 +22,10 @@ import {
 } from "../src/utils/yupModal";
 import PaymentPaypal from "../src/components/payment/paypal";
 import PaymentMomo from "../src/components/payment/momo";
+import PaymentVnpay from "../src/components/payment/vnpay";
 import { addOrder } from "../src/redux/action/order";
 import axiosIntance from "../src/helpers/axios";
+import { setLocalStorage } from "../src/utils/localstorage";
 
 
 
@@ -32,7 +34,7 @@ import axiosIntance from "../src/helpers/axios";
 const PaymentCart = ({ addOrder, removeCartAll }) => {
 
   const carts = useSelector((state) => state.utilis.carts);
-  const checkoutData = useSelector((state) => state.utilis.checkoutData);
+  let checkoutData = useSelector((state) => state.utilis.checkoutData);
   const order = useSelector((state) => state.order);
 
   const [convertVND, setConvertVND] = useState(null);
@@ -45,10 +47,11 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
   const [showMomo, setShowMomo] = useState(false);
   const [urlMomo, setUrlMomo] = useState('');
   const [dataMomo, setDataMomo] = useState(null);
-  const [paymentMomoSucess, setPaymentMomoSuccess] = useState(0)
 
+  const [showVnpay, setShowVnpay] = useState(false);
+  const [urlVnpay, setUrlVnpay] = useState('');
+  const [dataVnpay, setDataVnpay] = useState(null);
 
-  
 
   async function getPriceVNDOnUSD() {
     // const res = await axios.get(`https://free.currconv.com/api/v7/convert?q=USD_VND&compact=ultra&apiKey=${process.env.EXCHANGE_RATE_CONVERT_KEY}`)
@@ -130,7 +133,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
     addOrder(orders);
   }
 
-  
+
   const getPayment = (name) => {
     const pay = payment.find((p) => String(p.payment_method).toLowerCase() === name.toLowerCase() && p.visible == true)
     return pay
@@ -158,19 +161,62 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
   const handleCloseMomo = (status) => {
     setShowMomo(false);
     setDataMomo(null);
-    if(status==1){
+    if (status == 1) {
       paymentUser({
         order_status_id: 2,
         payment_status_id: 2,
         payment_id: getPayment("momo") ? getPayment("momo").id : null,
       })
       toast.success("Thanh toán bằng ví diện tử momo thành công", { duration: 1000 });
-    }else{
+    } else {
       toast.error("Thanh toán bằng ví diện tử momo không thành công", { duration: 1000 });
     }
-    setPaymentMomoSuccess(0)
   };
   const handleShowMomo = () => setShowMomo(true);
+
+  const handleClickVnpay = () => {
+    axiosIntance.post('setting/payment/vnpay/create', {
+      order_type: "Order",
+      order_desc: "Thanh toan don hang",
+      bank_code:  null,
+      language: "vn",
+      amount: String(Number(price) + Number(deliveryFee))*100
+
+    }).then((res) => {
+      if (res.status == 200) {
+        const { data } = res.data;
+        if (data) {
+          setUrlVnpay(data.url)
+          // setShowVnpay(true);
+          
+          setLocalStorage('checkoutData', checkoutData)
+          setLocalStorage('carts', carts);
+          setLocalStorage('orderCode', data.order_id);
+          Router.push(data.url)
+        } else {
+          toast.error("Thanh toán bằng vnpay đang lỗi, vui lòng thử lại sau", { duration: 500 });
+        }
+      } else {
+        toast.error("Thanh toán bằng vnpay đang lỗi, vui lòng thử lại sau", { duration: 500 });
+      }
+    })
+  }
+
+  const handleCloseVnpay = (status) => {
+    setShowVnpay(false);
+    setDataVnpay(null);
+    if (status == 1) {
+      // paymentUser({
+      //   order_status_id: 2,
+      //   payment_status_id: 2,
+      //   payment_id: getPayment("momo") ? getPayment("momo").id : null,
+      // })
+      // toast.success("Thanh toán bằng ví diện tử momo thành công", { duration: 1000 });
+    } else {
+      toast.error("Thanh toán bằng ví diện tử vnpay không thành công", { duration: 1000 });
+    }
+  };
+  const handleShowVnpay = () => setShowVnpay(true);
 
 
   return (
@@ -198,8 +244,14 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
           data={dataMomo}
           setData={setDataMomo}
           handleClose={handleCloseMomo}
-          setPaymentMomoSuccess={setPaymentMomoSuccess}
         />
+        {/* <PaymentVnpay
+          url={'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html?vnp_Amount=1806000&vnp_Command=pay&vnp_CreateDate=20220209134330&vnp_CurrCode=VND&vnp_IpAddr=10.8.101.6&vnp_Locale=vn&vnp_OrderInfo=1ef8f0bd-6ac8-4664-98c8-8d03041ab4c7&vnp_OrderType=Order12&vnp_ReturnUrl=https%3A%2F%2Fwebhook.site%2F8e595f0a-3222-4dc4-afa7-26db4a6896bd&vnp_TmnCode=RAEX2EIZ&vnp_TxnRef=ORD1644414210836406&vnp_Version=2.1.0&vnp_SecureHash=aa18c27159031bad43c0a66d0cd5a53a4074d65218dad01d1d624d9f8360d6f6c00cba83dbd9640d2d47c27c67af45dbe6f9121140d4ef6da55bb6a8e2b70847'}
+          show={showVnpay}
+          data={dataVnpay}
+          setData={setDataVnpay}
+          handleClose={handleCloseVnpay}
+        /> */}
 
         <div className="checkout-area mb-60">
           <div className="container">
@@ -284,7 +336,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                     </h4>
                     <div className="payment-method mt-40">
                       <Accordion defaultActiveKey="4">
-                        <div className="accordion-item">
+                      <div className="accordion-item">
                           <h2 className="accordion-header">
                             <Accordion.Toggle
                               className="accordion-button"
@@ -292,10 +344,42 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                               eventKey="0"
                               aria-expanded="false"
                             >
-                              Thanh toán qua ví điện tử momo
+                              Thanh toán qua ví VNPay
                             </Accordion.Toggle>
                           </h2>
                           <Accordion.Collapse eventKey="0">
+                            <div className="accordion-body">
+
+                              <div className="mt-3">
+                                <div className="logo-momo">
+                                  <img src="/images/logo/vnpay.jpg" alt="" />
+                                </div>
+                              </div>
+                              <div className="order-button-payment mt-20">
+                                <button
+                                  type="submit"
+                                  className="bt-btn theme-btn payment-btn"
+                                  style={{ background: '#0057a6' }}
+                                  onClick={() => handleClickVnpay()}
+                                >
+                                  Thanh toán
+                                </button>
+                              </div>
+                            </div>
+                          </Accordion.Collapse>
+                        </div>
+                        <div className="accordion-item">
+                          <h2 className="accordion-header">
+                            <Accordion.Toggle
+                              className="accordion-button"
+                              as="button"
+                              eventKey="1"
+                              aria-expanded="false"
+                            >
+                              Thanh toán qua ví điện tử momo
+                            </Accordion.Toggle>
+                          </h2>
+                          <Accordion.Collapse eventKey="1">
                             <div className="accordion-body">
 
                               <div className="mt-3">
@@ -353,12 +437,12 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                             <Accordion.Toggle
                               className="accordion-button"
                               as="button"
-                              eventKey="1"
+                              eventKey="2"
                             >
                               Thanh toán khi nhận hàng
                             </Accordion.Toggle>
                           </h2>
-                          <Accordion.Collapse eventKey="1">
+                          <Accordion.Collapse eventKey="2">
                             <div className="accordion-body">
                               <div className="order-button-payment mt-20">
                                 <button
@@ -384,12 +468,12 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                             <Accordion.Toggle
                               className="accordion-button"
                               as="button"
-                              eventKey="2"
+                              eventKey="3"
                             >
                               PayPal
                             </Accordion.Toggle>
                           </h2>
-                          <Accordion.Collapse eventKey="2">
+                          <Accordion.Collapse eventKey="3">
                             <PaymentPaypal total={Number((Number(price) + Number(deliveryFee) - Number(checkoutData && checkoutData.discount ? checkoutData.discount : 0)) / Number(23000)).toFixed(2)} token={tokenUser} paymentUser={paymentUser} />
                           </Accordion.Collapse>
                         </div>
