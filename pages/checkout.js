@@ -238,7 +238,7 @@ const Checkout = ({ setCheckoutData, getCustomerAddress }) => {
                 );
               }, 400);
             } else {
-              console.log("Loi")
+              // console.log("Loi")
               toast.error("Vui lòng chọn đơn vị giao hàng")
             }
             setSubmitting(false);

@@ -59,7 +59,6 @@ export const getSingleProduct = (id) => async (dispatch) => {
   const res = await axiosIntance.get(`/product/public/detail/${id}`);
 
   const { data } = res.data;
-  console.log(data);
   if (res && res.status === 200) {
     dispatch({
       type: GET_SINGLE,
@@ -80,7 +79,6 @@ export const getSingleProductBySlug = (slug) => async (dispatch) => {
     type: GET_SINGLE_REQUEST
   });
   const { data } = res.data;
-  console.log(data);
   if (res && res.status === 200) {
     dispatch({
       type: GET_SINGLE,

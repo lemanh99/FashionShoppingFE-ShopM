@@ -81,7 +81,6 @@ export const getCategory_4 = () => async (dispatch) => {
   const res = await axiosIntance.get(`/product/category/public/most`)
   if (res && res.status === 200) {
     const { data } = res.data;
-    console.log("Data", data)
     dispatch({
       type: CATEGORY_4,
       payload: data,

@@ -46,7 +46,6 @@ export const getOrderHistory = () => {
       dispatch({ type: GET_HISTORY_ORDER_REQUEST });
       const res = await axiosIntance.get(`/order/customer/history`);
       if (res.status === 200) {
-        console.log(res.data);
         const { data } = res.data;
         dispatch({
           type: GET_HISTORY_ORDER_SUCCESS,
@@ -77,7 +76,6 @@ export const getOrderHistory = () => {
     return async (dispatch) => {
       const res = await axiosIntance.get(`/order/customer/last-order`);
       if (res.status === 200) {
-        console.log(res.data);
         const { data } = res.data;
         dispatch({
           type: GET_ORDER_LASTED,

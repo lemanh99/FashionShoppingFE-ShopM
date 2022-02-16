@@ -1,5 +1,5 @@
 export const getAddressVietNam = (datas, city, district, ward) => {
-    console.log(datas,city,district,ward)
+    // console.log(datas,city,district,ward)
     if (datas) {
         const cities = datas.filter((data) => data.codename == city)[0]
         let districts = null

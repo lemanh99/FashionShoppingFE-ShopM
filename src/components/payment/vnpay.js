@@ -6,12 +6,7 @@ const PaymentVnpay = ({ url, show, handleClose, data, setData }) => {
     
     const myOnloadFunction = (e) => {
         e.preventDefault();
-        console.log(url)
-        console.log(document.getElementById('frame'))
-        console.log(window.parent.location.href)
         if(data && data!=document.getElementById('frame').contentWindow.location){
-            console.log(document.getElementById('frame').contentWindow.location.pathname)
-            // success
             if(document.getElementById('frame').contentWindow.location.pathname=="/payment/momo/failed"){
                 handleClose(1);
             }else{

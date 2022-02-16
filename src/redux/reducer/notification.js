@@ -6,7 +6,6 @@ const initState = {
 };
 
 export default (state = initState, action) => {
-    console.log(action.type);
     switch (action.type) {
         case NOTIFICATION_REQUEST:
             state = {

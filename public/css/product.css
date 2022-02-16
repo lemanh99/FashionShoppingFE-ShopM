@@ -236,4 +236,8 @@
 
 .my-modal {
     height: 850px;
-} 
+}
+.product-name-detail{
+    font-size: 25px;
+    margin-right: 13px;
+}

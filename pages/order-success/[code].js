@@ -42,7 +42,7 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
   const chcekoutData = useSelector((state) => state.utilis.chcekoutData);
   let date = new Date();
   date.setDate(date.getDate() + 7);
-  console.log(orderItem)
+  // console.log(orderItem)
 
   return (
     <Layout container footerBg textCenter sticky>

@@ -42,7 +42,7 @@ export const login = (user) => {
             if (res.status === 200) {
                 // const { token, user } = res.data;
                 const { data } = res.data;
-                console.log(data);
+                // console.log(data);
                 const token = data.access;
                 const refresh = data.refresh;
                 localStorage.setItem("token", token);

@@ -30,11 +30,23 @@ export const convert_datetime_from_timestamp = (timestamps) => {
 
 export const convert_datetime_to_day = (datetime) => {
   if (datetime == null) return null;
-  var year = datetime.getFullYear();
-  var month = datetime.getMonth()+1;
-  var day = datetime.getDate();
-  var time = year + '-' + month + '-' + day;
-  return time;
+  if(typeof datetime == 'object'){
+    var year = datetime.getFullYear();
+    var month = datetime.getMonth()+1;
+    var day = datetime.getDate();
+    var time = year + '-' + month + '-' + day;
+    return time
+  }
+  if(typeof datetime=='number'){
+    var a = new Date(datetime);
+    var year = a.getFullYear();
+    var month = a.getMonth()+1;
+    var day = a.getDate();
+    var time = year + '-' + month + '-' + day;
+    return time
+  }
+
+  return datetime;
 }
 
 const Time = (endDateTime) => {

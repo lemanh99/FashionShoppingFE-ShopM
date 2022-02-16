@@ -27,7 +27,6 @@ const ShopLayout = ({
   useEffect(() => {
     if (query !== null) {
       if (query) {
-        console.log("Khong chay day", query);
         getProductByParams(query);
       } else {
         

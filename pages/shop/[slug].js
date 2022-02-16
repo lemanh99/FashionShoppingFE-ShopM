@@ -240,7 +240,7 @@ const ProductDetails = ({
                   <div className="col-xxl-5 col-xl-5  col-lg-6  col-md-11  col-sm-12 col-12">
                     <div className="product-view-info mt-30">
                       <div className="product-left-img-info">
-                        <h3 className="mb-20">{product && product.name}</h3>
+                        <h3 className="mb-20 product-name-detail">{product && product.name}</h3>
                         <div className="rating rating-shop d-flex align-items-center">
                           {rates && (
                             <Reating

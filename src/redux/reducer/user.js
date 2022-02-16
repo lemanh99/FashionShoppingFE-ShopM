@@ -8,7 +8,6 @@ const initState = {
 };
 
 export default (state = initState, action) => {
-    console.log(action.type);
     switch (action.type) {
         case CUSTOMER_ADDRESS_REQUEST:
             state = {

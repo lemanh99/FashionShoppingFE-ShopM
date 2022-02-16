@@ -1,5 +1,5 @@
 const Paggination = ({ setActive, active, length, sort }) => {
-  console.log(active, sort);
+  // console.log(active, sort);
   const page_number = 15;
   const arrayNumber = (a, b) => {
     var foo = [];

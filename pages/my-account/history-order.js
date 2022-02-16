@@ -19,7 +19,7 @@ const OrderHistory = ({ getOrderHistory, cancelOrder }) => {
   useEffect(() => {
     setListOrder(orders)
   }, [orders])
-  console.log("Order,", listOrder)
+  // console.log("Order,", listOrder)
 
   const handleCancel = (value) => {
     cancelOrder(value)
