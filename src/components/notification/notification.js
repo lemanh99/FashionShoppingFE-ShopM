@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
 import Button from 'react-bootstrap/Button';
-
+import Link from "next/dist/client/link";
 import moment from 'moment';
 
 
 import { Bell, BookOpen, AlertTriangle } from 'react-feather';
-import { getNotification } from '../../redux/action/notification';
+import { getNotificationLimit, maskReadNotification } from '../../redux/action/notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { convert_datetime_to_day } from '../../utils/time';
 
@@ -25,7 +25,7 @@ const NotifyMe = props => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(getNotification())
+        dispatch(getNotificationLimit())
     }, [])
 
     useEffect(() => {
@@ -51,6 +51,13 @@ const NotifyMe = props => {
     // }
 
     // ];
+    const handerClickMaskRead = () => {
+        if (auth.authenticate && messageCount > 0) {
+            dispatch(maskReadNotification())
+            setMessageCount(0);
+            setShowCount(false);
+        }
+    }
     const storageKey = props.storageKey || 'notification_timeline_storage_id';
     const key = props.notific_key;
     const heading = props.heading || 'Notifications';
@@ -63,6 +70,7 @@ const NotifyMe = props => {
     const handleClick = (event) => {
         setShow(!show);
         setTarget(event.target);
+        handerClickMaskRead();
     }
 
     // Calculate the day diff
@@ -206,7 +214,9 @@ const NotifyMe = props => {
                                             }
                                         </div>
                                         <div className="notification-ui_dd-content">
-                                            <a href="#!" className="btn-notification btn-success-notification btn-block-notification">Xem tất cả</a>
+                                            <Link href='/my-account/notification'>
+                                                <a className="btn-notification btn-success-notification btn-block-notification">Xem tất cả</a>
+                                            </Link>
                                         </div>
                                     </>
                                 )

@@ -24,8 +24,37 @@ export const getNotification = () => {
     };
 };
 
+export const getNotificationLimit = () => {
+    return async (dispatch) => {
+        dispatch({ type: NOTIFICATION_REQUEST });
+        const res = await axiosIntance.get(`/notification/user/limit/5`);
+        
+        if (res && res.status === 200) {
+            const { data } = res.data;
+            dispatch({
+                type: NOTIFICATION_SUCCESS,
+                payload: {
+                    notifications: data,
+                },
+            });
+        } else {
+            dispatch({
+                type: NOTIFICATION_FAILURE,
+                payload: { error: "Error" },
+                notifications: [],
+            });
+        }
+    };
+};
+
 export const getNotificationReset = () => {
     return async (dispatch) => {
         dispatch({ type: NOTIFICATION_RESET });
+    };
+};
+
+export const maskReadNotification = () => {
+    return async (dispatch) => {
+        const res = await axiosIntance.put(`/notification/user/read-all`);
     };
 };

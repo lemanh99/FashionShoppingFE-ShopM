@@ -37,6 +37,17 @@ const SideBarMyAccount = ({
                 </tr>
                 <tr className="cart_item">
                   <td className="product-name">
+                    <Link href='/my-account/notification'>
+                      <a className="text-capitalize">
+                        <strong className="product-quantity">
+                          Thông báo
+                        </strong>
+                      </a>
+                    </Link>
+                  </td>
+                </tr>
+                <tr className="cart_item">
+                  <td className="product-name">
                     <Link href='/my-account/password'>
                       <a className="text-capitalize">
                         <strong className="product-quantity">

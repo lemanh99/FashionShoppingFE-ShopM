@@ -426,8 +426,8 @@ const ProductDetails = ({
                             <TwitterShareButton
                               url={url}
                               title={product && product.name}
-                              hashtags= {["#shopm", "SHOPM"]}
-                              >
+                              hashtags={["#shopm", "SHOPM"]}
+                            >
                               <a
                                 className="d-inline-block font13 text-uppercase transition-3 mb-20"
                                 href="#"
@@ -774,7 +774,15 @@ const ProductDetails = ({
                                   </div>
                                 </div>
 
-                              ) : <>
+                              ) : rates.evaluate_allowed ? (<div className="product-review mt-80 pb-10">
+                                <h5 className="mb-30 font600">Thêm bình luận </h5>
+                                <div className="d-flex">
+                                  <span className="pr-15 mb-15">
+                                    Bạn chưa thể đánh giá sản phẩm. Bạn mua để được đánh giá
+                                  </span>
+                                  {/* /rating */}
+                                </div>
+                              </div>) : (<>
                                 <div className="product-review mt-80 pb-10">
                                   <h5 className="mb-30 font600">Thêm bình luận </h5>
                                   <div className="d-flex">
@@ -818,7 +826,7 @@ const ProductDetails = ({
                                     </button>
                                   </div>
                                 </div>
-                              </>}
+                              </>)}
 
                             </div>
                           </div>

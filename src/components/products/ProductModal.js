@@ -175,7 +175,7 @@ const ProductModal = ({
                     <div className="col-xxl-5 col-xl-5  col-lg-6  col-md-11  col-sm-12 col-12">
                       <div className="product-view-info mt-30">
                         <div className="product-left-img-info">
-                          <h3 className="mb-20">{product && product.name}</h3>
+                          <h3 className="mb-20 product-name-detail">{product && product.name}</h3>
                           <div className="rating rating-shop d-flex align-items-center">
                             {product && (
                               <Reating
@@ -344,6 +344,16 @@ const ProductModal = ({
                                 onClick={(e) => onClickWishlist(e)}
                               >
                                 <span className="icon-heart" />
+                              </a>
+                            </div>
+                            <div className="pro-wishlist d-inline-block mb-15 ms-2">
+                              <a
+                                href="#"
+                                className={`web-btn h2-theme-border1 d-inline-block rounded-0 text-capitalize white h2-theme-bg position-relative over-hidden plr-16 ptb-15  ${wishlist ? "active_wishList" : ""
+                                  } `}
+                                onClick={(e) => onClickCompares(e)}
+                              >
+                                <span className="fal fa-random" />
                               </a>
                             </div>
                           </div>
