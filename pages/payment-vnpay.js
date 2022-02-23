@@ -1,11 +1,11 @@
 // import swal from "@sweetalert/with-react";
-import { CardElement, Elements } from "@stripe/react-stripe-js";
+import Link from "next/dist/client/link";
 // import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import { Formik } from "formik";
 import Router, { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
-import { Accordion } from "react-bootstrap";
+import { Accordion, Spinner } from "react-bootstrap";
 import { connect, useSelector } from "react-redux";
 import InputGroup from "../src/components/form/InputGroup";
 import SelectGroup from "../src/components/form/SelectGroup";
@@ -144,67 +144,22 @@ const PaymentVnpay = ({ addOrder, removeCartAll }) => {
             }
         })
     }
-    const handleCloseMomo = (status) => {
-        setShowMomo(false);
-        setDataMomo(null);
-        if (status == 1) {
-            paymentUser({
-                order_status_id: 2,
-                payment_status_id: 2,
-                payment_id: getPayment("momo") ? getPayment("momo").id : null,
-            })
-            toast.success("Thanh toán bằng ví diện tử momo thành công", { duration: 1000 });
-        } else {
-            toast.error("Thanh toán bằng ví diện tử momo không thành công", { duration: 1000 });
-        }
-    };
-    const handleShowMomo = () => setShowMomo(true);
-
-    const handleClickVnpay = () => {
-        axiosIntance.post('setting/payment/vnpay/create', {
-            order_type: "Order",
-            order_desc: "Thanh toan don hang",
-            bank_code: null,
-            language: "vn",
-            amount: String(Number(price) + Number(deliveryFee)) * 100
-
-        }).then((res) => {
-            if (res.status == 200) {
-                const { data } = res.data;
-                if (data) {
-                    setUrlVnpay(data.url)
-                    // setShowVnpay(true);
-                    Router.push(data.url)
-                    // setLocalStorage('checkoutData', checkoutData)
-                    // window.open(data.url, '_blank')
-                } else {
-                    toast.error("Thanh toán bằng vnpay đang lỗi, vui lòng thử lại sau", { duration: 500 });
-                }
-            } else {
-                toast.error("Thanh toán bằng vnpay đang lỗi, vui lòng thử lại sau", { duration: 500 });
-            }
-        })
-    }
-
-    const handleCloseVnpay = (status) => {
-        setShowVnpay(false);
-        setDataVnpay(null);
-        if (status == 1) {
-            // paymentUser({
-            //   order_status_id: 2,
-            //   payment_status_id: 2,
-            //   payment_id: getPayment("momo") ? getPayment("momo").id : null,
-            // })
-            // toast.success("Thanh toán bằng ví diện tử momo thành công", { duration: 1000 });
-        } else {
-            toast.error("Thanh toán bằng ví diện tử vnpay không thành công", { duration: 1000 });
-        }
-    };
-    const handleShowVnpay = () => setShowVnpay(true);
-
-
     return (
         <Layout sticky textCenter container footerBg>
+            <div className="container">
+                <div className="row">
+                    <div className="col-xl-12  col-lg-12  col-md-12  col-sm-12 col-12 d-flex align-items-center justify-content-center">
+                        <div className="page-title-not-found mt-50 text-center">
+                            <div className="position-relative" style={{marginBottom: '15px'}}>
+                                <Spinner animation="border" role="status" size="100px">
+                                    <span className="visually-hidden">Loading...</span>
+                                </Spinner>
+                            </div>
+                            <h2 className="text-capitalize font600 mb-10" style={{ fontSize: '23px', marginBottom: '80px' }}>Hệ thống đang xử lý vui lòng chờ giây lát ...</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </Layout>
     );
 };
