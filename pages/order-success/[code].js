@@ -9,6 +9,7 @@ import PageBanner from "../../src/layout/PageBanner";
 import { getOrderByOrderCode } from "../../src/redux/action/order";
 import { getCarts } from "../../src/redux/action/utilis";
 import { getAddressVietNam } from "../../src/utils/address";
+import Link from "next/link";
 
 const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
   const order = useSelector((state) => state.order);
@@ -25,9 +26,9 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
       getOrderByOrderCode(code);
       axios.get('https://provinces.open-api.vn/api/?depth=3').then((res) => {
         if (res.status == 200) {
-            setAddressApi(res.data)
+          setAddressApi(res.data)
         }
-    })
+      })
     }
     getCarts();
 
@@ -135,6 +136,10 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
                       <b>Phương thức thanh toán: </b>
                       {dataOrder && dataOrder.payment_method}
                     </p>
+                    <p>
+                      <b>Ngày dự kiến nhận hàng: </b>
+                      {moment(date).format("DD-MM-YYYY")}
+                    </p>
                   </div>
                   <div className="col-md-6">
                     <h5>Thông tin giao hàng</h5>
@@ -144,7 +149,7 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
                     </p>
                     <p>
                       <b>Địa chỉ nhận hàng:</b> {" "}
-                      {shippingAddress && shippingAddress.street}{" "}{shippingAddress?(getAddressVietNam(addressApi, shippingAddress.city, shippingAddress.district, shippingAddress.village)):null}
+                      {shippingAddress && shippingAddress.street}{" "}{shippingAddress ? (getAddressVietNam(addressApi, shippingAddress.city, shippingAddress.district, shippingAddress.village)) : null}
                     </p>
                     <p>
                       <b>Số điện thoại nhận hàng:</b> {" "}
@@ -152,13 +157,29 @@ const OrderSuccess = ({ getCarts, getOrderByOrderCode }) => {
                     </p>
 
                   </div>
-                  {shippingAddress && shippingAddress.shipping_status_name != "delivered" &&shippingAddress.shipping_status_name != "cancelled" ? (
+                  {shippingAddress && shippingAddress.shipping_status_name != "delivered" && shippingAddress.shipping_status_name != "cancelled" ? (
                     <div className="col-12 mt-4">
-                      <div className="h2-theme-bg  p-3 mt-4 text-center">
-                        <h5 className="text-white">Ngày dự kiến nhận hàng</h5>
-                        <h2 className="text-white">
-                          {moment(date).format("DD-MM-YYYY")}
-                        </h2>
+                      <div className="p-3 mt-4 text-center">
+                        <div className="row">
+                          <div className="col-6">
+                            <div className="order-button-payment mt-20">
+                              <Link href={`/my-account/history-order/${dataOrder && dataOrder.order_code}`}>
+                                <a className="bt-btn theme-btn">
+                                  Xem lịch sử đơn hàng
+                                </a>
+                              </Link>
+                            </div>
+                          </div>
+                          <div className="col-6">
+                          <div className="order-button-payment mt-20">
+                            <Link href="/">
+                              <a className="bt-btn theme-btn">
+                                Quay lại trang chủ
+                              </a>
+                            </Link>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   ) : null}

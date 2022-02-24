@@ -6,6 +6,7 @@ import ProductModal from "../src/components/products/ProductModal";
 import Layout from "../src/layout/Layout";
 import PageBanner from "../src/layout/PageBanner";
 import { addToCart, compare, getCompare } from "../src/redux/action/utilis";
+import Link from "next/link";
 
 const Compare = ({ getCompare, addToCart, compare }) => {
   const compare_ = useSelector((state) => state.utilis.compares);
