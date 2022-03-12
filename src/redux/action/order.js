@@ -1,4 +1,4 @@
-import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_HISTORY_ORDER_REQUEST, GET_HISTORY_ORDER_SUCCESS, GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_SUCCESS, GET_ORDER_LASTED } from "./type";
+import { ADD_ORDER_FAILURE, ADD_ORDER_REQUEST, ADD_ORDER_SUCCESS, GET_HISTORY_ORDER_REQUEST, GET_HISTORY_ORDER_SUCCESS, GET_ORDER_BY_ID_FAILURE, GET_ORDER_BY_ID_REQUEST, GET_ORDER_BY_ID_SUCCESS, GET_ORDER_LASTED } from "./type";
 import axiosIntance from "../../helpers/axios";
 
 export const addOrder = (order) => {
@@ -35,7 +35,7 @@ export const getOrderByOrderCode = (code) => {
         } else {
             dispatch({
                 type: GET_ORDER_BY_ID_FAILURE,
-                payload: { error: res.data.error },
+                payload: { error: null },
             });
         }
     };

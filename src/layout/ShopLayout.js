@@ -16,6 +16,7 @@ import { activeData, dblock } from "../utils/utils";
 const ShopLayout = ({
   getProducts,
   allProducts,
+  pagination,
   loading,
   keyValueForQurey,
   value,
@@ -24,10 +25,11 @@ const ShopLayout = ({
   query,
   getProductByParams
 }) => {
+  const [pageNumber, setPageNumber] = useState(1)
   useEffect(() => {
     if (query !== null) {
       if (query) {
-        getProductByParams(query);
+        getProductByParams(query, pageNumber);
       } else {
         
         if (value) {
@@ -53,6 +55,9 @@ const ShopLayout = ({
 
   }, [query]);
   const [active, setActive] = useState(active_ ? active_ : 0);
+  const handleClick = (page_number) => {
+
+  }
   let sort = 12;
   let products = allProducts;
   return (
@@ -177,10 +182,13 @@ const ShopLayout = ({
               {!loading ? (
                 <div className="mt-5">
                   <Paggination
-                    length={products && products.length}
+                    length={pagination && pagination.total_items}
                     sort={sort}
                     active={active}
                     setActive={setActive}
+                    pageNumber={pageNumber}
+                    setPageNumber={setPageNumber}
+                    handeClick={handleClick}
                   />
                 </div>
               ) : (null)}
@@ -194,8 +202,9 @@ const ShopLayout = ({
 
 const mapStateToProps = (state) => ({
   allProducts: hideFromArr(
-    getProductByFilter(state.product.products, state.filter)
+    getProductByFilter(state.product.products.items, state.filter)
   ),
+  pagination: state.product.products.pagination, 
   loading: state.product.loading
 });
 

@@ -118,6 +118,7 @@ export const arrLengthByKey = (data, key, value) => {
 };
 
 export const hideFromArr = (products) => {
+  console.log("Dsa", products)
   return (
     products && products.filter((product) => product.showProductPage !== false)
   );

@@ -218,7 +218,7 @@ const Filter = ({ filterByPrice, products, getProducts, getProductRecommend, pro
 };
 
 const mapStateToProps = (state) => ({
-  products: hideFromArr(state.product.products),
+  products: hideFromArr(state.product.products.items),
   product_recommendations: state.product.recommended,
 });
 

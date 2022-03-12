@@ -368,7 +368,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                             </div>
                           </Accordion.Collapse>
                         </div>
-                        <div className="accordion-item">
+                        {/* <div className="accordion-item">
                           <h2 className="accordion-header">
                             <Accordion.Toggle
                               className="accordion-button"
@@ -399,7 +399,7 @@ const PaymentCart = ({ addOrder, removeCartAll }) => {
                               </div>
                             </div>
                           </Accordion.Collapse>
-                        </div>
+                        </div> */}
                         {/* <div className="accordion-item">
                           <h2 className="accordion-header">
                             <Accordion.Toggle

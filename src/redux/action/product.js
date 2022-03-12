@@ -4,7 +4,7 @@ import axiosIntance from "../../helpers/axios";
 
 export const getProducts = () => async (dispatch) => {
   dispatch({ type: GET_PRODUCT_REQUEST });
-  const res = await axiosIntance.get(`/product/public/`)
+  const res = await axiosIntance.get(`/product/public/?page=${1}&record_limit=12000`)
   if (res && res.status === 200) {
     const { data } = res.data;
     dispatch({
@@ -20,14 +20,16 @@ export const getProducts = () => async (dispatch) => {
 };
 export const getProductFilterByApi = (filters) => async (dispatch) => {
   dispatch({ type: GET_PRODUCT_REQUEST });
+  const page = filters && filters.page?filters.page:1;
   const category_name = filters && filters.category_name?filters.category_name:"";
   const search_keyword = filters && filters.search_keyword?filters.search_keyword:"";
   const color_name = filters && filters.color_name?filters.color_name:"";
   const size_name = filters && filters.size_name?filters.size_name:"";
   const tag = filters && filters.tag?filters.tag:"";
-  const res = await axiosIntance.get(`/product/public/?category_name=${category_name}&search_keyword=${search_keyword}&color_name=${color_name}&size_name=${size_name}&tag=${tag}`)
+  const res = await axiosIntance.get(`/product/public/?category_name=${category_name}&search_keyword=${search_keyword}&color_name=${color_name}&size_name=${size_name}&tag=${tag}&page=${page}&record_limit=12000`)
   if (res && res.status === 200) {
     const { data } = res.data;
+    console.log(data);
     dispatch({
       type: GET_PRODUCT,
       payload: data,
@@ -39,9 +41,10 @@ export const getProductFilterByApi = (filters) => async (dispatch) => {
     });
   }
 };
-export const getProductByParams = (query) => async (dispatch) => {
+export const getProductByParams = (query, page) => async (dispatch) => {
   dispatch({ type: GET_PRODUCT_REQUEST });
-  const res = await axiosIntance.get(`/product/public/${query}`)
+  const page_number = page?page:1
+  const res = await axiosIntance.get(`/product/public/${query}&page=${page_number}&record_limit=12000`)
   if (res && res.status === 200) {
     const { data } = res.data;
     dispatch({
